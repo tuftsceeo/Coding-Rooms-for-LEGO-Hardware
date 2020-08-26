@@ -6,15 +6,15 @@
 
 # File navigation
 
-## index.html
-Coding Rooms index markup that simulates the interaction between Coding Rooms and the iframe environment. CCWebExecManager file.
+## ```index.html```
+Coding Rooms index markup that simulates the interaction between Coding Rooms and the iframe environment. ```CCWebExecManager``` file.
 
 
-## iframe.html
-iframe environment to be hosted by TuftsCEEO. Implementation of CCWebExecClient.
+## ```iframe.html```
+iframe environment to be hosted by TuftsCEEO. Implementation of ```CCWebExecClient```.
 
 
-## /modules/ServiceDock_SPIKE.js
+## ```/modules/ServiceDock_SPIKE.js```
 TuftsCEEO Service Dock for SPIKE™ Prime file (used only in the iframe)
 
 # Current protocol payload (JSON) 
@@ -25,7 +25,7 @@ TuftsCEEO Service Dock for SPIKE™ Prime file (used only in the iframe)
 |files   	      | JSON object     |  keys: name of "file", values: string content of file  |
 |stdin   	      |   string	      |   	          |
 
-Javascript payload object sent by webExecManager on 'execute_code'
+Javascript payload object sent by ```webExecManager``` on ```'execute_code'```
 ```javascript
         var payload = {
           language: 'demo-lang',
