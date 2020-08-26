@@ -11,7 +11,7 @@ Coding Rooms index markup that simulates the interaction between Coding Rooms an
 
 
 ## ```iframe.html```
-iframe environment to be hosted by TuftsCEEO. Implementation of ```CCWebExecClient```.
+iframe environment. Implementation of ```CCWebExecClient```.
 
 
 ## ```/modules/ServiceDock_SPIKE.js```
