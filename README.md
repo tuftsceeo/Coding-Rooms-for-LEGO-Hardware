@@ -7,11 +7,11 @@
 # File navigation
 
 ## index.html
-Coding Rooms index markup that simulates the interaction between Coding Rooms UI and the iframe environment
+Coding Rooms index markup that simulates the interaction between Coding Rooms and the iframe environment. CCWebExecManager file.
 
 
 ## iframe.html
-iframe environment to be hosted by TuftsCEEO
+iframe environment to be hosted by TuftsCEEO. Implementation of CCWebExecClient.
 
 
 ## /modules/ServiceDock_SPIKE.js
