@@ -7,7 +7,7 @@
 # File navigation
 
 ## ```index.html```
-Coding Rooms index markup that simulates the interaction between Coding Rooms and the iframe environment. ```CCWebExecManager``` file.
+Coding Rooms index markup that simulates the interaction between Coding Rooms and the iframe environment. THe ```CCWebExecManager```
 
 
 ## ```iframe.html```
@@ -15,7 +15,7 @@ iframe environment to be hosted by TuftsCEEO. Implementation of ```CCWebExecClie
 
 
 ## ```/modules/ServiceDock_SPIKE.js```
-TuftsCEEO Service Dock for SPIKE™ Prime file (used only in the iframe)
+TuftsCEEO SPIKE™ Prime Service (used only in the iframe)
 
 # Current protocol payload (JSON) 
 |Parameters   	| Usage   	| Description  	|
