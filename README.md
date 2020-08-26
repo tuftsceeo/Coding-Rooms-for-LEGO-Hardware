@@ -15,7 +15,7 @@ iframe environment to be hosted by TuftsCEEO. Implementation of ```CCWebExecClie
 
 
 ## ```/modules/ServiceDock_SPIKE.js```
-TuftsCEEO SPIKE™ Prime Service (used only in the iframe)
+SPIKE™ Prime TuftsCEEO Service (used only in the iframe)
 
 # Current protocol payload (JSON) 
 |Parameters   	| Usage   	| Description  	|
