@@ -1,4 +1,4 @@
-# Coding-Rooms-for-LEGO-Hardware
+# Coding Rooms for LEGO Hardware
 
 > LEGO® hardware web execution environment embedded in an iframe for use in Coding Rooms
 
