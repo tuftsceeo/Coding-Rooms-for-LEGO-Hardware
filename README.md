@@ -1,8 +1,8 @@
 # Coding Rooms for LEGO Hardware
 
-> LEGO® hardware web execution environment embedded in an iframe for use in Coding Rooms
+### **LEGO® hardware web execution environment embedded in an iframe for use in Coding Rooms**
 
-> Current supporting: SPIKE™ Prime
+#### **Current supporting: SPIKE™ Prime**
 
 # File navigation
 
