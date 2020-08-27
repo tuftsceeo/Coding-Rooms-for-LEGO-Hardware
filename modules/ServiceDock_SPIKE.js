@@ -2508,6 +2508,10 @@ function Service_SPIKE() {
                             funcAfterDisconnect();
                         }
 
+                        if ( funcAfterError != undefined ) {
+                            funcAfterError("SPIKE Prime hub has been disconnected");
+                        }
+
                         writer.close();
                         //await writer.releaseLock();
                         await writableStreamClosed;
