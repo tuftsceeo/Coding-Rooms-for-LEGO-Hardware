@@ -166,6 +166,7 @@ function Service_SPIKE() {
     let writer;
     let value;
     let done;
+    let writableStreamClosed;
 
     //define for json concatenation
     let jsonline = "";
@@ -282,7 +283,8 @@ function Service_SPIKE() {
 
     var funcAtInit = undefined; // function to call after init of SPIKE Service
 
-    var funcAfterPrint = undefined; // function to call for micropy program print statements or errors
+    var funcAfterPrint = undefined; // function to call for SPIKE python program print statements or errors
+    var funcAfterError = undefined; // function to call for errors in ServiceDock
 
     var funcAfterDisconnect = undefined; // function to call after SPIKE Prime is disconnected
 
@@ -325,11 +327,15 @@ function Service_SPIKE() {
 
         console.log("navigator.product is ", navigator.product);
         console.log("navigator.appName is ", navigator.appName);
+        // reinit variables in the case of hardware disconnection and Service reactivation
+        reader = undefined;
+        writer = undefined;
 
         // initialize web serial connection
         var webSerialConnected = await initWebSerial();
 
         if (webSerialConnected) {
+
             // start streaming UJSONRPC
             streamUJSONRPC();
             serviceActive = true;
@@ -361,12 +367,21 @@ function Service_SPIKE() {
         funcAtInit = callback;
     }
 
-    /** <h4> Get the callback function to execute after service is initialized </h4>
+    /** <h4> Get the callback function to execute after a print or error from SPIKE python program </h4>
      * @public
      * @param {function} callback 
      */
     function executeAfterPrint(callback) {
         funcAfterPrint = callback;
+    }
+
+    /** <h4> Get the callback function to execute after Service Dock encounters an error </h4>
+     * 
+     * @public 
+     * @param {any} callback 
+     */
+    function executeAfterError(callback) {
+        funcAfterError = callback;
     }
 
     /** <h4> Get the callback function to execute after service is disconnected </h4>
@@ -2121,6 +2136,12 @@ function Service_SPIKE() {
                     var base64data = btoa(dataToSend); // encode the packet to base64
                     
                     UJSONRPC.writePackage(base64data, transferid); // send the packet
+
+                    // writeProgram's callback defined by the user
+                    if (writeProgramCallback != undefined) {
+                        writeProgramCallback();
+                    }
+
                 }
                 // the package to send is empty, so throw error
                 else {
@@ -2307,15 +2328,11 @@ function Service_SPIKE() {
                 await port.open({ baudrate: 115200 });
             }
             catch (er) {
-                try {
-                    console.log(er)
-                    await port.close();
+                console.log(er)
+                if ( funcAfterError != undefined ) {
+                    funcAfterError(er + "\nPlease try again. If error persists, refresh this environment.");
                 }
-                catch (err) {
-                    console.log(err)
-                    success = false;
-                    return success;
-                }
+                await port.close();
             }
 
             if (port.readable) {
@@ -2330,6 +2347,9 @@ function Service_SPIKE() {
 
         } catch (e) {
             console.log("Cannot read port:", e);
+            if ( funcAfterError != undefined ) {
+                funcAfterError(e);
+            }
             return false;
         }
     }
@@ -2343,7 +2363,7 @@ function Service_SPIKE() {
         if (typeof writer === 'undefined') {
             // set up writer for the first time
             const encoder = new TextEncoderStream();
-            const writableStreamClosed = encoder.readable.pipeTo(port.writable);
+            writableStreamClosed = encoder.readable.pipeTo(port.writable);
             writer = encoder.writable.getWriter();
         }
     }
@@ -2379,9 +2399,11 @@ function Service_SPIKE() {
                             var json_string = await JSON.stringify(value);
 
                             let findEscapedQuotes = /\\"/g;
+                            let findNewLines = /\\n/g;
 
                             var cleanedJsonString = json_string.replace(findEscapedQuotes, '"');
-                            var cleanedJsonString = cleanedJsonString.substring(1,cleanedJsonString.length - 1);
+                            cleanedJsonString = cleanedJsonString.substring(1,cleanedJsonString.length - 1);
+                            // cleanedJsonString = cleanedJsonString.replace(findNewLines,'');
 
                             jsonline = jsonline + cleanedJsonString; // concatenate packet to data
 
@@ -2409,9 +2431,26 @@ function Service_SPIKE() {
 
                                             lastUJSONRPC = conjoinedPacketsArray[i];
 
-                                            // update hub information using lastUJSONRPC
-                                            await updateHubPortsInfo();
-                                            await PrimeHubEventHandler();
+                                            try {
+                                                var parseTest = await JSON.parse(lastUJSONRPC)
+
+                                                // update hub information using lastUJSONRPC
+                                                await updateHubPortsInfo();
+                                                await PrimeHubEventHandler();
+                                            }
+                                            catch (e) {
+                                                console.log(e);
+                                                console.log("error parsing lastUJSONRPC: ", lastUJSONRPC);
+                                                console.log("current jsonline: ", jsonline);
+                                                console.log("current cleaned json_string: ", cleanedJsonString)
+                                                console.log("current json_string: ", json_string);
+                                                console.log("current value: ", value);
+
+                                                if (funcAfterError != undefined) {
+                                                    funcAfterError("Fatal Error: Please refresh this environment");
+                                                }
+
+                                            }
 
                                             jsonline = "";
 
@@ -2420,9 +2459,27 @@ function Service_SPIKE() {
                                     else {
                                         lastUJSONRPC = jsonline.substring(0, carriageReIndex);
 
-                                        // update hub information using lastUJSONRPC
-                                        await updateHubPortsInfo();
-                                        await PrimeHubEventHandler();
+                                        // // parsing test
+                                        try {
+                                            var parseTest = await JSON.parse(lastUJSONRPC)
+
+                                            // update hub information using lastUJSONRPC
+                                            await updateHubPortsInfo();
+                                            await PrimeHubEventHandler();
+                                        }
+                                        catch (e) {
+                                            console.log(e);
+                                            console.log("error parsing lastUJSONRPC: ", lastUJSONRPC);
+                                            console.log("current jsonline: ", jsonline);
+                                            console.log("current cleaned json_string: ", cleanedJsonString)
+                                            console.log("current json_string: ", json_string);
+                                            console.log("current value: ", value);
+
+                                            if (funcAfterError != undefined) {
+                                                funcAfterError("Fatal Error: Please refresh this environment");
+                                            }
+
+                                        }
 
                                         jsonline = "";
                                     }
@@ -2443,45 +2500,32 @@ function Service_SPIKE() {
                     }
                     // error handler
                     catch (error) {
+                        console.log('[readLoop] ERROR', error);
+
                         serviceActive = false;
                         
-                        if ( funcAfterDisconnect != undefined ) {
+                        if (funcAfterDisconnect != undefined) {
                             funcAfterDisconnect();
                         }
 
-                        console.log('[readLoop] ERROR', error);
-                        try {
-                            // error detected: release
-                            await reader.releaseLock();
-                            //await decoder.readable.releaseLock(); not a function
-                            await writer.releaseLock();
-                            //await decoder.readable.cancel(); device is lost
-                            await readableStreamClosed.catch(reason => { });
-                            //await reader.cancel(); cant cancel whats released
-                            //await decoder.readable.cancel(); device is lost
-                            //await decoder.cancel(); not a function
-                            //await encoder.cancel(); encoder is not defined
+                        writer.close();
+                        //await writer.releaseLock();
+                        await writableStreamClosed;
 
-                            if (decoder.readable.locked) {
-                                console.log("decoder.readable is locked");
-                            }
-                            else {
-                                console.log("it aint", decoder.readable.locked);
-                            }
+                        reader.cancel();
+                        //await reader.releaseLock();
+                        await readableStreamClosed.catch(reason => { });
 
-                            // if (reader.locked) {
-                            //     console.log("reader is locked");
-                            // }
-                            // else {
-                            //     console.log("it aint", reader.locked);
-                            // }
-                            await port.close();
-                            break; // stop trying to read
-                        }
-                        catch (e) {
-                            console.log(e);
-                            break; // stop trying to read
-                        }
+                        await port.close();
+
+                        writer = undefined;
+                        reader = undefined;
+                        jsonline = "";
+                        lastUJSONRPC = undefined;
+                        json_string = undefined;
+                        cleanedJsonString = undefined;
+
+                        break; // stop trying to read
                     }
                 } // end of: while (true) [reader loop]
 
@@ -2519,6 +2563,11 @@ function Service_SPIKE() {
                 console.log("error parsing lastUJSONRPC at updateHubPortsInfo", lastUJSONRPC);
                 console.log(typeof lastUJSONRPC);
                 console.log(lastUJSONRPC.p);
+
+                if (funcAfterError != undefined) {
+                    funcAfterError("Fatal Error: Please reboot the Hub and refresh this environment");
+                }
+
             }
 
             var index_to_port = ["A", "B", "C", "D", "E", "F"]
@@ -2683,11 +2732,15 @@ function Service_SPIKE() {
         if (messageType == "runtime_error") {
             var decodedResponse = atob(parsedUJSON["p"][3]);
 
+            decodedResponse = JSON.stringify(decodedResponse);
+
             console.log(decodedResponse);
 
-            // execute function after print if defined
-            if (funcAfterPrint != undefined) {
-                funcAfterPrint(decodedResponse);
+            var splitData = decodedResponse.split(/\\n/); // split the code by every newline
+
+            // execute function after print if defined (only print the last line of error message)
+            if (funcAfterError != undefined) {
+                funcAfterError(splitData[splitData.length-2] + "\nFatal Error: Please reboot the Hub");
             }
         }
         // storage information
@@ -2937,8 +2990,6 @@ function Service_SPIKE() {
                             if (writeProgramCallback != undefined) {
                                 
                                 writeProgramCallback();
-
-                                writeProgramCallback = undefined;
                             }
 
 
@@ -3012,6 +3063,7 @@ function Service_SPIKE() {
         reachMicroPy: reachMicroPy,
         executeAfterInit: executeAfterInit,
         executeAfterPrint: executeAfterPrint,
+        executeAfterError: executeAfterError,
         executeAfterDisconnect: executeAfterDisconnect,
         getPortsInfo: getPortsInfo,
         getPortInfo: getPortInfo,
