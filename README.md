@@ -20,7 +20,7 @@ LEGO SPIKE™ Prime TuftsCEEO Service (used only in the iframe)
 # Current protocol payload (JSON) 
 |Parameters   	| Usage   	| Description  	|
 |---	          |---	      |---	          |
-|language       | string    | language of data sent ("LEGO" when customizing)  	   |
+|language       | string    | language of data sent ("MicroPython for LEGO" when customizing)  	   |
 |defaultFileName| string  	      |   	name of the "file"             |
 |files   	      | JSON object     |  keys: name of "file", values: string content of file  |
 |stdin   	      |   string	      |   	          |
