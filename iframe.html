@@ -276,6 +276,12 @@
             async function writeCodeExecRequestPayloadToDOM(payload) {
                 var files = payload.files;
                 
+                var defaultFileName = payload.defaultFileName;
+
+                console.log("defaultFileName: ", defaultFileName);
+
+                console.log("payload: ", payload);
+
                 // assumes there is only one key-value pair in files
                 for ( var key in files ) {
                     console.log("key: ", key);
@@ -284,6 +290,7 @@
                     
                     console.log("fileContent: ", fileContent);
                 }
+
 
                 // parse the selected slot id
                 var slotidSelect = document.getElementById("slotidSelect");
