@@ -1,3 +1,5 @@
+Production: [![Netlify Status](https://api.netlify.com/api/v1/badges/5c3bd66f-d018-436d-91d6-6271e16acb69/deploy-status)](https://app.netlify.com/sites/tufts-cr-for-lego/deploys) QA: [![Netlify Status](https://api.netlify.com/api/v1/badges/2dd6078f-2ae0-46c6-be77-9b3349283948/deploy-status)](https://app.netlify.com/sites/tufts-cr-for-lego-qa/deploys)
+
 # Coding Rooms for LEGO Hardware
 
 ### **LEGO® hardware web execution environment embedded in an iframe for use in Coding Rooms**
