@@ -284,8 +284,8 @@
 
                 // assumes there is only one key-value pair in files
                 for ( var key in files ) {
-                    console.log("key: ", atob(key));
-                    var fileName = atob(key);    
+                    console.log("key: ", key);
+                    var fileName = key;    
                     var fileContent = files[key];
                     
                     console.log("fileContent: ", fileContent);
