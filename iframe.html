@@ -287,7 +287,6 @@
                     console.log("key: ", key);
                     var fileName = key;    
                     var fileContent = files[key];
-                    
                     console.log("fileContent: ", fileContent);
                 }
 
@@ -300,6 +299,8 @@
                 var slotidInteger = parseInt(slotid);
 
                 printOnConsole("Writing new program to slot " + slotid);
+
+                var base64encoding = btoa(fileName);
 
                 // register the program into SPIKE (only one file can be registered)
                 mySPIKE.writeProgram(fileName, fileContent, slotidInteger, async function () {
