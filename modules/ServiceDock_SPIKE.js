@@ -2041,6 +2041,7 @@ function Service_SPIKE() {
      */
     UJSONRPC.getFirmwareInfo = async function getFirmwareInfo() {
         var randomId = generateId();
+
         var command = '{"i":' + '"' + randomId + '"' + ', "m": "get_firmware_info" ' + '}';
         sendDATA(command);
     }
@@ -2095,9 +2096,9 @@ function Service_SPIKE() {
         var command = '{"i":' + '"' + randomId + '"' +
             ', "m": "start_write_program", "p": {' +
             '"meta": {' +
-            '"created": ' + parseInt(Date.now() * 1000) +
-            ', "modified": ' + parseInt(Date.now() * 1000) +
-            ', "name": ' + '"' + projectName + '"' +
+            '"created": ' + parseInt(Date.now()) +
+            ', "modified": ' + parseInt(Date.now()) +
+            ', "name": ' + '"' + btoa(projectName) + '"' +
             ', "type": ' + typeInt +
             ', "project_id":' + Math.floor(Math.random() * 1000) +
             '}' +

@@ -276,6 +276,12 @@
             async function writeCodeExecRequestPayloadToDOM(payload) {
                 var files = payload.files;
                 
+                var defaultFileName = payload.defaultFileName;
+
+                console.log("defaultFileName: ", defaultFileName);
+
+                console.log("payload: ", payload);
+
                 // assumes there is only one key-value pair in files
                 for ( var key in files ) {
                     console.log("key: ", key);
@@ -284,6 +290,7 @@
                     
                     console.log("fileContent: ", fileContent);
                 }
+
 
                 // parse the selected slot id
                 var slotidSelect = document.getElementById("slotidSelect");
@@ -329,21 +336,19 @@
     </head>
 
     <body>
-        <div id = "explanation">
-            <b> Your browser did not enable Serial API. Please make sure that: </b>
-            <div>
-                1) Your browser is Google Chrome
+        <center>
+            <div id="explanation">
+                <center>
+                    Your browser did not enable Serial API. Please make sure that:
+                </center>
+                <ol>
+                    <li>Your browser is Google Chrome </li>
+                    <li>The experimental web platform flag is enabled.</li>
+                </ol>
+                    <li><em>ENABLE</em> Experimental Web Platform (#enable-experimental-web-platform-features)</li>
+                    <li>To enable, please go to: chrome://flags/#enable-experimental-web-platform-features or chrome://flags</li>
             </div>
-            <div>
-                2) The experimental web platform flag is enabled. 
-                <div>
-                    To enable, please go to:
-                </div>
-                <div>
-                    chrome://flags/#enable-experimental-web-platform-features
-                </div>
-            </div>
-        </div>
+        </center>
         <div id="servicedock" style="position: absolute; top:10px; right:10px;">
             <service-spike id="Service_SPIKE"></service-spike>
         </div>
