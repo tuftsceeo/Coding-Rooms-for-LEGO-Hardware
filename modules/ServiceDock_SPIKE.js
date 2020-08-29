@@ -2745,7 +2745,7 @@ function Service_SPIKE() {
 
             // execute function after print if defined (only print the last line of error message)
             if (funcAfterError != undefined) {
-                funcAfterError(splitData[splitData.length-2] + "\nFatal Error: Please reboot the Hub");
+                funcAfterError(splitData[splitData.length-2]);
             }
         }
         // storage information
