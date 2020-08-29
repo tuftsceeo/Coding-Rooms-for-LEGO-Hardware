@@ -8,7 +8,7 @@
         <script language="javascript">
 
             var motorInfo = '<div id="motor">Motor<div id="motorAngle"></div></div>'
-            var colorInfo = '<div id="color">Color<div id="colorRGBbox" data-r="0", data-g="0", data-b="0" style="height:30px;width:30px;"> </div> </div>';
+            var colorInfo = '<div id="color">Color<div id="colorRGBbox" data-r="0", data-g="0", data-b="0" style="height:25px;width:25px;"> </div> </div>';
             var distanceInfo = '<div id="distance">Distance<div id = "distanceValue"></div></div>';
             var forceInfo = '<div id="force">Force<div id="forceForce"></div></div>';
 
@@ -17,17 +17,24 @@
             var hubProjects;
             var devicesInfo = document.getElementById("devicesInfo");
 
-            window.onload = function () {
-                var explanation = document.getElementById("explanation")
+            window.onload = function () { 
+                // common web UI elements
+                var hardwareSelect = document.getElementById("hardwareSelect");
+                var topToolbar_container = document.getElementById("topToolbar_container");
+                var mainUI_container = document.getElementById("mainUI_container");
+                var connectionHelp_container = document.getElementById("connectionHelp_container");
 
-                if ('serial' in navigator) {
-                    explanation.style.display = "none";
-                }
-                else {
-                    explanation.style.display = "block";
-                }
+                handleHardwareSelect();
+                hardwareSelect.addEventListener("change", function () {
+                    // TO:DO reinitialize (re"block") hidden UI elements
+                    handleHardwareSelect();
+                })
+
+                mainUI_container.style.display = "none";
 
                 console.log("here!");
+
+                /* SPIKE Prime web UI code*/
 
                 mySPIKE = document.getElementById("Service_SPIKE").getService();
 
@@ -41,6 +48,9 @@
                 mySPIKE.executeAfterError(printOnConsole);
                 
                 mySPIKE.executeAfterInit(async function () {
+
+                    mainUI_container.style.display = "block";
+                    connectionHelp_container.style.display = "none";
 
                     printOnConsole("Successfully connected to SPIKE Prime!");
 
@@ -146,9 +156,13 @@
                     printOnConsole("Web UI initialization complete!")
                     printOnConsole("\n")
 
+                    /* END OF SPIKE Prime web UI code */
+
                 })
                 console.log("mySPIKE = " + mySPIKE);
-            };
+            }; /* end of window.load */
+
+            /* helper functions */
 
             function addMotorIcon(port) {
                 var portInfo = document.getElementById("port" + port + "Info");
@@ -327,6 +341,32 @@
                 return true;
             }
 
+            function handleHardwareSelect() {
+                var explanation = document.getElementById("dependenciesInfo");
+
+                var hardwareSelected = hardwareSelect.options[hardwareSelect.selectedIndex];
+                var hardwareSelectedID = hardwareSelected.id;
+                
+                if (hardwareSelectedID = "hardware_SPIKE") {
+                    var documentation = document.getElementById("documentation_SPIKE");
+                    documentation.addEventListener("click", function () {
+                        var url = "/documentation/SPIKE_Prime_Python_Knowledge_Base.htm"
+                        window.open(url);
+                    })
+                    if ('serial' in navigator) {
+                        explanation.style.display = "none";
+                        topToolbar_container.style.display = "block";
+                        mainUI_container.style.display = "block";
+                    }
+                    else {
+                        explanation.style.display = "block";
+                        topToolbar_container.style.display = "none";
+                        mainUI_container.style.display = "none";
+                    }
+                }
+                
+            }
+
             function printOnConsole(message) {
                     var consoleText = document.getElementById("console");
                     consoleText.value = consoleText.value + "\r\n" + message;
@@ -337,130 +377,222 @@
     </head>
 
     <body>
-        <center>
-            <div id="explanation">
-                <center>
-                    Your browser did not enable Serial API. Please make sure that:
-                </center>
-                <ol>
-                    <li>Your browser is Google Chrome </li>
-                    <li>The experimental web platform flag is enabled.</li>
-                </ol>
-                    <li><em>ENABLE</em> Experimental Web Platform (#enable-experimental-web-platform-features)</li>
-                    <li>To enable, please go to: chrome://flags/#enable-experimental-web-platform-features or chrome://flags</li>
+        <input type="button"
+            style="position: absolute; background:url('/modules/views/freepik_rotation.png')no-repeat; background-size: 35px 35px; background-position: center; height: 40px; width: 40px;  cursor: pointer; border:none;"
+            id="refresh">
+        <h3 align = center >LEGO&reg; SPIKE&trade; Prime Web UI</h3>
+            <div id="hardwareSelect_container" align = center>
+                Select platform: 
+                <select id="hardwareSelect">
+                    <option id="hardwareSPIKE">SPIKE Prime</option>
+                </select>
             </div>
-        </center>
-        <div id="servicedock" style="position: absolute; top:10px; right:10px;">
-            <service-spike id="Service_SPIKE"></service-spike>
-        </div>
-        <input type="button" style = "position: absolute; background:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAABDUlEQVRIie2VMQ7CMAxFH0iwACMjF6ADEgucggtwCU4CokfgDExwDJhYu3YChg6IMsSWqtA2CdCNL1mOGts/be0f+CMQQzHFCEiB3LI7cAY2QORbvAXsxVqF5wvgWUKi9gBioOsiWBWSVo7YHjADtkAmOcc6kmkhMJf11HUiwQRIJC8uCxgAF95f/SJ7viQZ5nON7c1dSXG1nScBcvocWNcFaeFPMJPcU1MEfcm9NkVQmt/+opgXbIKb+H5TBIn4t1b7FcFB/DKgRrHNFZVtHmGGJcMMjw+CB1UHJgkgCZKaDka4NDAG5rh/fIhY0pXCD6pl5ImRckWV3NciwmjLCdPCNkmKuZQU9oX1hxsv9ntsmYmYPLAAAAAASUVORK5CYII=')no-repeat; background-size: 20px 20px; background-position: center; height: 24px; width: 24px;  cursor: pointer;" id = "refresh">
-        <h1 align = center >LEGO® SPIKE™ Prime Web UI</h1>
-        <div id = "topbar">
-            <div style="float:left">
-                Slot:
-            </div>
-            <select id="slotidSelect" style="float:left">
-                <option id="slot0">0</option>
-                <option id="slot1">1</option>
-                <option id="slot2">2</option>
-                <option id="slot3">3</option>
-                <option id="slot4">4</option>
-                <option id="slot5">5</option>
-                <option id="slot6">6</option>
-                <option id="slot7">7</option>
-                <option id="slot8">8</option>
-                <option id="slot9">9</option>
-                <option id="slot10">10</option>
-                <option id="slot11">11</option>
-                <option id="slot12">12</option>
-                <option id="slot13">13</option>
-                <option id="slot14">14</option>
-                <option id="slot15">15</option>
-                <option id="slot16">16</option>
-                <option id="slot17">17</option>
-                <option id="slot18">18</option>
-                <option id="slot19">19</option>
-            </select>
-            <input type = "submit" id = "runProgram" value = "Execute">
-            <input type="submit" id="rebootHub" value="Reboot">
-            <input type="submit" id = "stopProgram" value="Stop">
-        </div>
-        <br />
-        <div id = "telemetry">
-            <div>
-                Console
-            </div>
-            <textarea id = "console" readonly style = "width: 500px; height: 150px; white-space:pre-wrap"></textarea>
-        </div>
-        <br/>
-        <div id = "devicesInfo">
-            <div id = "portAInfo" style = "float:left; margin: 2px;">
-                <div id = "deviceInfo">
-                </div>
-                <div class = "morePortInfo">
-                    A
+            <div id="dependenciesInfo">
+                <div style="margin: 10px;">
+                    To use the SPIKE™ Prime hardware, you must enable the <b>WebSerial API</b> in your browser. To do so, please
+                    make sure:
+                    <ol>
+                        <li>You are using the Google Chrome browser</li>
+                        <li>The experimental web platform flag is enabled.</li>
+                    </ol>
+                    To enable this flag:
+                    <li>In your Browser URL, visit</li>
+                    chrome://flags/#enable-experimental-web-platform-features
+                    <li> Set the "Experimental Web Platform features" to "Enabled" via dropdown</li>
+                    <li> Relaunch the browser to have changes take effect </li>
+                    <li> Revisit your Coding Rooms classroom (this website) </li>
                 </div>
             </div>
-            <div id = "portBInfo" style = "float:left; margin: 2px;">
-                <div id="deviceInfo">
-                </div>
-                <div class="morePortInfo">
-                    B
-                </div>
-            </div>
-            <div id = "portCInfo" style = "float:left; margin: 2px;">
-                <div id="deviceInfo">
-                </div>
-                <div class="morePortInfo">
-                    C
-                </div>
-            </div> 
-            <div id = "portDInfo" style = "float:left; margin: 2px;">
-                <div id="deviceInfo">
-                </div>
-                <div class="morePortInfo">
-                    D
-                </div>
-            </div> 
-            <div id = "portEInfo" style = "float:left; margin: 2px;">
-                <div id="deviceInfo">
-                
-                </div>
-                <div class="morePortInfo">
-                    E
-                </div>
-            </div> 
-            <div id = "portFInfo" style = "float:left; margin: 2px;">
-                <div id="deviceInfo">
-                
-                </div>
-                <div class="morePortInfo">
-                    F
+            <div id="topToolbar_container" align = center>
+                <div id="topToolbar_SPIKE" class = "topToolbar">
+                    <div style = "position: relative; float:left; margin: 10px; text-align: center; top: 20%;">
+                        Service Dock for SPIKE&trade; Prime:
+                    </div>
+                    <service-spike id="Service_SPIKE" class = "Service"></service-spike>
+                    <button id = "documentation_SPIKE" class = "documentation"></button>
                 </div>
             </div>
-
-        </div>
-        <br/><br /><br /><br >
-        <div id = "SPIKEInfo">
-            <div id = "batteryInfo">
-
+            <br/>
+            <div id="connectionHelp_container" style = "margin:auto">
+                <div>
+                    <div id="SPIKE_connectionHelp" class="connectionHelp">
+                        <em style="font-size: 20px;">Connect your SPIKE Prime hardware to your computer (via USB or Bluetooth) and activate
+                            using the Service Dock functions above</em>
+                        <br />
+                        <br />
+                        <em style="font-size: 16px;">be sure no other applications, progarms, or browser windows are connected to your SPIKE
+                            Prime simultaneously</em>
+                    </div>
+                </div>
             </div>
-        </div>
+            <div id = "mainUI_container" style = "margin: auto">
+                <div id = "mainUI_SPIKE" class = "mainUI">
+                    <div id="topbar">
+                        <div id = "webSerialInfo" align = center>
+                        </div>
+                        <div id = "mainUI_toolbar" align = center style = "margin: 10px;">
+                            Select Program Slot:
+                            <select id="slotidSelect">
+                                <option id="slot0">0</option>
+                                <option id="slot1">1</option>
+                                <option id="slot2">2</option>
+                                <option id="slot3">3</option>
+                                <option id="slot4">4</option>
+                                <option id="slot5">5</option>
+                                <option id="slot6">6</option>
+                                <option id="slot7">7</option>
+                                <option id="slot8">8</option>
+                                <option id="slot9">9</option>
+                                <option id="slot10">10</option>
+                                <option id="slot11">11</option>
+                                <option id="slot12">12</option>
+                                <option id="slot13">13</option>
+                                <option id="slot14">14</option>
+                                <option id="slot15">15</option>
+                                <option id="slot16">16</option>
+                                <option id="slot17">17</option>
+                                <option id="slot18">18</option>
+                                <option id="slot19">19</option>
+                            </select>
+                            <input type="submit" id="runProgram" value="Execute">
+                            <input type="submit" id="rebootHub" value="Reboot">
+                            <input type="submit" id="stopProgram" value="Stop">
+                        </div>
+                    </div>
+                    <div id="mainUI_devicePorts" style="margin: 10px;">
+                        <div id="devicesInfo" style = "position: relative; left: 25px; margin: auto;" align = center>
+                            <div id="hubInfo"  class = "SPIKE_devicePort">
+                                <div class="morePortInfo">
+                                    Hub
+                                </div>
+                            </div>
+                            <div id="portAInfo" class = "SPIKE_devicePort">
+                                <div id="deviceInfo">
+                                </div>
+                                <div class="morePortInfo">
+                                    A
+                                </div>
+                            </div>
+                            <div id="portBInfo" class = "SPIKE_devicePort">
+                                <div id="deviceInfo">
+                                </div>
+                                <div class="morePortInfo">
+                                    B
+                                </div>
+                            </div>
+                            <div id="portCInfo" class = "SPIKE_devicePort">
+                                <div id="deviceInfo">
+                                </div>
+                                <div class="morePortInfo">
+                                    C
+                                </div>
+                            </div>
+                            <div id="portDInfo" class = "SPIKE_devicePort">
+                                <div id="deviceInfo">
+                                </div>
+                                <div class="morePortInfo">
+                                    D
+                                </div>
+                            </div>
+                            <div id="portEInfo" class = "SPIKE_devicePort">
+                                <div id="deviceInfo">
+                    
+                                </div>
+                                <div class="morePortInfo">
+                                    E
+                                </div>
+                            </div>
+                            <div id="portFInfo" class = "SPIKE_devicePort">
+                                <div id="deviceInfo">
+                    
+                                </div>
+                                <div class="morePortInfo">
+                                    F
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br /><br /><br /><br />
+                    <div id="mainUI_console" style = "margin: 10px;">
+                        <div style = " position: relative; left: 25px;">
+                            Console
+                        </div>
+                        <div id="telemetry" align=center>
+                            <textarea id="console" readonly style="width: 500px; height: 150px; white-space:pre-wrap"></textarea>
+                        </div>
+                    </div>
+                    <div id="SPIKEInfo">
+                        <div id="batteryInfo">
+                    
+                        </div>
+                    </div>
+                </div>
+            </div>
     </body>
     <style>
-        #portAInfo, #portBInfo, #portCInfo, #portDInfo, #portEInfo, #portFInfo {
-            background-color: lightblue; 
-            width: 70px; 
-            height:70px;
+        /* common web UI elements */
+        #dependenciesInfo {
+            background-color: rgb(254, 243, 199); 
+            border: solid; 
+            border-width: 1px; 
+            margin: 10px;
         }
 
-        #explanation {
-            position: absolute;
-            top: 60px;
-            background-color: rgb(150, 206, 224);
+        .topToolbar {
+            position: relative;
             width: 500px;
-            height: 320px;
-            z-index: 3;
+            height: 70px;
+            background-color: rgb(254, 243, 199);
+            border:solid;
+            border-width: 1px;
+            margin: auto;
+            vertical-align: middle;
+            display: inline-block;
+            line-height: normal;
+        }
+
+        .connectionHelp {
+            background-color: rgb(254, 243, 199); 
+            border: solid; 
+            border-width: 1px; 
+            margin: 10px;
+        }
+
+        .mainUI{
+            background-color: rgb(254, 243, 199);
+            border: solid;
+            border-width: 1px;
+        }
+
+        .documentation {
+            height: 50px; 
+            width: 50px; 
+            position: relative; 
+            float: left;
+            border-radius: 10px;
+            border: none;
+            background-color: yellowgreen;
+            top: 10px;
+            cursor: pointer;
+            background: url("/modules/views/PixelPerfect_question.png");
+            background-size: 68px 68px;
+            border: none; 
+            background-position: center;
+        }
+
+        .Service {
+            position: relative; 
+            float: left; 
+            margin: 0px 10px 10px 0px;
+        }
+
+        /* SPIKE Prime web UI elements */
+        .SPIKE_devicePort{
+            background-color: lightblue; 
+            width: 65px; 
+            height:65px;
+            float:left;
+            margin: 2px;
         }
     </style>
 </html>
