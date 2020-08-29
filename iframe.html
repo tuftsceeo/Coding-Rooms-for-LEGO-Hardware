@@ -30,8 +30,6 @@
                     handleHardwareSelect();
                 })
 
-                mainUI_container.style.display = "none";
-
                 console.log("here!");
 
                 /* SPIKE Prime web UI code*/
@@ -407,7 +405,11 @@
                     To use the SPIKE™ Prime hardware, you must enable the <b>WebSerial API</b> in your browser. To do so, please
                     make sure:
                     <ol>
-                        <li>You are using the Google Chrome browser</li>
+                        <li>You are using the 
+                            <a href="https://www.google.com/chrome/" target="_blank">
+                                Google Chrome 
+                            </a>
+                            browser</li>
                         <li>The experimental web platform flag is enabled.</li>
                     </ol>
                     To enable this flag:
@@ -550,7 +552,9 @@
                     CodingRooms’ implementation of “MicroPython for LEGO® Hardware” created in collaboration with researchers at
                     Tufts
                     Center for Engineering Education and Outreach (CEEO). To see other CEEO Innovation projects, visit
-                    CEEOInnovations.org.
+                    <a href = "https://www.CEEOInnovations.org" target="_blank">
+                        CEEOInnovations.org.
+                    </a>
                 </h5>
                 <h5>
                     LEGO®, the LEGO® logo, the Brick, MINDSTORMS®, SPIKE™, and the Minifigure are trademarks of ©The LEGO® Group.
@@ -563,6 +567,10 @@
     </body>
     <style>
         /* common web UI elements */
+        #mainUI_container, #topToolbar_container, #connectionHelp_container {
+            display: none;
+        }
+
         #dependenciesInfo {
             background-color: rgb(254, 243, 199); 
             border: solid; 
