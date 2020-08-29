@@ -46,6 +46,11 @@
                 mySPIKE.executeAfterPrint(printOnConsole);
 
                 mySPIKE.executeAfterError(printOnConsole);
+
+                mySPIKE.CodingRooms_executeAfterDisconnect(function () {
+                    mainUI_container.style.display = "none";
+                    connectionHelp_container.style.display = "block";
+                })
                 
                 mySPIKE.executeAfterInit(async function () {
 
@@ -100,6 +105,7 @@
 
                         mySPIKE.stopCurrentProgram();
                     })
+
                     mySPIKE.executeWithStream( async function () {
                         var batteryStatus = await mySPIKE.getBatteryStatus();
 
@@ -509,7 +515,7 @@
                     </div>
                     <br /><br /><br /><br />
                     <div id="mainUI_console" style = "margin: 10px;">
-                        <div style = " position: relative; left: 25px;">
+                        <div style = " position: relative; left: 25px;" align = center;>
                             Console
                         </div>
                         <div id="telemetry" align=center>
