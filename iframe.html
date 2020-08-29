@@ -152,6 +152,20 @@
                                 deviceInfo.innerHTML = "";
                             }
                         }
+
+                        var hubInfo = await mySPIKE.getHubInfo();
+                        var yaw = hubInfo["pos"][0];
+                        var pitch = hubInfo["pos"][1];
+                        var roll = hubInfo["pos"][2];
+
+                        var yawDiv = document.getElementById("yaw");
+                        var pitchDiv = document.getElementById("pitch");
+                        var rollDiv = document.getElementById("roll");
+
+                        yawDiv.innerHTML = "yaw: " + yaw;
+                        pitchDiv.innerHTML = "pitch: " + pitch;
+                        rollDiv.innerHTML = "roll: " + roll;
+                        
                     })
 
                     printOnConsole("Web UI initialization complete!")
@@ -465,9 +479,11 @@
                     </div>
                     <div id="mainUI_devicePorts" style="margin: 10px;" align = center>
                         <div id="devicesInfo" align = center>
-                            <div id="hubInfo"  class = "SPIKE_devicePort">
-                                <div class="morePortInfo">
-                                    Hub
+                            <div id="hubInfo">
+                                <div id="deviceInfo">
+                                    <div id = "yaw">yaw:</div>
+                                    <div id="pitch">pitch:</div>
+                                    <div id="roll">roll:</div>
                                 </div>
                             </div>
                             <div id="portAInfo" class = "SPIKE_devicePort">
@@ -594,12 +610,21 @@
             justify-content: center;
             /* for vertical aligning */
             align-items: center;
+            font-size: 15px;
         }
         .SPIKE_devicePort{
             background-color: lightblue; 
             width: 65px; 
             height:65px;
             margin: 3px;
+        }
+
+        #hubInfo {
+            background-color: orange; 
+            width: 65px; 
+            height:65px;
+            margin: 3px;
+
         }
     </style>
 </html>
