@@ -287,6 +287,9 @@ function Service_SPIKE() {
     var funcAfterError = undefined; // function to call for errors in ServiceDock
 
     var funcAfterDisconnect = undefined; // function to call after SPIKE Prime is disconnected
+    var funcAfterDisconnectCodingRooms = undefined; // function to call after SPIKE Prime is disconnected (defined in iframe)
+
+    var funcWithStream = undefined; // function to call after every parsed UJSONRPC package
 
     var funcAfterNewGesture = undefined;
     var funcAfterNewOrientation = undefined;
@@ -384,6 +387,16 @@ function Service_SPIKE() {
         funcAfterError = callback;
     }
 
+    
+    /**
+     * 
+     * @public
+     * @param {any} callback 
+     */
+    function executeWithStream(callback) {
+        funcWithStream = callback;
+    }
+
     /** <h4> Get the callback function to execute after service is disconnected </h4>
      * 
      * @public
@@ -391,6 +404,10 @@ function Service_SPIKE() {
      */
     function executeAfterDisconnect(callback) {
         funcAfterDisconnect = callback;
+    }
+
+    function CodingRooms_executeAfterDisconnect(callback) {
+        funcAfterDisconnectCodingRooms = callback;
     }
 
     /** <h4> Send command to the SPIKE Prime (UJSON RPC or Micropy depending on current interpreter) </h4>
@@ -2441,6 +2458,11 @@ function Service_SPIKE() {
                                                 // update hub information using lastUJSONRPC
                                                 await updateHubPortsInfo();
                                                 await PrimeHubEventHandler();
+                                                
+                                                if (funcWithStream) {
+                                                    await funcWithStream();
+                                                }
+
                                             }
                                             catch (e) {
                                                 console.log(e);
@@ -2470,6 +2492,10 @@ function Service_SPIKE() {
                                             // update hub information using lastUJSONRPC
                                             await updateHubPortsInfo();
                                             await PrimeHubEventHandler();
+                                            
+                                            if (funcWithStream) {
+                                                await funcWithStream();
+                                            }
                                         }
                                         catch (e) {
                                             console.log(e);
@@ -2510,6 +2536,10 @@ function Service_SPIKE() {
                         
                         if (funcAfterDisconnect != undefined) {
                             funcAfterDisconnect();
+                        }
+
+                        if ( funcAfterDisconnectCodingRooms != undefined ) {
+                            funcAfterDisconnectCodingRooms();
                         }
 
                         if ( funcAfterError != undefined ) {
@@ -3073,6 +3103,8 @@ function Service_SPIKE() {
         executeAfterPrint: executeAfterPrint,
         executeAfterError: executeAfterError,
         executeAfterDisconnect: executeAfterDisconnect,
+        CodingRooms_executeAfterDisconnect: CodingRooms_executeAfterDisconnect,
+        executeWithStream: executeWithStream,
         getPortsInfo: getPortsInfo,
         getPortInfo: getPortInfo,
         getBatteryStatus: getBatteryStatus,

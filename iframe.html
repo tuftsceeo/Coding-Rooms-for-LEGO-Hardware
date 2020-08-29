@@ -100,18 +100,15 @@
 
                         mySPIKE.stopCurrentProgram();
                     })
-
-                    // receive the UJSONRPC stream
-                    setInterval( async function () {
-
+                    mySPIKE.executeWithStream( async function () {
                         var batteryStatus = await mySPIKE.getBatteryStatus();
 
                         var batteryInfo = document.getElementById("batteryInfo");
                         batteryInfo.innerHTML = "Battery: " + batteryStatus + "%";
 
                         var portsInfo = await mySPIKE.getPortsInfo();
-                        
-                        for ( var port in portsInfo ) {
+
+                        for (var port in portsInfo) {
 
                             if (portsInfo[port]["device"] == "smallMotor" || portsInfo[port]["device"] == "bigMotor") {
                                 var motorDiv = await addMotorIcon(port);
@@ -124,7 +121,7 @@
                                 var R = portsInfo[port]["data"]["RGB"][0];
                                 var G = portsInfo[port]["data"]["RGB"][1];
                                 var B = portsInfo[port]["data"]["RGB"][2];
-                                RGBbox.style.backgroundColor = "rgb(" + R +"," + G + "," + B + ")";
+                                RGBbox.style.backgroundColor = "rgb(" + R + "," + G + "," + B + ")";
                             }
                             else if (portsInfo[port]["device"] == "ultrasonic") {
                                 var distanceDiv = await addDistanceIcon(port);
@@ -149,9 +146,7 @@
                                 deviceInfo.innerHTML = "";
                             }
                         }
-
-
-                    }, 100)
+                    })
 
                     printOnConsole("Web UI initialization complete!")
                     printOnConsole("\n")
