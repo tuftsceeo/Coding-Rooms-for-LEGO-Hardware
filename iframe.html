@@ -152,6 +152,20 @@
                                 deviceInfo.innerHTML = "";
                             }
                         }
+
+                        var hubInfo = await mySPIKE.getHubInfo();
+                        var yaw = hubInfo["pos"][0];
+                        var pitch = hubInfo["pos"][1];
+                        var roll = hubInfo["pos"][2];
+
+                        var yawDiv = document.getElementById("yaw");
+                        var pitchDiv = document.getElementById("pitch");
+                        var rollDiv = document.getElementById("roll");
+
+                        yawDiv.innerHTML = "yaw: " + yaw;
+                        pitchDiv.innerHTML = "pitch: " + pitch;
+                        rollDiv.innerHTML = "roll: " + roll;
+                        
                     })
 
                     printOnConsole("Web UI initialization complete!")
@@ -429,11 +443,9 @@
             <div id = "mainUI_container" style = "margin: auto">
                 <div id = "mainUI_SPIKE" class = "mainUI">
                     <div id="topbar">
-                        <div id = "webSerialInfo" align = center>
-                        </div>
                         <div id = "mainUI_toolbar" align = center style = "margin: 10px;">
                             Select Program Slot:
-                            <select id="slotidSelect">
+                            <select id="slotidSelect" style = "align-items: center;">
                                 <option id="slot0">0</option>
                                 <option id="slot1">1</option>
                                 <option id="slot2">2</option>
@@ -455,16 +467,23 @@
                                 <option id="slot18">18</option>
                                 <option id="slot19">19</option>
                             </select>
-                            <input type="submit" id="runProgram" value="Execute">
-                            <input type="submit" id="rebootHub" value="Reboot">
-                            <input type="submit" id="stopProgram" value="Stop">
+                            <!-- icons8.com-->
+                            <button id = "runProgram" style = "background: url(modules/views/play.png) no-repeat;  background-position: center; background-size: 26px 26px; height: 30px; width: 40px; align-items: center; border-radius: 50px;"></button>
+                            <!-- icons8.com-->
+                            <button id="rebootHub"
+                                style="background: url(modules/views/reboot.png) no-repeat;  background-position: center; background-size: 30px 30px; height: 30px; width: 40px; align-items: center; border-radius: 50px;"></button>
+                            <!-- roundicons icon-->
+                                <button id="stopProgram"
+                                style="background: url(modules/views/roundicons_stop.png) no-repeat;  background-position: center; background-size: 20px 20px; height: 30px; width: 40px; align-items: center; border-radius: 50px;"></button>
                         </div>
                     </div>
                     <div id="mainUI_devicePorts" style="margin: 10px;" align = center>
-                        <div id="devicesInfo" style = "position: relative; left: 25px; margin: auto;" align = center>
-                            <div id="hubInfo"  class = "SPIKE_devicePort">
-                                <div class="morePortInfo">
-                                    Hub
+                        <div id="devicesInfo" align = center>
+                            <div id="hubInfo">
+                                <div id="deviceInfo">
+                                    <div id = "yaw">yaw:</div>
+                                    <div id="pitch">pitch:</div>
+                                    <div id="roll">roll:</div>
                                 </div>
                             </div>
                             <div id="portAInfo" class = "SPIKE_devicePort">
@@ -513,21 +532,33 @@
                             </div>
                         </div>
                     </div>
-                    <br /><br /><br /><br />
                     <div id="mainUI_console" style = "margin: 10px;">
-                        <div style = " position: relative; left: 25px;" align = center;>
-                            Console
-                        </div>
                         <div id="telemetry" align=center>
+                            Console
                             <textarea id="console" readonly style="width: 500px; height: 150px; white-space:pre-wrap"></textarea>
                         </div>
                     </div>
-                    <div id="SPIKEInfo">
+                    <div id="SPIKEInfo" align = center style = "margin: 10px;">
                         <div id="batteryInfo">
                     
                         </div>
                     </div>
                 </div>
+            </div>
+            <div id="disclaimer" align=center style="margin: 10px;">
+                <h5>
+                    CodingRooms’ implementation of “MicroPython for LEGO® Hardware” created in collaboration with researchers at
+                    Tufts
+                    Center for Engineering Education and Outreach (CEEO). To see other CEEO Innovation projects, visit
+                    CEEOInnovations.org.
+                </h5>
+                <h5>
+                    LEGO®, the LEGO® logo, the Brick, MINDSTORMS®, SPIKE™, and the Minifigure are trademarks of ©The LEGO® Group.
+                    All other
+                    trademarks and copyrights are the property of their respective owners. All rights reserved. CodingRooms isn’t
+                    not
+                    affiliated, authorized, or endorsed by The LEGO Group.
+                </h5>
             </div>
     </body>
     <style>
@@ -547,9 +578,7 @@
             border:solid;
             border-width: 1px;
             margin: auto;
-            vertical-align: middle;
             display: inline-block;
-            line-height: normal;
         }
 
         .connectionHelp {
@@ -586,14 +615,30 @@
             float: left; 
             margin: 0px 10px 10px 0px;
         }
-
+        
         /* SPIKE Prime web UI elements */
+        #devicesInfo {
+            position: relative; 
+            display: flex;
+            flex-wrap: wrap;
+            /* for horizontal aligning of child divs */
+            justify-content: center;
+            /* for vertical aligning */
+            align-items: center;
+            font-size: 15px;
+        }
         .SPIKE_devicePort{
             background-color: lightblue; 
             width: 65px; 
             height:65px;
-            float:left;
-            margin: 2px;
+            margin: 3px;
+        }
+
+        #hubInfo {
+            background-color: orange; 
+            width: 65px; 
+            height:65px;
+            margin: 3px;
         }
     </style>
 </html>
