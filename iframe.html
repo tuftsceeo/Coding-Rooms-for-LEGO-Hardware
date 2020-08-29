@@ -461,7 +461,7 @@
                         </div>
                     </div>
                     <div id="mainUI_devicePorts" style="margin: 10px;" align = center>
-                        <div id="devicesInfo" style = "position: relative; left: 25px; margin: auto;" align = center>
+                        <div id="devicesInfo" align = center>
                             <div id="hubInfo"  class = "SPIKE_devicePort">
                                 <div class="morePortInfo">
                                     Hub
@@ -513,16 +513,13 @@
                             </div>
                         </div>
                     </div>
-                    <br /><br /><br /><br />
                     <div id="mainUI_console" style = "margin: 10px;">
-                        <div style = " position: relative; left: 25px;" align = center;>
-                            Console
-                        </div>
                         <div id="telemetry" align=center>
+                            Console
                             <textarea id="console" readonly style="width: 500px; height: 150px; white-space:pre-wrap"></textarea>
                         </div>
                     </div>
-                    <div id="SPIKEInfo">
+                    <div id="SPIKEInfo" align = center style = "margin: 10px;">
                         <div id="batteryInfo">
                     
                         </div>
@@ -586,14 +583,22 @@
             float: left; 
             margin: 0px 10px 10px 0px;
         }
-
+        
         /* SPIKE Prime web UI elements */
+        #devicesInfo {
+            position: relative; 
+            display: flex;
+            flex-wrap: wrap;
+            /* for horizontal aligning of child divs */
+            justify-content: center;
+            /* for vertical aligning */
+            align-items: center;
+        }
         .SPIKE_devicePort{
             background-color: lightblue; 
             width: 65px; 
             height:65px;
-            float:left;
-            margin: 2px;
+            margin: 3px;
         }
     </style>
 </html>
