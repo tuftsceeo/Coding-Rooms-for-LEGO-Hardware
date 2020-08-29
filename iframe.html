@@ -429,11 +429,9 @@
             <div id = "mainUI_container" style = "margin: auto">
                 <div id = "mainUI_SPIKE" class = "mainUI">
                     <div id="topbar">
-                        <div id = "webSerialInfo" align = center>
-                        </div>
                         <div id = "mainUI_toolbar" align = center style = "margin: 10px;">
                             Select Program Slot:
-                            <select id="slotidSelect">
+                            <select id="slotidSelect" style = "align-items: center;">
                                 <option id="slot0">0</option>
                                 <option id="slot1">1</option>
                                 <option id="slot2">2</option>
@@ -455,9 +453,11 @@
                                 <option id="slot18">18</option>
                                 <option id="slot19">19</option>
                             </select>
-                            <input type="submit" id="runProgram" value="Execute">
-                            <input type="submit" id="rebootHub" value="Reboot">
-                            <input type="submit" id="stopProgram" value="Stop">
+                            <button id = "runProgram" style = "background: url(modules/views/play.png) no-repeat;  background-position: center; background-size: 26px 26px; height: 30px; width: 40px; align-items: center; border-radius: 50px;"></button>
+                            <button id="rebootHub"
+                                style="background: url(modules/views/reboot.png) no-repeat;  background-position: center; background-size: 30px 30px; height: 30px; width: 40px; align-items: center; border-radius: 50px;"></button>
+                            <button id="stopProgram"
+                                style="background: url(modules/views/roundicons_stop.png) no-repeat;  background-position: center; background-size: 20px 20px; height: 30px; width: 40px; align-items: center; border-radius: 50px;"></button>
                         </div>
                     </div>
                     <div id="mainUI_devicePorts" style="margin: 10px;" align = center>
@@ -544,9 +544,7 @@
             border:solid;
             border-width: 1px;
             margin: auto;
-            vertical-align: middle;
             display: inline-block;
-            line-height: normal;
         }
 
         .connectionHelp {
