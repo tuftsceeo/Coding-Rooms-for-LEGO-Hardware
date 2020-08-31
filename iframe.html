@@ -8,7 +8,7 @@
         <script language="javascript">
 
             var motorInfo = '<div id="motor">Motor<div id="motorAngle"></div></div>'
-            var colorInfo = '<div id="color">Color<div id="colorRGBbox" data-r="0", data-g="0", data-b="0" style="height:25px;width:25px;"> </div> </div>';
+            var colorInfo = '<div id="color">Color<div id="colorRGBbox" data-r="0", data-g="0", data-b="0" style="height:22px;width:22px;"> </div> </div>';
             var distanceInfo = '<div id="distance">Distance<div id = "distanceValue"></div></div>';
             var forceInfo = '<div id="force">Force<div id="forceForce"></div></div>';
 
@@ -60,7 +60,7 @@
 
                     mySPIKE.getFirmwareInfo( function (version) {
                         var connectInfo = document.getElementById("mainUI_connectInfo");
-                        connectInfo.innerHTML = "<b> Connected to: </b> " + "(Hub OS: " + version + ")";
+                        connectInfo.innerHTML = /* "<b> Connected to: </b> " + */ "(Hub OS: " + version + ")";
                     })
 
                     printOnConsole("Successfully connected to SPIKE Prime!");
@@ -105,7 +105,7 @@
                         var batteryStatus = await mySPIKE.getBatteryStatus();
 
                         var batteryInfo = document.getElementById("batteryInfo");
-                        batteryInfo.innerHTML = "Battery: " + batteryStatus + "%";
+                        batteryInfo.innerHTML = "&#160; Battery: " + batteryStatus + "%";
 
                         var portsInfo = await mySPIKE.getPortsInfo();
 
@@ -209,7 +209,6 @@
                     }
 
                 }
-
             }; /* end of window.load */
 
             /* helper functions */
@@ -406,11 +405,13 @@
     </head>
 
     <body>
-        <input type="button"
+        <button
             style="position: absolute; background:url('/modules/views/freepik_rotation.png')no-repeat; background-size: 35px 35px; background-position: center; height: 40px; width: 40px;  cursor: pointer; border:none;"
-            id="refresh">
+            id="refresh" class = "tooltip">
+            <span class="tooltiptext">Refresh Preview</span>
+        </button>
         <h3 align = center >MicroPython for LEGO&reg; Hardware </h3>
-            <div id="hardwareSelect_container" align = center>
+            <div id="hardwareSelect_container" style = "margin-bottom: 10px;" align = center>
                 Select platform: 
                 <select id="hardwareSelect">
                     <option id="hardwareSPIKE">SPIKE Prime</option>
@@ -441,8 +442,12 @@
                     <div style = "position: relative; float:left; margin: 10px; text-align: center; top: 20%;">
                         Service Dock for SPIKE&trade; Prime:
                     </div>
-                    <service-spike id="Service_SPIKE" class = "Service"></service-spike>
-                    <button id = "documentation_SPIKE" class = "documentation"></button>
+                    <service-spike id="Service_SPIKE" class = "Service tooltip">
+                        <span class="tooltiptext">Connect to SPIKE Prime</span>
+                    </service-spike>
+                    <button id = "documentation_SPIKE" class = "documentation tooltip">
+                        <span class="tooltiptext">Coding Help</span>
+                    </button>
                 </div>
             </div>
             <br/>
@@ -458,52 +463,75 @@
                     </div>
                 </div>
             </div>
-            <div id = "mainUI_container" style = "margin: auto">
+            <div id = "mainUI_container" style = "margin: auto;">
                 <div id = "mainUI_SPIKE" class = "mainUI">
                     <div id="topbar">
-                        <div id = "mainUI_connectInfo" align = center style = "margin: 10px;">
+                        <div align = center style = "margin-top: 10px;">
+                            <div id="mainUI_connectInfo" style="margin: 10px; display: table-cell;">
                             
+                            </div>
+                            <div id = "batteryInfo" style = "display: table-cell">
+
+                            </div>
                         </div>
                         <div id = "mainUI_toolbar" align = center style = "margin: 10px;">
-                            <select id="slotidSelect" style = "align-items: center;">
-                                <option id="slot0">0</option>
-                                <option id="slot1">1</option>
-                                <option id="slot2">2</option>
-                                <option id="slot3">3</option>
-                                <option id="slot4">4</option>
-                                <option id="slot5">5</option>
-                                <option id="slot6">6</option>
-                                <option id="slot7">7</option>
-                                <option id="slot8">8</option>
-                                <option id="slot9">9</option>
-                                <option id="slot10">10</option>
-                                <option id="slot11">11</option>
-                                <option id="slot12">12</option>
-                                <option id="slot13">13</option>
-                                <option id="slot14">14</option>
-                                <option id="slot15">15</option>
-                                <option id="slot16">16</option>
-                                <option id="slot17">17</option>
-                                <option id="slot18">18</option>
-                                <option id="slot19">19</option>
-                            </select>
-                            <!-- icons8.com-->
-                            <button id = "runProgram" style = "background: url(modules/views/play.png) no-repeat;  background-position: center; background-size: 26px 26px; height: 30px; width: 40px; align-items: center; border-radius: 50px;"></button>
-                            <!-- icons8.com-->
-                            <button id="rebootHub"
-                                style="background: url(modules/views/reboot.png) no-repeat;  background-position: center; background-size: 30px 30px; height: 30px; width: 40px; align-items: center; border-radius: 50px;"></button>
-                            <!-- roundicons icon-->
+                            <div style = "display: table-cell; top: -6px; position: relative;">
+                                Select Storage Position:
+                                <select id="slotidSelect" style="align-items: center; margin-right: 10px;">
+                                    <option id="slot0">0</option>
+                                    <option id="slot1">1</option>
+                                    <option id="slot2">2</option>
+                                    <option id="slot3">3</option>
+                                    <option id="slot4">4</option>
+                                    <option id="slot5">5</option>
+                                    <option id="slot6">6</option>
+                                    <option id="slot7">7</option>
+                                    <option id="slot8">8</option>
+                                    <option id="slot9">9</option>
+                                    <option id="slot10">10</option>
+                                    <option id="slot11">11</option>
+                                    <option id="slot12">12</option>
+                                    <option id="slot13">13</option>
+                                    <option id="slot14">14</option>
+                                    <option id="slot15">15</option>
+                                    <option id="slot16">16</option>
+                                    <option id="slot17">17</option>
+                                    <option id="slot18">18</option>
+                                    <option id="slot19">19</option>
+                                </select>
+                            </div>
+                            <div style = "display: table-cell; margin: 10px;">
+                                <!-- icons8.com-->
+                                <button id="runProgram"
+                                    style="background: url(modules/views/play.png) no-repeat;  background-position: center; background-size: 26px 26px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
+                                    class="tooltip">
+                                    <span class="tooltiptext">Play Program</span>
+                                </button>
+                                <!-- icons8.com-->
+                                <button id="rebootHub"
+                                    style="background: url(modules/views/reboot.png) no-repeat;  background-position: center; background-size: 30px 30px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
+                                    class="tooltip">
+                                    <span class="tooltiptext">Reboot SPIKE Prime</span>
+                                </button>
+                                <!-- roundicons icon-->
                                 <button id="stopProgram"
-                                style="background: url(modules/views/roundicons_stop.png) no-repeat;  background-position: center; background-size: 20px 20px; height: 30px; width: 40px; align-items: center; border-radius: 50px;"></button>
+                                    style="background: url(modules/views/roundicons_stop.png) no-repeat;  background-position: center; background-size: 20px 20px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
+                                    class="tooltip">
+                                    <span class="tooltiptext">Stop Program</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div id="mainUI_devicePorts" style="margin: 10px;" align = center>
                         <div id="devicesInfo" align = center>
-                            <div id="hubInfo">
+                            <div id="hubInfo" class = "SPIKE_devicePort">
                                 <div id="deviceInfo">
                                     <div id = "yaw">yaw:</div>
                                     <div id="pitch">pitch:</div>
                                     <div id="roll">roll:</div>
+                                </div>
+                                <div class = "morePortInfo">
+                                    Hub
                                 </div>
                             </div>
                             <div id="portAInfo" class = "SPIKE_devicePort">
@@ -627,6 +655,7 @@
             border: solid; 
             border-width: 1px; 
             margin: 10px;
+            padding: 10px;
         }
 
         .mainUI{
@@ -656,8 +685,17 @@
             float: left; 
             margin: 0px 10px 10px 0px;
         }
+
+        .Service:focus, .documentation:focus, .tooltip:focus {
+            outline: 0;
+        }
         
         /* SPIKE Prime web UI elements */
+        #runProgram, #rebootHub, #stopProgram {
+            cursor: pointer;
+            background-color: orange;
+        }
+
         #devicesInfo {
             position: relative; 
             display: flex;
@@ -672,15 +710,61 @@
         .SPIKE_devicePort{
             background-color: lightblue; 
             width: 65px; 
-            height:65px;
+            height:73px;
             margin: 3px;
+            border-radius: 5px;
+        }
+
+        .morePortInfo {
+            position: absolute;
+            top: 55px;
+            margin: auto;
+            font-size: 15px;
+            text-indent: 2px;
         }
 
         #hubInfo {
             background-color: orange; 
             width: 65px; 
-            height:65px;
+            height:73px;
             margin: 3px;
+        }
+
+        /* toolTip CSS from w3schools */
+
+        /* Tooltip container */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+        }
+
+        /* Tooltip text */
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 150%;
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            padding: 5px 0;
+            border-radius: 6px;
+
+            /* Position the tooltip text */
+            position: absolute;
+            top: 30px;
+            z-index: 1;
+            left: 30px;
+
+            /* Fade in tooltip */
+            opacity: 0;
+            transition: opacity 0.3s;
+            transition-delay: 2s;
+        }
+
+        /* Show the tooltip text when you mouse over the tooltip container */
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
         }
     </style>
 </html>
