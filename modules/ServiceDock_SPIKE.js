@@ -158,6 +158,7 @@ function Service_SPIKE() {
     /* using this filter in webserial setup will only take serial ports*/
     const filter = {
         usbVendorId: VENDOR_ID
+
     };
 
     // define for communication
@@ -2355,7 +2356,7 @@ function Service_SPIKE() {
             console.log("ports:", port);
             // select device
             port = await navigator.serial.requestPort({
-                filters:[filter]
+                // filters:[filter]
             });
 
             // wait for the port to open.
