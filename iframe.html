@@ -24,17 +24,18 @@
                 var topToolbar_container = document.getElementById("topToolbar_container");
                 var mainUI_container = document.getElementById("mainUI_container");
                 var connectionHelp_container = document.getElementById("connectionHelp_container");
-                
+                var explanation = document.getElementById("dependenciesInfo");
+
                 // instantiate LEGO hardware Services
                 mySPIKE = document.getElementById("Service_SPIKE").getService();
 
+                console.log("here!");
+
                 handleHardwareSelect();
-                hardwareSelect.addEventListener("change", function () {
+                hardwareSelect.addEventListener("change", async function () {
                     // TO:DO reinitialize (re"block") hidden UI elements
                     handleHardwareSelect();
                 })
-
-                console.log("here!");
 
                 /* SPIKE Prime web UI code*/
 
@@ -168,22 +169,23 @@
                     /* END OF SPIKE Prime web UI code */
 
                 })
+
                 console.log("mySPIKE = " + mySPIKE);
 
 
                 function handleHardwareSelect() {
-                    var explanation = document.getElementById("dependenciesInfo");
-
                     var hardwareSelected = hardwareSelect.options[hardwareSelect.selectedIndex];
                     var hardwareSelectedID = hardwareSelected.id;
 
-                    if (hardwareSelectedID = "hardware_SPIKE") {
-                        var documentation = document.getElementById("documentation_SPIKE");
-                        documentation.addEventListener("click", function () {
-                            var url = "/documentation/SPIKE_Prime_Python_Knowledge_Base.htm"
-                            window.open(url);
-                        })
+                    if (hardwareSelectedID == "hardwareSPIKE") {
+
                         if ('serial' in navigator) {
+                            console.log("you got cereal")
+                            var documentation = document.getElementById("documentation_SPIKE");
+                            documentation.addEventListener("click", function () {
+                                var url = "/documentation/SPIKE_Prime_Python_Knowledge_Base.htm"
+                                window.open(url);
+                            })
                             explanation.style.display = "none";
                             topToolbar_container.style.display = "block";
                             if (mySPIKE.isActive()) {
@@ -194,10 +196,16 @@
                             }
                         }
                         else {
+                            console.log("you dont got")
                             explanation.style.display = "block";
                             topToolbar_container.style.display = "none";
                             mainUI_container.style.display = "none";
                         }
+                    }
+                    else if (hardwareSelectedID == "survey") {
+
+                        window.open("https://tufts.qualtrics.com/jfe/form/SV_2tM0l0jcPzyPH1z");
+                        hardwareSelect.selectedIndex = 0;
                     }
 
                 }
@@ -406,24 +414,22 @@
                 Select platform: 
                 <select id="hardwareSelect">
                     <option id="hardwareSPIKE">SPIKE Prime</option>
+                    <option id = "survey">&lt;Request new hardware&gt;</option>
                 </select>
             </div>
             <div id="dependenciesInfo">
-                <div style="margin: 10px;">
-                    To use the SPIKE&trade; Prime hardware, you must enable the <b>WebSerial API</b> in your browser. To do so, please
+                <div style="margin: 10px; font: Arial;">
+                    To use the SPIKE&trade; Prime hardware, you must enable the <em><b>WebSerial API</b></em> in your browser. To do so, please
                     make sure:
                     <ol>
                         <li class = "checklist">You are using the 
                             <a href="https://www.google.com/chrome/" target="_blank">
-                                Google Chrome 
-                            </a>
-                            browser</li>
+                                Google Chrome browser</a>.</li>
                         <li class = "checklist">The experimental web platform flag is enabled.</li>
                     </ol>
                     To enable this flag:
                     <ol style = "font-size: 15px;">
-                        <li class="steps">In your Browser URL, visit</li>
-                        <li style = "list-style-type: ''; text-indent: 1em;"><em style="font-size: 16px;">chrome://flags/#enable-experimental-web-platform-features</em></li>
+                        <li class="steps">In your Browser URL, visit <em>chrome://flags/#enable-experimental-web-platform-features</em></li>
                         <li class="steps"> Set the "Experimental Web Platform features" to "Enabled" via dropdown</li>
                         <li class="steps"> Relaunch the browser to have changes take effect </li>
                         <li class="steps"> Revisit your Coding Rooms classroom (this website) </li>
@@ -504,28 +510,28 @@
                                 <div id="deviceInfo">
                                 </div>
                                 <div class="morePortInfo">
-                                    A
+                                    Port A
                                 </div>
                             </div>
                             <div id="portBInfo" class = "SPIKE_devicePort">
                                 <div id="deviceInfo">
                                 </div>
                                 <div class="morePortInfo">
-                                    B
+                                    Port B
                                 </div>
                             </div>
                             <div id="portCInfo" class = "SPIKE_devicePort">
                                 <div id="deviceInfo">
                                 </div>
                                 <div class="morePortInfo">
-                                    C
+                                    Port C
                                 </div>
                             </div>
                             <div id="portDInfo" class = "SPIKE_devicePort">
                                 <div id="deviceInfo">
                                 </div>
                                 <div class="morePortInfo">
-                                    D
+                                    Port D
                                 </div>
                             </div>
                             <div id="portEInfo" class = "SPIKE_devicePort">
@@ -533,7 +539,7 @@
                     
                                 </div>
                                 <div class="morePortInfo">
-                                    E
+                                    Port E
                                 </div>
                             </div>
                             <div id="portFInfo" class = "SPIKE_devicePort">
@@ -541,7 +547,7 @@
                     
                                 </div>
                                 <div class="morePortInfo">
-                                    F
+                                    Port F
                                 </div>
                             </div>
                         </div>
