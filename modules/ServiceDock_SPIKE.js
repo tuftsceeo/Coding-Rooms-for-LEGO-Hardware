@@ -22,8 +22,8 @@ class servicespike extends HTMLElement {
         this.service = new Service_SPIKE(); // instantiate a service object ( one object per button )
 
         this.service.executeAfterDisconnect(function () {
-            active = false;
             status.style.backgroundColor = "red";
+            active = false;
         })
 
         // Create a shadow root
@@ -158,6 +158,7 @@ function Service_SPIKE() {
     /* using this filter in webserial setup will only take serial ports*/
     const filter = {
         usbVendorId: VENDOR_ID
+
     };
 
     // define for communication
@@ -283,14 +284,6 @@ function Service_SPIKE() {
 
     var funcAtInit = undefined; // function to call after init of SPIKE Service
 
-    var funcAfterPrint = undefined; // function to call for SPIKE python program print statements or errors
-    var funcAfterError = undefined; // function to call for errors in ServiceDock
-
-    var funcAfterDisconnect = undefined; // function to call after SPIKE Prime is disconnected
-    var funcAfterDisconnectCodingRooms = undefined; // function to call after SPIKE Prime is disconnected (defined in iframe)
-
-    var funcWithStream = undefined; // function to call after every parsed UJSONRPC package
-
     var funcAfterNewGesture = undefined;
     var funcAfterNewOrientation = undefined;
 
@@ -312,7 +305,17 @@ function Service_SPIKE() {
     var startWriteProgramCallback = undefined; // [message_id, function to execute ]
     var writePackageInformation = undefined; // [ message_id, remaining_data, transfer_id, blocksize]
     var writeProgramCallback = undefined; // callback function to run after a program was successfully written
+    
+    /* callback functions added for Coding ROoms */
+    var getFirmwareInfoCallback = undefined;
 
+    var funcAfterPrint = undefined; // function to call for SPIKE python program print statements or errors
+    var funcAfterError = undefined; // function to call for errors in ServiceDock
+
+    var funcAfterDisconnect = undefined; // function to call after SPIKE Prime is disconnected
+    var funcAfterDisconnectCodingRooms = undefined; // function to call after SPIKE Prime is disconnected (defined in iframe)
+
+    var funcWithStream = undefined; // function to call after every parsed UJSONRPC package
     //////////////////////////////////////////
     //                                      //
     //          Public Functions            //
@@ -553,6 +556,17 @@ function Service_SPIKE() {
      */
     async function getHubInfo() {
         return hub;
+    }
+
+    /**
+     * 
+     * 
+     * @param {any} callback 
+     */
+    async function getFirmwareInfo(callback) {
+
+        UJSONRPC.getFirmwareInfo(callback);
+
     }
 
 
@@ -2056,11 +2070,14 @@ function Service_SPIKE() {
      * 
      * @memberof! UJSONRPC
      */
-    UJSONRPC.getFirmwareInfo = async function getFirmwareInfo() {
+    UJSONRPC.getFirmwareInfo = async function getFirmwareInfo(callback) {
         var randomId = generateId();
 
-        var command = '{"i":' + '"' + randomId + '"' + ', "m": "get_firmware_info" ' + '}';
+        var command = '{"i":' + '"' + randomId + '"' + ', "m": "get_hub_info" ' + '}';
         sendDATA(command);
+        if ( callback != undefined ) {
+            getFirmwareInfoCallback = [randomId, callback];
+        }
     }
 
     /** 
@@ -2338,13 +2355,17 @@ function Service_SPIKE() {
             port = await navigator.serial.getPorts();
             console.log("ports:", port);
             // select device
-            port = await navigator.serial.requestPort();
+            port = await navigator.serial.requestPort({
+                // filters:[filter]
+            });
 
             // wait for the port to open.
             try {
                 await port.open({ baudrate: 115200 });
                 // console.log("Connected web serial port");
                 // console.log(navigator.serial.getInfo());
+                // console.log(typeof port);
+
                 // console.log(port.getInfo());
 
             }
@@ -2938,6 +2959,24 @@ function Service_SPIKE() {
 
                 }
             }
+            
+            // getFirmwareInfo callback check
+            if ( getFirmwareInfoCallback != undefined ) {
+                if ( getFirmwareInfoCallback[0] == parsedUJSON["i"] ) {
+                    var version = parsedUJSON["r"]["runtime"]["version"];
+                    var stringVersion = ""
+                    for (var index in version ) {
+                        if (index < version.length -1 ) {
+                            stringVersion = stringVersion + version[index] + ".";
+                        }
+                        else {
+                            stringVersion = stringVersion + version[index];
+                        }
+                    }
+                    console.log("firmware version: ", stringVersion);
+                    getFirmwareInfoCallback[1](stringVersion);
+                }
+            }
 
             console.log("received response: ", lastUJSONRPC);
 
@@ -3108,6 +3147,7 @@ function Service_SPIKE() {
         getPortsInfo: getPortsInfo,
         getPortInfo: getPortInfo,
         getBatteryStatus: getBatteryStatus,
+        getFirmwareInfo: getFirmwareInfo,
         getHubInfo: getHubInfo,
         getProjects: getProjects,
         isActive: isActive,
