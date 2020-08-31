@@ -411,7 +411,7 @@
             <span class="tooltiptext">Refresh Preview</span>
         </button>
         <h3 align = center >MicroPython for LEGO&reg; Hardware </h3>
-            <div id="hardwareSelect_container" align = center>
+            <div id="hardwareSelect_container" style = "margin-bottom: 10px;" align = center>
                 Select platform: 
                 <select id="hardwareSelect">
                     <option id="hardwareSPIKE">SPIKE Prime</option>
@@ -463,10 +463,10 @@
                     </div>
                 </div>
             </div>
-            <div id = "mainUI_container" style = "margin: auto">
+            <div id = "mainUI_container" style = "margin: auto;">
                 <div id = "mainUI_SPIKE" class = "mainUI">
                     <div id="topbar">
-                        <div align = center>
+                        <div align = center style = "margin-top: 10px;">
                             <div id="mainUI_connectInfo" style="margin: 10px; display: table-cell;">
                             
                             </div>
@@ -475,43 +475,51 @@
                             </div>
                         </div>
                         <div id = "mainUI_toolbar" align = center style = "margin: 10px;">
-                            Select Storage Position:
-                            <select id="slotidSelect" style = "align-items: center;">
-                                <option id="slot0">0</option>
-                                <option id="slot1">1</option>
-                                <option id="slot2">2</option>
-                                <option id="slot3">3</option>
-                                <option id="slot4">4</option>
-                                <option id="slot5">5</option>
-                                <option id="slot6">6</option>
-                                <option id="slot7">7</option>
-                                <option id="slot8">8</option>
-                                <option id="slot9">9</option>
-                                <option id="slot10">10</option>
-                                <option id="slot11">11</option>
-                                <option id="slot12">12</option>
-                                <option id="slot13">13</option>
-                                <option id="slot14">14</option>
-                                <option id="slot15">15</option>
-                                <option id="slot16">16</option>
-                                <option id="slot17">17</option>
-                                <option id="slot18">18</option>
-                                <option id="slot19">19</option>
-                            </select>
-                            <!-- icons8.com-->
-                            <button id = "runProgram" style = "background: url(modules/views/play.png) no-repeat;  background-position: center; background-size: 26px 26px; height: 30px; width: 40px; align-items: center; border-radius: 50px;" class = "tooltip">
-                                <span class="tooltiptext">Play Program</span>
-                            </button>
-                            <!-- icons8.com-->
-                            <button id="rebootHub"
-                                style="background: url(modules/views/reboot.png) no-repeat;  background-position: center; background-size: 30px 30px; height: 30px; width: 40px; align-items: center; border-radius: 50px;" class = "tooltip">
-                                <span class="tooltiptext">Reboot SPIKE Prime</span>
-                            </button>
-                            <!-- roundicons icon-->
+                            <div style = "display: table-cell; top: -6px; position: relative;">
+                                Select Storage Position:
+                                <select id="slotidSelect" style="align-items: center; margin-right: 10px;">
+                                    <option id="slot0">0</option>
+                                    <option id="slot1">1</option>
+                                    <option id="slot2">2</option>
+                                    <option id="slot3">3</option>
+                                    <option id="slot4">4</option>
+                                    <option id="slot5">5</option>
+                                    <option id="slot6">6</option>
+                                    <option id="slot7">7</option>
+                                    <option id="slot8">8</option>
+                                    <option id="slot9">9</option>
+                                    <option id="slot10">10</option>
+                                    <option id="slot11">11</option>
+                                    <option id="slot12">12</option>
+                                    <option id="slot13">13</option>
+                                    <option id="slot14">14</option>
+                                    <option id="slot15">15</option>
+                                    <option id="slot16">16</option>
+                                    <option id="slot17">17</option>
+                                    <option id="slot18">18</option>
+                                    <option id="slot19">19</option>
+                                </select>
+                            </div>
+                            <div style = "display: table-cell; margin: 10px;">
+                                <!-- icons8.com-->
+                                <button id="runProgram"
+                                    style="background: url(modules/views/play.png) no-repeat;  background-position: center; background-size: 26px 26px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
+                                    class="tooltip">
+                                    <span class="tooltiptext">Play Program</span>
+                                </button>
+                                <!-- icons8.com-->
+                                <button id="rebootHub"
+                                    style="background: url(modules/views/reboot.png) no-repeat;  background-position: center; background-size: 30px 30px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
+                                    class="tooltip">
+                                    <span class="tooltiptext">Reboot SPIKE Prime</span>
+                                </button>
+                                <!-- roundicons icon-->
                                 <button id="stopProgram"
-                                style="background: url(modules/views/roundicons_stop.png) no-repeat;  background-position: center; background-size: 20px 20px; height: 30px; width: 40px; align-items: center; border-radius: 50px;" class = "tooltip">
-                                <span class="tooltiptext">Stop Program</span>
-                            </button>
+                                    style="background: url(modules/views/roundicons_stop.png) no-repeat;  background-position: center; background-size: 20px 20px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
+                                    class="tooltip">
+                                    <span class="tooltiptext">Stop Program</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div id="mainUI_devicePorts" style="margin: 10px;" align = center>
@@ -685,6 +693,7 @@
         /* SPIKE Prime web UI elements */
         #runProgram, #rebootHub, #stopProgram {
             cursor: pointer;
+            background-color: orange;
         }
 
         #devicesInfo {
