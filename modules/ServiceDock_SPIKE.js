@@ -63,7 +63,7 @@ class servicespike extends HTMLElement {
         /* tooltip CSS */
         var tooltip = document.createElement("span");
         tooltip.innerHTML = "Connect to SPIKE Prime"
-        var tooltipStyle = "visibility: hidden; width: 150%; background-color: #555; color: #fff; text-align: center; padding: 5px 0; border-radius: 6px; /* Position the tooltip text */ position: absolute; top: 30px; z-index: 1; left: 30px; /* Fade in tooltip */ opacity: 0; transition: opacity 0.3s; transition-delay: 2s;"
+        var tooltipStyle = "visibility: hidden; width: 150%; background-color: #555; color: #fff; text-align: center; padding: 5px 0; border-radius: 6px; /* Position the tooltip text */ position: absolute; top: 30px; z-index: 1; left: 30px; /* Fade in tooltip */ opacity: 0; transition: opacity 0.3s; transition-delay: 0.5s;"
         tooltip.setAttribute("style", tooltipStyle);
         
         /* event listeners */
