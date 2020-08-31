@@ -55,22 +55,16 @@
                     mainUI_container.style.display = "block";
                     connectionHelp_container.style.display = "none";
 
+                    mySPIKE.getFirmwareInfo( function (version) {
+                        var connectInfo = document.getElementById("mainUI_connectInfo");
+                        connectInfo.innerHTML = "<b> Connected to: </b> " + "(Hub OS: " + version + ")";
+                    })
+
                     printOnConsole("Successfully connected to SPIKE Prime!");
 
                     printOnConsole("Reading registered programs in the hub...");
-                    
-                    hubProjects = await mySPIKE.getProjects();
-                    
-                    for ( var slot in hubProjects ) {
-                        var slotOption = document.getElementById("slot" + slot);
 
-                        if (hubProjects[slot] != "None") {
-                            slotOption.innerHTML = "(" + slot + ") " + hubProjects[slot]["name"];
-                        }
-                        else {
-                            slotOption.innerHTML = "(" + slot + ") " + "None";
-                        }
-                    }
+                    refreshSlotsDisplay();
 
                     var runButton = document.getElementById("runProgram");
                     runButton.addEventListener("click", function () {
@@ -450,8 +444,10 @@
             <div id = "mainUI_container" style = "margin: auto">
                 <div id = "mainUI_SPIKE" class = "mainUI">
                     <div id="topbar">
+                        <div id = "mainUI_connectInfo" align = center style = "margin: 10px;">
+                            
+                        </div>
                         <div id = "mainUI_toolbar" align = center style = "margin: 10px;">
-                            Select Program Slot:
                             <select id="slotidSelect" style = "align-items: center;">
                                 <option id="slot0">0</option>
                                 <option id="slot1">1</option>
@@ -557,7 +553,7 @@
                     CodingRooms’ implementation of “MicroPython for LEGO® Hardware” created in collaboration with researchers at
                     Tufts
                     Center for Engineering Education and Outreach (CEEO). To see other CEEO Innovation projects, visit
-                    <a href = "https://www.CEEOInnovations.org" target="_blank">
+                    <a href = "http://www.CEEOInnovations.org" target="_blank">
                         CEEOInnovations.org.
                     </a>
                 </h5>
