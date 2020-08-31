@@ -44,8 +44,8 @@ class servicespike extends HTMLElement {
         var imageRelPath = "/modules/views/SPIKE_icon.png"
         var length = 50; // for width and height of button
         var buttonBackgroundColor = "#A2E1EF" // background color of the button
-        var buttonStyle = "width:" + length + "px; height:" + length + "px; background: url(" + imageRelPath + ") no-repeat; background-size: 57px 57px; background-color:" + buttonBackgroundColor
-            + "; border: none; background-position: center; cursor: pointer; border-radius: 10px; position: relative;"
+        var buttonStyle = "width:" + length + "px; height:" + length + "px; background: url(" + imageRelPath + ") no-repeat; background-size: 57px 57px;" 
+            + "border: none; background-position: center; cursor: pointer; border-radius: 10px; position: relative;"
         button.setAttribute("style", buttonStyle);
 
         /* status circle definition and CSS */
@@ -60,16 +60,26 @@ class servicespike extends HTMLElement {
             "; position: relative; left:" + posLeft + "px; top:" + posTop + "px;";
         status.setAttribute("style", statusStyle);
 
+        /* tooltip CSS */
+        var tooltip = document.createElement("span");
+        tooltip.innerHTML = "Connect to SPIKE Prime"
+        var tooltipStyle = "visibility: hidden; width: 150%; background-color: #555; color: #fff; text-align: center; padding: 5px 0; border-radius: 6px; /* Position the tooltip text */ position: absolute; top: 30px; z-index: 1; left: 30px; /* Fade in tooltip */ opacity: 0; transition: opacity 0.3s; transition-delay: 2s;"
+        tooltip.setAttribute("style", tooltipStyle);
+        
         /* event listeners */
         
         button.addEventListener("mouseleave", function (event) {
-            button.style.backgroundColor = "#A2E1EF";
-            button.style.color = "#000000";
+            tooltip.style.visibility = "hidden";
+            tooltip.style.opacity = "0";
         });
 
         button.addEventListener("mouseenter", function (event) {
-            button.style.backgroundColor = "#FFFFFF";
-            button.style.color = "#000000";
+            tooltip.style.visibility = "visible";
+            tooltip.style.opacity = "1";
+        })
+
+        button.addEventListener("focus", function () {
+            button.style.outline = "0";
         })
 
         // when ServiceDock button is double clicked
@@ -94,6 +104,7 @@ class servicespike extends HTMLElement {
 
         shadow.appendChild(wrapper);
         button.appendChild(status);
+        button.appendChild(tooltip);
         wrapper.appendChild(button);
 
     }
@@ -2439,7 +2450,7 @@ function Service_SPIKE() {
 
                             // stringify the packet to look for carriage return
                             var json_string = await JSON.stringify(value);
-                            
+
                             let findEscapedQuotes = /\\"/g;
                             let findNewLines = /\\n/g;
 
