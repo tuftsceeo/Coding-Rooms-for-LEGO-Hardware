@@ -22,8 +22,8 @@ class servicespike extends HTMLElement {
         this.service = new Service_SPIKE(); // instantiate a service object ( one object per button )
 
         this.service.executeAfterDisconnect(function () {
-            active = false;
             status.style.backgroundColor = "red";
+            active = false;
         })
 
         // Create a shadow root
