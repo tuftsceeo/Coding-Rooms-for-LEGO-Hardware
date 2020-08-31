@@ -401,22 +401,24 @@
             </div>
             <div id="dependenciesInfo">
                 <div style="margin: 10px;">
-                    To use the SPIKE™ Prime hardware, you must enable the <b>WebSerial API</b> in your browser. To do so, please
+                    To use the SPIKE&trade; Prime hardware, you must enable the <b>WebSerial API</b> in your browser. To do so, please
                     make sure:
                     <ol>
-                        <li>You are using the 
+                        <li class = "checklist">You are using the 
                             <a href="https://www.google.com/chrome/" target="_blank">
                                 Google Chrome 
                             </a>
                             browser</li>
-                        <li>The experimental web platform flag is enabled.</li>
+                        <li class = "checklist">The experimental web platform flag is enabled.</li>
                     </ol>
                     To enable this flag:
-                    <li>In your Browser URL, visit</li>
-                    chrome://flags/#enable-experimental-web-platform-features
-                    <li> Set the "Experimental Web Platform features" to "Enabled" via dropdown</li>
-                    <li> Relaunch the browser to have changes take effect </li>
-                    <li> Revisit your Coding Rooms classroom (this website) </li>
+                    <ol style = "font-size: 15px;">
+                        <li class="steps">In your Browser URL, visit</li>
+                        <li style = "list-style-type: ''; text-indent: 1em;"><em style="font-size: 16px;">chrome://flags/#enable-experimental-web-platform-features</em></li>
+                        <li class="steps"> Set the "Experimental Web Platform features" to "Enabled" via dropdown</li>
+                        <li class="steps"> Relaunch the browser to have changes take effect </li>
+                        <li class="steps"> Revisit your Coding Rooms classroom (this website) </li>
+                    </ol>
                 </div>
             </div>
             <div id="topToolbar_container" align = center>
@@ -578,6 +580,20 @@
             border: solid; 
             border-width: 1px; 
             margin: 10px;
+        }
+
+        #dependenciesInfo .checklist {
+            line-height:150%;
+            font:Arial, sans-serif;
+            text-indent: 1em;
+        }
+
+        #dependenciesInfo .steps {
+            font-size: 15px;
+            line-height:180%;
+            font:Arial, sans-serif;
+            list-style-type: "-";
+            text-indent: 1em;
         }
 
         .topToolbar {
