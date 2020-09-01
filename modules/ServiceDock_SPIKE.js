@@ -860,6 +860,9 @@ function Service_SPIKE() {
             result = result + addedTab;
         }
 
+        // replace tab characters
+        result = result.replace(/\\t/g, "    ");
+
         stringifiedData = firstPart + result + secondPart;
 
         writeProgramCallback = callback;
