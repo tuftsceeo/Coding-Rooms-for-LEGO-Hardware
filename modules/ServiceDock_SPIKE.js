@@ -2969,12 +2969,12 @@ function Service_SPIKE() {
         }
         else if (messageType == 7) {
             if (funcAfterPrint != undefined) {
-                funcAfterPrint(">>> Program started!")
+                funcAfterPrint(">>> Program started!");
             }
         }
         else if (messageType == 8) {
             if ( funcAfterPrint != undefined ) {
-                funcAfterPrint(">>> Program finished!")
+                funcAfterPrint(">>> Program finished!");
             }
         }
         else if (messageType == 11) {
@@ -2989,7 +2989,7 @@ function Service_SPIKE() {
 
             // execute function after print if defined
             if (funcAfterPrint != undefined) {
-                funcAfterPrint(">>>" + atob(printedMessage));
+                funcAfterPrint(atob(printedMessage));
             }
         }
         else {
