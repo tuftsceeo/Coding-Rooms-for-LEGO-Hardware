@@ -316,7 +316,8 @@ function Service_SPIKE() {
     var startWriteProgramCallback = undefined; // [message_id, function to execute ]
     var writePackageInformation = undefined; // [ message_id, remaining_data, transfer_id, blocksize]
     var writeProgramCallback = undefined; // callback function to run after a program was successfully written
-    
+    var writeProgramSetTimeout = undefined; // setTimeout object for looking for response to start_write_program
+
     /* callback functions added for Coding ROoms */
     var getFirmwareInfoCallback = undefined;
 
@@ -832,6 +833,12 @@ function Service_SPIKE() {
      * @param {function} callback callback to run after program is written
      */
     async function writeProgram(projectName, data, slotid, callback) {
+
+        // reinit witeProgramTimeout
+        if (writeProgramSetTimeout != undefined) {
+            clearTimeout(writeProgramSetTimeout);
+            writeProgramSetTimeout = undefined;
+        }
 
         // template of python file that needs to be concatenated
         var firstPart = "from runtime import VirtualMachine\n\n# Stack for execution:\nasync def stack_1(vm, stack):\n"
@@ -2161,6 +2168,15 @@ function Service_SPIKE() {
 
         sendDATA(command);
 
+        // check if start_write_program received a response after 5 seconds
+        writeProgramSetTimeout = setTimeout(function() {
+            if (startWriteProgramCallback != undefined) {
+                if (funcAfterError != undefined) {
+                    funcAfterError("5 seconds have passed without response... Please reboot the hub and try again.")
+                }
+            }
+        }, 5000)
+
         // function to write the first packet of data
         function writePackageFunc(blocksize, transferid) {
 
@@ -2426,6 +2442,7 @@ function Service_SPIKE() {
      */
     async function streamUJSONRPC() {
         try {
+            var firstReading = true;
             // read when port is set up
             while (port.readable) {
 
@@ -2437,6 +2454,13 @@ function Service_SPIKE() {
                 // continuously get
                 while (true) {
                     try {
+
+                        if (firstReading) {
+                            console.log("##### READING FIRST UJSONRPC LINE ##### CHECKING VARIABLES");
+                            console.log("jsonline: ", jsonline);
+                            console.log("lastUJSONRPC: ", lastUJSONRPC);
+                            firstReading = false;
+                        }
                         // read UJSON RPC stream ( actual data in {value} )
                         ({ value, done } = await reader.read());
                         
@@ -2517,7 +2541,7 @@ function Service_SPIKE() {
                                     else {
                                         lastUJSONRPC = jsonline.substring(0, carriageReIndex);
 
-                                        // // parsing test
+                                        // parsing test
                                         try {
                                             var parseTest = await JSON.parse(lastUJSONRPC)
 
@@ -2542,12 +2566,14 @@ function Service_SPIKE() {
                                             }
 
                                         }
-
-                                        jsonline = "";
+                                        
+                                        jsonline = jsonline.substring(carriageReIndex + 2, jsonline.length);
                                     }
 
                                 }
                                 else {
+                                    console.log("jsonline was reset: ", jsonline);
+
                                     // reset jsonline for next concatenation
                                     jsonline = "";
                                 }
