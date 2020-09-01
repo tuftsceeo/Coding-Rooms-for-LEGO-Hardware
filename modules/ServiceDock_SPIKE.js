@@ -2836,7 +2836,28 @@ function Service_SPIKE() {
 
             // execute function after print if defined (only print the last line of error message)
             if (funcAfterError != undefined) {
-                funcAfterError(splitData[splitData.length-2]);
+                var errorType = splitData[splitData.length-2];
+
+                // error is a syntax error
+                if (errorType.indexOf("SyntaxError") > -1) {
+                    /* get the error line number*/
+                    var lineNumberLine = splitData[splitData.length - 3];
+                    console.log("lineNumberLine: ", lineNumberLine);
+                    var indexLine = lineNumberLine.indexOf("line");
+                    var lineNumberSubstring = lineNumberLine.substring(indexLine, lineNumberLine.length);
+                    var numberPattern = /\d+/g;
+                    var lineNumber = lineNumberSubstring.match(numberPattern)[0];
+                    console.log(lineNumberSubstring.match(numberPattern));
+                    console.log("lineNumber:", lineNumber);
+                    console.log("typeof lineNumber:", typeof lineNumber);
+                    var lineNumberInNumber = parseInt(lineNumber) - 7;
+                    console.log("typeof lineNumberInNumber:", typeof lineNumberInNumber);
+
+                    funcAfterError("line " + lineNumberInNumber + ": " + errorType);
+                }
+                else {
+                    funcAfterError(errorType);
+                }
             }
         }
         else if (messageType == 0) {
