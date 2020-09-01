@@ -2853,7 +2853,7 @@ function Service_SPIKE() {
                     console.log(lineNumberSubstring.match(numberPattern));
                     console.log("lineNumber:", lineNumber);
                     console.log("typeof lineNumber:", typeof lineNumber);
-                    var lineNumberInNumber = parseInt(lineNumber) - 7;
+                    var lineNumberInNumber = parseInt(lineNumber) - 5;
                     console.log("typeof lineNumberInNumber:", typeof lineNumberInNumber);
 
                     funcAfterError("line " + lineNumberInNumber + ": " + errorType);
