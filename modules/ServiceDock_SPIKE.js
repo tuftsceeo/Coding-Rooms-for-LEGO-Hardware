@@ -2839,6 +2839,9 @@ function Service_SPIKE() {
                 funcAfterError(splitData[splitData.length-2]);
             }
         }
+        else if (messageType == 0) {
+
+        }
         // storage information
         else if ( messageType == 1 ) {
             
@@ -2964,8 +2967,15 @@ function Service_SPIKE() {
             }
             console.log(lastUJSONRPC);
         }
-        else if (messageType == 0) {
-
+        else if (messageType == 7) {
+            if (funcAfterPrint != undefined) {
+                funcAfterPrint(">>> Program started!")
+            }
+        }
+        else if (messageType == 8) {
+            if ( funcAfterPrint != undefined ) {
+                funcAfterPrint(">>> Program finished!")
+            }
         }
         else if (messageType == 11) {
             console.log(lastUJSONRPC);
@@ -2979,7 +2989,7 @@ function Service_SPIKE() {
 
             // execute function after print if defined
             if (funcAfterPrint != undefined) {
-                funcAfterPrint(atob(printedMessage));
+                funcAfterPrint(">>>" + atob(printedMessage));
             }
         }
         else {
