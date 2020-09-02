@@ -257,6 +257,7 @@ function Service_SPIKE() {
     /* PrimeHub data storage arrays for was_***() functions */
     let hubGestures = []; // array of hubGestures run since program started or since was_gesture() ran
     let hubButtonPresses = [];
+    let hubName = undefined;
 
     /* SPIKE Prime Projects */
     
@@ -328,6 +329,9 @@ function Service_SPIKE() {
     var funcAfterDisconnectCodingRooms = undefined; // function to call after SPIKE Prime is disconnected (defined in iframe)
 
     var funcWithStream = undefined; // function to call after every parsed UJSONRPC package
+
+    var triggerCurrentStateCallback = undefined;
+
     //////////////////////////////////////////
     //                                      //
     //          Public Functions            //
@@ -356,6 +360,7 @@ function Service_SPIKE() {
 
             // start streaming UJSONRPC
             streamUJSONRPC();
+            triggerCurrentState();
             serviceActive = true;
 
             await sleep(2000); // wait for service to init
@@ -573,12 +578,31 @@ function Service_SPIKE() {
     /**
      * 
      * 
+     * @returns name of hub
+     */
+    async function getHubName(callback) {
+        return hubName;
+    }
+
+    /**
+     * 
+     * 
      * @param {any} callback 
      */
     async function getFirmwareInfo(callback) {
 
         UJSONRPC.getFirmwareInfo(callback);
 
+    }
+
+    /**
+     * 
+     * 
+     * @param {any} callback 
+     */
+    async function triggerCurrentState(callback) {
+
+        UJSONRPC.triggerCurrentState(callback);
     }
 
 
@@ -2100,6 +2124,16 @@ function Service_SPIKE() {
             getFirmwareInfoCallback = [randomId, callback];
         }
     }
+    
+    UJSONRPC.triggerCurrentState = async function triggerCurrentState(callback) {
+        var randomId = generateId();
+
+        var command = '{"i":' + '"' + randomId + '"' + ', "m": "trigger_current_state" ' + '}';
+        sendDATA(command);
+        if ( callback != undefined ) {
+            triggerCurrentStateCallback = callback;
+        }
+    }
 
     /** 
      * 
@@ -3001,6 +3035,15 @@ function Service_SPIKE() {
                 funcAfterPrint(">>> Program finished!");
             }
         }
+        else if ( messageType == 9 ) {
+            var encodedName = parsedUJSON["p"];
+            var decodedName = atob(encodedName);
+            hubName = decodedName;
+
+            if ( triggerCurrentStateCallback != undefined ) {
+                triggerCurrentStateCallback();
+            }
+        }
         else if (messageType == 11) {
             console.log(lastUJSONRPC);
         }
@@ -3219,7 +3262,9 @@ function Service_SPIKE() {
         getPortInfo: getPortInfo,
         getBatteryStatus: getBatteryStatus,
         getFirmwareInfo: getFirmwareInfo,
+        triggerCurrentState: triggerCurrentState,
         getHubInfo: getHubInfo,
+        getHubName: getHubName,
         getProjects: getProjects,
         isActive: isActive,
         getBigMotorPorts: getBigMotorPorts,

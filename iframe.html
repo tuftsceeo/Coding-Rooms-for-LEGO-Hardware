@@ -58,9 +58,10 @@
                     mainUI_container.style.display = "block";
                     connectionHelp_container.style.display = "none";
 
-                    mySPIKE.getFirmwareInfo( function (version) {
+                    mySPIKE.getFirmwareInfo( async function (version) {
+                        var hubName = await mySPIKE.getHubName();
                         var connectInfo = document.getElementById("mainUI_connectInfo");
-                        connectInfo.innerHTML = /* "<b> Connected to: </b> " + */ "(Hub OS: " + version + ")";
+                        connectInfo.innerHTML =  "<b> Connected to: </b> " + "<em>"  + hubName+  "</em>" +" (Hub OS: " + version + ")";
                     })
 
                     printOnConsole("Successfully connected to SPIKE Prime!");
@@ -465,7 +466,7 @@
                     <div id="topbar">
                         <div align = center style = "margin-top: 10px;">
                             <div id="mainUI_connectInfo" style="margin: 10px; display: table-cell;">
-                            
+                                
                             </div>
                             <div id = "batteryInfo" style = "display: table-cell">
 
