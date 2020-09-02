@@ -2566,7 +2566,7 @@ function Service_SPIKE() {
                                                 console.log("current value: ", value);
 
                                                 if (funcAfterError != undefined) {
-                                                    funcAfterError("Fatal Error: Please refresh this environment");
+                                                    funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
                                                 }
 
                                             }
@@ -2599,7 +2599,7 @@ function Service_SPIKE() {
                                             console.log("current value: ", value);
 
                                             if (funcAfterError != undefined) {
-                                                funcAfterError("Fatal Error: Please refresh this environment");
+                                                funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
                                             }
 
                                         }
