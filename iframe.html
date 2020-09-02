@@ -350,14 +350,17 @@
 
                 console.log("payload: ", payload);
 
-                // assumes there is only one key-value pair in files
+                // only gets the content of file with name, "main.py"
                 for ( var key in files ) {
                     console.log("key: ", key);
                     var fileName = key;    
                     var fileContent = files[key];
                     console.log("fileContent: ", fileContent);
+                    //
+                    if (fileName == "main.py") {
+                        break;
+                    }
                 }
-
 
                 // parse the selected slot id
                 var slotidSelect = document.getElementById("slotidSelect");
