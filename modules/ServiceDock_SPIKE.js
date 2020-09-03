@@ -22,8 +22,8 @@ class servicespike extends HTMLElement {
         this.service = new Service_SPIKE(); // instantiate a service object ( one object per button )
 
         this.service.executeAfterDisconnect(function () {
-            active = false;
             status.style.backgroundColor = "red";
+            active = false;
         })
 
         // Create a shadow root
@@ -41,11 +41,11 @@ class servicespike extends HTMLElement {
         button.setAttribute("id", "sl_button");
         button.setAttribute("class", "SD_button");
 
-        var imageRelPath = "'data:image/png;base64,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'" // relative to the document in which a servicespike is created ( NOT this file )
+        var imageRelPath = "/modules/views/SPIKE_icon.png"
         var length = 50; // for width and height of button
         var buttonBackgroundColor = "#A2E1EF" // background color of the button
-        var buttonStyle = "width:" + length + "px; height:" + length + "px; background: url(" + imageRelPath + ") no-repeat; background-size: 40px 40px; background-color:" + buttonBackgroundColor
-            + "; border: none; background-position: center; cursor: pointer; border-radius: 10px; position: relative; margin: 4px 0px; "
+        var buttonStyle = "width:" + length + "px; height:" + length + "px; background: url(" + imageRelPath + ") no-repeat; background-size: 57px 57px;" 
+            + "border: none; background-position: center; cursor: pointer; border-radius: 10px; position: relative;"
         button.setAttribute("style", buttonStyle);
 
         /* status circle definition and CSS */
@@ -60,16 +60,26 @@ class servicespike extends HTMLElement {
             "; position: relative; left:" + posLeft + "px; top:" + posTop + "px;";
         status.setAttribute("style", statusStyle);
 
+        /* tooltip CSS */
+        var tooltip = document.createElement("span");
+        tooltip.innerHTML = "Connect to SPIKE Prime"
+        var tooltipStyle = "visibility: hidden; width: 150%; background-color: #555; color: #fff; text-align: center; padding: 5px 0; border-radius: 6px; /* Position the tooltip text */ position: absolute; top: 30px; z-index: 1; left: 10%; /* Fade in tooltip */ opacity: 0; transition: opacity 0.3s; transition-delay: 0.5s;"
+        tooltip.setAttribute("style", tooltipStyle);
+        
         /* event listeners */
         
         button.addEventListener("mouseleave", function (event) {
-            button.style.backgroundColor = "#A2E1EF";
-            button.style.color = "#000000";
+            tooltip.style.visibility = "hidden";
+            tooltip.style.opacity = "0";
         });
 
         button.addEventListener("mouseenter", function (event) {
-            button.style.backgroundColor = "#FFFFFF";
-            button.style.color = "#000000";
+            tooltip.style.visibility = "visible";
+            tooltip.style.opacity = "1";
+        })
+
+        button.addEventListener("focus", function () {
+            button.style.outline = "0";
         })
 
         // when ServiceDock button is double clicked
@@ -94,6 +104,7 @@ class servicespike extends HTMLElement {
 
         shadow.appendChild(wrapper);
         button.appendChild(status);
+        button.appendChild(tooltip);
         wrapper.appendChild(button);
 
     }
@@ -158,6 +169,7 @@ function Service_SPIKE() {
     /* using this filter in webserial setup will only take serial ports*/
     const filter = {
         usbVendorId: VENDOR_ID
+
     };
 
     // define for communication
@@ -245,6 +257,7 @@ function Service_SPIKE() {
     /* PrimeHub data storage arrays for was_***() functions */
     let hubGestures = []; // array of hubGestures run since program started or since was_gesture() ran
     let hubButtonPresses = [];
+    let hubName = undefined;
 
     /* SPIKE Prime Projects */
     
@@ -283,11 +296,6 @@ function Service_SPIKE() {
 
     var funcAtInit = undefined; // function to call after init of SPIKE Service
 
-    var funcAfterPrint = undefined; // function to call for SPIKE python program print statements or errors
-    var funcAfterError = undefined; // function to call for errors in ServiceDock
-
-    var funcAfterDisconnect = undefined; // function to call after SPIKE Prime is disconnected
-
     var funcAfterNewGesture = undefined;
     var funcAfterNewOrientation = undefined;
 
@@ -309,6 +317,20 @@ function Service_SPIKE() {
     var startWriteProgramCallback = undefined; // [message_id, function to execute ]
     var writePackageInformation = undefined; // [ message_id, remaining_data, transfer_id, blocksize]
     var writeProgramCallback = undefined; // callback function to run after a program was successfully written
+    var writeProgramSetTimeout = undefined; // setTimeout object for looking for response to start_write_program
+
+    /* callback functions added for Coding ROoms */
+    var getFirmwareInfoCallback = undefined;
+
+    var funcAfterPrint = undefined; // function to call for SPIKE python program print statements or errors
+    var funcAfterError = undefined; // function to call for errors in ServiceDock
+
+    var funcAfterDisconnect = undefined; // function to call after SPIKE Prime is disconnected
+    var funcAfterDisconnectCodingRooms = undefined; // function to call after SPIKE Prime is disconnected (defined in iframe)
+
+    var funcWithStream = undefined; // function to call after every parsed UJSONRPC package
+
+    var triggerCurrentStateCallback = undefined;
 
     //////////////////////////////////////////
     //                                      //
@@ -338,6 +360,7 @@ function Service_SPIKE() {
 
             // start streaming UJSONRPC
             streamUJSONRPC();
+            triggerCurrentState();
             serviceActive = true;
 
             await sleep(2000); // wait for service to init
@@ -384,6 +407,16 @@ function Service_SPIKE() {
         funcAfterError = callback;
     }
 
+    
+    /**
+     * 
+     * @public
+     * @param {any} callback 
+     */
+    function executeWithStream(callback) {
+        funcWithStream = callback;
+    }
+
     /** <h4> Get the callback function to execute after service is disconnected </h4>
      * 
      * @public
@@ -391,6 +424,10 @@ function Service_SPIKE() {
      */
     function executeAfterDisconnect(callback) {
         funcAfterDisconnect = callback;
+    }
+
+    function CodingRooms_executeAfterDisconnect(callback) {
+        funcAfterDisconnectCodingRooms = callback;
     }
 
     /** <h4> Send command to the SPIKE Prime (UJSON RPC or Micropy depending on current interpreter) </h4>
@@ -536,6 +573,36 @@ function Service_SPIKE() {
      */
     async function getHubInfo() {
         return hub;
+    }
+
+    /**
+     * 
+     * 
+     * @returns name of hub
+     */
+    async function getHubName(callback) {
+        return hubName;
+    }
+
+    /**
+     * 
+     * 
+     * @param {any} callback 
+     */
+    async function getFirmwareInfo(callback) {
+
+        UJSONRPC.getFirmwareInfo(callback);
+
+    }
+
+    /**
+     * 
+     * 
+     * @param {any} callback 
+     */
+    async function triggerCurrentState(callback) {
+
+        UJSONRPC.triggerCurrentState(callback);
     }
 
 
@@ -791,6 +858,12 @@ function Service_SPIKE() {
      */
     async function writeProgram(projectName, data, slotid, callback) {
 
+        // reinit witeProgramTimeout
+        if (writeProgramSetTimeout != undefined) {
+            clearTimeout(writeProgramSetTimeout);
+            writeProgramSetTimeout = undefined;
+        }
+
         // template of python file that needs to be concatenated
         var firstPart = "from runtime import VirtualMachine\n\n# Stack for execution:\nasync def stack_1(vm, stack):\n"
         var secondPart = "# Setup for execution:\ndef setup(rpc, system, stop):\n\n    # Initialize VM:\n    vm = VirtualMachine(rpc, system, stop, \"Target__1\")\n\n    # Register stack on VM:\n    vm.register_on_start(\"stack_1\", stack_1)\n\n    return vm"
@@ -810,6 +883,9 @@ function Service_SPIKE() {
 
             result = result + addedTab;
         }
+
+        // replace tab characters
+        result = result.replace(/\\t/g, "    ");
 
         stringifiedData = firstPart + result + secondPart;
 
@@ -2039,11 +2115,24 @@ function Service_SPIKE() {
      * 
      * @memberof! UJSONRPC
      */
-    UJSONRPC.getFirmwareInfo = async function getFirmwareInfo() {
+    UJSONRPC.getFirmwareInfo = async function getFirmwareInfo(callback) {
         var randomId = generateId();
 
-        var command = '{"i":' + '"' + randomId + '"' + ', "m": "get_firmware_info" ' + '}';
+        var command = '{"i":' + '"' + randomId + '"' + ', "m": "get_hub_info" ' + '}';
         sendDATA(command);
+        if ( callback != undefined ) {
+            getFirmwareInfoCallback = [randomId, callback];
+        }
+    }
+    
+    UJSONRPC.triggerCurrentState = async function triggerCurrentState(callback) {
+        var randomId = generateId();
+
+        var command = '{"i":' + '"' + randomId + '"' + ', "m": "trigger_current_state" ' + '}';
+        sendDATA(command);
+        if ( callback != undefined ) {
+            triggerCurrentStateCallback = callback;
+        }
     }
 
     /** 
@@ -2115,6 +2204,15 @@ function Service_SPIKE() {
         console.log("sending start_write_program script");
 
         sendDATA(command);
+
+        // check if start_write_program received a response after 5 seconds
+        writeProgramSetTimeout = setTimeout(function() {
+            if (startWriteProgramCallback != undefined) {
+                if (funcAfterError != undefined) {
+                    funcAfterError("5 seconds have passed without response... Please reboot the hub and try again.")
+                }
+            }
+        }, 5000)
 
         // function to write the first packet of data
         function writePackageFunc(blocksize, transferid) {
@@ -2322,11 +2420,18 @@ function Service_SPIKE() {
             console.log("ports:", port);
             // select device
             port = await navigator.serial.requestPort({
-                //filters: [filter]
+                // filters:[filter]
             });
+
             // wait for the port to open.
             try {
                 await port.open({ baudrate: 115200 });
+                // console.log("Connected web serial port");
+                // console.log(navigator.serial.getInfo());
+                // console.log(typeof port);
+
+                // console.log(port.getInfo());
+
             }
             catch (er) {
                 console.log(er)
@@ -2374,6 +2479,7 @@ function Service_SPIKE() {
      */
     async function streamUJSONRPC() {
         try {
+            var firstReading = true;
             // read when port is set up
             while (port.readable) {
 
@@ -2385,6 +2491,13 @@ function Service_SPIKE() {
                 // continuously get
                 while (true) {
                     try {
+
+                        if (firstReading) {
+                            console.log("##### READING FIRST UJSONRPC LINE ##### CHECKING VARIABLES");
+                            console.log("jsonline: ", jsonline);
+                            console.log("lastUJSONRPC: ", lastUJSONRPC);
+                            firstReading = false;
+                        }
                         // read UJSON RPC stream ( actual data in {value} )
                         ({ value, done } = await reader.read());
                         
@@ -2438,6 +2551,11 @@ function Service_SPIKE() {
                                                 // update hub information using lastUJSONRPC
                                                 await updateHubPortsInfo();
                                                 await PrimeHubEventHandler();
+                                                
+                                                if (funcWithStream) {
+                                                    await funcWithStream();
+                                                }
+
                                             }
                                             catch (e) {
                                                 console.log(e);
@@ -2448,7 +2566,7 @@ function Service_SPIKE() {
                                                 console.log("current value: ", value);
 
                                                 if (funcAfterError != undefined) {
-                                                    funcAfterError("Fatal Error: Please refresh this environment");
+                                                    funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
                                                 }
 
                                             }
@@ -2460,13 +2578,17 @@ function Service_SPIKE() {
                                     else {
                                         lastUJSONRPC = jsonline.substring(0, carriageReIndex);
 
-                                        // // parsing test
+                                        // parsing test
                                         try {
                                             var parseTest = await JSON.parse(lastUJSONRPC)
 
                                             // update hub information using lastUJSONRPC
                                             await updateHubPortsInfo();
                                             await PrimeHubEventHandler();
+                                            
+                                            if (funcWithStream) {
+                                                await funcWithStream();
+                                            }
                                         }
                                         catch (e) {
                                             console.log(e);
@@ -2477,16 +2599,18 @@ function Service_SPIKE() {
                                             console.log("current value: ", value);
 
                                             if (funcAfterError != undefined) {
-                                                funcAfterError("Fatal Error: Please refresh this environment");
+                                                funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
                                             }
 
                                         }
-
-                                        jsonline = "";
+                                        
+                                        jsonline = jsonline.substring(carriageReIndex + 2, jsonline.length);
                                     }
 
                                 }
                                 else {
+                                    console.log("jsonline was reset: ", jsonline);
+
                                     // reset jsonline for next concatenation
                                     jsonline = "";
                                 }
@@ -2507,6 +2631,10 @@ function Service_SPIKE() {
                         
                         if (funcAfterDisconnect != undefined) {
                             funcAfterDisconnect();
+                        }
+
+                        if ( funcAfterDisconnectCodingRooms != undefined ) {
+                            funcAfterDisconnectCodingRooms();
                         }
 
                         if ( funcAfterError != undefined ) {
@@ -2745,8 +2873,32 @@ function Service_SPIKE() {
 
             // execute function after print if defined (only print the last line of error message)
             if (funcAfterError != undefined) {
-                funcAfterError(splitData[splitData.length-2]);
+                var errorType = splitData[splitData.length-2];
+
+                // error is a syntax error
+                if (errorType.indexOf("SyntaxError") > -1) {
+                    /* get the error line number*/
+                    var lineNumberLine = splitData[splitData.length - 3];
+                    console.log("lineNumberLine: ", lineNumberLine);
+                    var indexLine = lineNumberLine.indexOf("line");
+                    var lineNumberSubstring = lineNumberLine.substring(indexLine, lineNumberLine.length);
+                    var numberPattern = /\d+/g;
+                    var lineNumber = lineNumberSubstring.match(numberPattern)[0];
+                    console.log(lineNumberSubstring.match(numberPattern));
+                    console.log("lineNumber:", lineNumber);
+                    console.log("typeof lineNumber:", typeof lineNumber);
+                    var lineNumberInNumber = parseInt(lineNumber) - 5;
+                    console.log("typeof lineNumberInNumber:", typeof lineNumberInNumber);
+
+                    funcAfterError("line " + lineNumberInNumber + ": " + errorType);
+                }
+                else {
+                    funcAfterError(errorType);
+                }
             }
+        }
+        else if (messageType == 0) {
+
         }
         // storage information
         else if ( messageType == 1 ) {
@@ -2873,8 +3025,24 @@ function Service_SPIKE() {
             }
             console.log(lastUJSONRPC);
         }
-        else if (messageType == 0) {
+        else if (messageType == 7) {
+            if (funcAfterPrint != undefined) {
+                funcAfterPrint(">>> Program started!");
+            }
+        }
+        else if (messageType == 8) {
+            if ( funcAfterPrint != undefined ) {
+                funcAfterPrint(">>> Program finished!");
+            }
+        }
+        else if ( messageType == 9 ) {
+            var encodedName = parsedUJSON["p"];
+            var decodedName = atob(encodedName);
+            hubName = decodedName;
 
+            if ( triggerCurrentStateCallback != undefined ) {
+                triggerCurrentStateCallback();
+            }
         }
         else if (messageType == 11) {
             console.log(lastUJSONRPC);
@@ -2903,6 +3071,24 @@ function Service_SPIKE() {
                         hubProjects[slotid] = storageInfo[slotid]; // reassign hubProjects global variable
                     }
 
+                }
+            }
+            
+            // getFirmwareInfo callback check
+            if ( getFirmwareInfoCallback != undefined ) {
+                if ( getFirmwareInfoCallback[0] == parsedUJSON["i"] ) {
+                    var version = parsedUJSON["r"]["runtime"]["version"];
+                    var stringVersion = ""
+                    for (var index in version ) {
+                        if (index < version.length -1 ) {
+                            stringVersion = stringVersion + version[index] + ".";
+                        }
+                        else {
+                            stringVersion = stringVersion + version[index];
+                        }
+                    }
+                    console.log("firmware version: ", stringVersion);
+                    getFirmwareInfoCallback[1](stringVersion);
                 }
             }
 
@@ -3070,10 +3256,15 @@ function Service_SPIKE() {
         executeAfterPrint: executeAfterPrint,
         executeAfterError: executeAfterError,
         executeAfterDisconnect: executeAfterDisconnect,
+        CodingRooms_executeAfterDisconnect: CodingRooms_executeAfterDisconnect,
+        executeWithStream: executeWithStream,
         getPortsInfo: getPortsInfo,
         getPortInfo: getPortInfo,
         getBatteryStatus: getBatteryStatus,
+        getFirmwareInfo: getFirmwareInfo,
+        triggerCurrentState: triggerCurrentState,
         getHubInfo: getHubInfo,
+        getHubName: getHubName,
         getProjects: getProjects,
         isActive: isActive,
         getBigMotorPorts: getBigMotorPorts,
