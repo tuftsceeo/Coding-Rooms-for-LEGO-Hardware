@@ -3192,17 +3192,17 @@ function Service_SPIKE() {
 
                         console.log("remaining data's length is more than blocksize");
 
-                        var dataToSend = remainingData.subststring(0, blocksize);
+                        var dataToSend = remainingData.substring(0, blocksize);
                         
                         console.log("sending blocksize amount of data: ", dataToSend)
                         
                         var base64data = btoa(dataToSend);
 
-                        var messageid = UJSONRPC.writePackage(blocksize, remainingData.length);
+                        var messageid = UJSONRPC.writePackage(base64data, transferID);
 
                         console.log("expected response with message id of ", messageid);
 
-                        var remainingData = dataToSend(blocksize, remainingData.length);
+                        var remainingData = remainingData.substring(blocksize, remainingData.length);
 
                         writePackageInformation = [messageid, remainingData, transferID, blocksize];   
                     }
