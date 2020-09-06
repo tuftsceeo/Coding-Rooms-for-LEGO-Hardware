@@ -1,4 +1,10 @@
 <html>
+    <!--
+        Developer  Notes:
+        common web UI elements (regardless of hardware): hardwareSelect, topToolbar_container, mainUI_container
+                                                        connectionHelp_container, explanation
+
+    -->
     <title> SPIKE iframe </title>
     <head>
         <script type="text/javascript" src="./modules/ServiceDock_SPIKE.js"></script>
@@ -18,7 +24,7 @@
             var hubProjects;
             var devicesInfo = document.getElementById("devicesInfo");
 
-            window.onload = function () { 
+            window.onload = function () {
                 // common web UI elements
                 var hardwareSelect = document.getElementById("hardwareSelect");
                 var topToolbar_container = document.getElementById("topToolbar_container");
@@ -61,7 +67,7 @@
                     mySPIKE.getFirmwareInfo( async function (version) {
                         var hubName = await mySPIKE.getHubName();
                         var connectInfo = document.getElementById("mainUI_connectInfo");
-                        connectInfo.innerHTML =  "<b> Connected to: </b> " + "<em>"  + hubName+  "</em>" +" (Hub OS: " + version + ")";
+                        connectInfo.innerHTML =  "<b> Connected to: </b> " + "<em id = 'hubNameElement'>"  + hubName+  "</em>" +" (Hub OS: " + version + ")";
                     })
 
                     printOnConsole("Successfully connected to SPIKE Prime!");
@@ -406,212 +412,217 @@
     </head>
 
     <body>
+        <!-- refresh iframe environment-->
         <button
             style="position: absolute; background:url('/modules/views/freepik_rotation.png')no-repeat; background-size: 35px 35px; background-position: center; height: 40px; width: 40px;  cursor: pointer; border:none;"
             id="refresh" class = "tooltip">
             <span class="tooltiptext">Refresh Preview</span>
         </button>
         <h3 align = center >MicroPython for LEGO&reg; Hardware </h3>
-            <div id="hardwareSelect_container" style = "margin-bottom: 10px;" align = center>
-                Select platform: 
-                <select id="hardwareSelect">
-                    <option id="hardwareSPIKE">SPIKE Prime</option>
-                    <option id = "survey">&lt;Request new hardware&gt;</option>
-                </select>
+        <!-- Select LEGO Hardware -->
+        <div id="hardwareSelect_container" style = "margin-bottom: 10px;" align = center>
+            Select platform: 
+            <select id="hardwareSelect">
+                <option id="hardwareSPIKE">SPIKE Prime</option>
+                <option id = "survey">&lt;Request new hardware&gt;</option>
+            </select>
+        </div>
+        <!-- Information on dependencies for using UI for this specific hardware-->
+        <div id="dependenciesInfo">
+            <div style="margin: 10px; font: Arial;" class = "hardwareIsSPIKE">
+                To use the SPIKE&trade; Prime hardware, you must enable the <em><b>WebSerial API</b></em> in your browser. To do so, please
+                make sure:
+                <ol>
+                    <li class = "checklist">You are using the 
+                        <a href="https://www.google.com/chrome/" target="_blank">
+                            Google Chrome browser</a>.</li>
+                    <li class = "checklist">The experimental web platform flag is enabled.</li>
+                </ol>
+                To enable this flag:
+                <ol style = "font-size: 15px;">
+                    <li class="steps">In your Browser URL, visit <em>chrome://flags/#enable-experimental-web-platform-features</em></li>
+                    <li class="steps"> Set the "Experimental Web Platform features" to "Enabled" via dropdown</li>
+                    <li class="steps"> Relaunch the browser to have changes take effect </li>
+                    <li class="steps"> Revisit your Coding Rooms classroom (this website) </li>
+                </ol>
             </div>
-            <div id="dependenciesInfo">
-                <div style="margin: 10px; font: Arial;">
-                    To use the SPIKE&trade; Prime hardware, you must enable the <em><b>WebSerial API</b></em> in your browser. To do so, please
-                    make sure:
-                    <ol>
-                        <li class = "checklist">You are using the 
-                            <a href="https://www.google.com/chrome/" target="_blank">
-                                Google Chrome browser</a>.</li>
-                        <li class = "checklist">The experimental web platform flag is enabled.</li>
-                    </ol>
-                    To enable this flag:
-                    <ol style = "font-size: 15px;">
-                        <li class="steps">In your Browser URL, visit <em>chrome://flags/#enable-experimental-web-platform-features</em></li>
-                        <li class="steps"> Set the "Experimental Web Platform features" to "Enabled" via dropdown</li>
-                        <li class="steps"> Relaunch the browser to have changes take effect </li>
-                        <li class="steps"> Revisit your Coding Rooms classroom (this website) </li>
-                    </ol>
+        </div>
+        <!-- topToolbar: (Name of hardware, button connecting to hardware, button to documentation for hardware programming-->
+        <div id="topToolbar_container" align = center>
+            <div id="topToolbar_SPIKE" class = "topToolbar hardwareIsSPIKE">
+                <div style = "position: relative; float:left; margin: 10px; text-align: center; top: 20%;">
+                    Service Dock for SPIKE&trade; Prime:
+                </div>
+                <service-spike id="Service_SPIKE" class = "Service tooltip">
+                    <span class="tooltiptext">Connect to SPIKE Prime</span>
+                </service-spike>
+                <button id = "documentation_SPIKE" class = "documentation tooltip">
+                    <span class="tooltiptext">Coding Help</span>
+                </button>
+            </div>
+        </div>
+        <br/>
+        <!-- connectionHelp: (Instructions on how to connect to hardware) !!! (only active when hardware not connected) -->
+        <div id="connectionHelp_container" style = "margin:auto">
+            <div>
+                <div id="SPIKE_connectionHelp" class="connectionHelp hardwareIsSPIKE">
+                    <em style="font-size: 20px;">Connect your SPIKE Prime hardware to your computer (via USB or Bluetooth) and activate
+                        using the Service Dock functions above</em>
+                    <br />
+                    <br />
+                    <em style="font-size: 16px;">be sure no other applications, programs, or browser windows are connected to your SPIKE
+                        Prime simultaneously</em>
                 </div>
             </div>
-            <div id="topToolbar_container" align = center>
-                <div id="topToolbar_SPIKE" class = "topToolbar">
-                    <div style = "position: relative; float:left; margin: 10px; text-align: center; top: 20%;">
-                        Service Dock for SPIKE&trade; Prime:
-                    </div>
-                    <service-spike id="Service_SPIKE" class = "Service tooltip">
-                        <span class="tooltiptext">Connect to SPIKE Prime</span>
-                    </service-spike>
-                    <button id = "documentation_SPIKE" class = "documentation tooltip">
-                        <span class="tooltiptext">Coding Help</span>
-                    </button>
-                </div>
-            </div>
-            <br/>
-            <div id="connectionHelp_container" style = "margin:auto">
-                <div>
-                    <div id="SPIKE_connectionHelp" class="connectionHelp">
-                        <em style="font-size: 20px;">Connect your SPIKE Prime hardware to your computer (via USB or Bluetooth) and activate
-                            using the Service Dock functions above</em>
-                        <br />
-                        <br />
-                        <em style="font-size: 16px;">be sure no other applications, progarms, or browser windows are connected to your SPIKE
-                            Prime simultaneously</em>
-                    </div>
-                </div>
-            </div>
-            <div id = "mainUI_container" style = "margin: auto;">
-                <div id = "mainUI_SPIKE" class = "mainUI">
-                    <div id="topbar">
-                        <div align = center style = "margin-top: 10px;">
-                            <div id="mainUI_connectInfo" style="margin: 10px; display: table-cell;">
-                                
-                            </div>
-                            <div id = "batteryInfo" style = "display: table-cell">
+        </div>
+        <!-- mainUI 
+            - topBar
+            - device Ports (for devices connected to hardware)
+            - console
+        -->
+        <div id = "mainUI_container" style = "margin: auto;">
+            <div id = "mainUI_SPIKE" class = "mainUI">
+                <div id="topbar">
+                    <div align = center style = "margin-top: 10px;">
+                        <div id="mainUI_connectInfo" style="margin: 10px; display: table-cell;">
+                            
+                        </div>
+                        <div id = "batteryInfo" style = "display: table-cell">
 
-                            </div>
-                        </div>
-                        <div id = "mainUI_toolbar" align = center style = "margin: 10px;">
-                            <div style = "display: table-cell; top: -6px; position: relative;">
-                                Select Storage Position:
-                                <select id="slotidSelect" style="align-items: center; margin-right: 10px;">
-                                    <option id="slot0">0</option>
-                                    <option id="slot1">1</option>
-                                    <option id="slot2">2</option>
-                                    <option id="slot3">3</option>
-                                    <option id="slot4">4</option>
-                                    <option id="slot5">5</option>
-                                    <option id="slot6">6</option>
-                                    <option id="slot7">7</option>
-                                    <option id="slot8">8</option>
-                                    <option id="slot9">9</option>
-                                    <option id="slot10">10</option>
-                                    <option id="slot11">11</option>
-                                    <option id="slot12">12</option>
-                                    <option id="slot13">13</option>
-                                    <option id="slot14">14</option>
-                                    <option id="slot15">15</option>
-                                    <option id="slot16">16</option>
-                                    <option id="slot17">17</option>
-                                    <option id="slot18">18</option>
-                                    <option id="slot19">19</option>
-                                </select>
-                            </div>
-                            <div style = "display: table-cell; margin: 10px;">
-                                <!-- icons8.com-->
-                                <button id="runProgram"
-                                    style="background: url(modules/views/play.png) no-repeat;  background-position: center; background-size: 26px 26px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
-                                    class="tooltip">
-                                    <span class="tooltiptext">Play Program</span>
-                                </button>
-                                <!-- icons8.com-->
-                                <button id="rebootHub"
-                                    style="background: url(modules/views/reboot.png) no-repeat;  background-position: center; background-size: 30px 30px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
-                                    class="tooltip">
-                                    <span class="tooltiptext">Reboot SPIKE Prime</span>
-                                </button>
-                                <!-- roundicons icon-->
-                                <button id="stopProgram"
-                                    style="background: url(modules/views/roundicons_stop.png) no-repeat;  background-position: center; background-size: 20px 20px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
-                                    class="tooltip">
-                                    <span class="tooltiptext">Stop Program</span>
-                                </button>
-                            </div>
                         </div>
                     </div>
-                    <div id="mainUI_devicePorts" style="margin: 10px;" align = center>
-                        <div id="devicesInfo" align = center>
-                            <div id="hubInfo" class = "SPIKE_devicePort">
-                                <div id="deviceInfo">
-                                    <div id = "yaw">yaw:</div>
-                                    <div id="pitch">pitch:</div>
-                                    <div id="roll">roll:</div>
-                                </div>
-                                <div class = "morePortInfo">
-                                    Hub
-                                </div>
-                            </div>
-                            <div id="portAInfo" class = "SPIKE_devicePort">
-                                <div id="deviceInfo">
-                                </div>
-                                <div class="morePortInfo">
-                                    Port A
-                                </div>
-                            </div>
-                            <div id="portBInfo" class = "SPIKE_devicePort">
-                                <div id="deviceInfo">
-                                </div>
-                                <div class="morePortInfo">
-                                    Port B
-                                </div>
-                            </div>
-                            <div id="portCInfo" class = "SPIKE_devicePort">
-                                <div id="deviceInfo">
-                                </div>
-                                <div class="morePortInfo">
-                                    Port C
-                                </div>
-                            </div>
-                            <div id="portDInfo" class = "SPIKE_devicePort">
-                                <div id="deviceInfo">
-                                </div>
-                                <div class="morePortInfo">
-                                    Port D
-                                </div>
-                            </div>
-                            <div id="portEInfo" class = "SPIKE_devicePort">
-                                <div id="deviceInfo">
-                    
-                                </div>
-                                <div class="morePortInfo">
-                                    Port E
-                                </div>
-                            </div>
-                            <div id="portFInfo" class = "SPIKE_devicePort">
-                                <div id="deviceInfo">
-                    
-                                </div>
-                                <div class="morePortInfo">
-                                    Port F
-                                </div>
-                            </div>
+                    <div id = "mainUI_toolbar" align = center style = "margin: 10px;">
+                        <div style = "display: table-cell; top: -6px; position: relative;">
+                            Select Storage Position:
+                            <select id="slotidSelect" style="align-items: center; margin-right: 10px;" class = "hardwareIsSPIKE">
+                                <option id="slot0">0</option>
+                                <option id="slot1">1</option>
+                                <option id="slot2">2</option>
+                                <option id="slot3">3</option>
+                                <option id="slot4">4</option>
+                                <option id="slot5">5</option>
+                                <option id="slot6">6</option>
+                                <option id="slot7">7</option>
+                                <option id="slot8">8</option>
+                                <option id="slot9">9</option>
+                                <option id="slot10">10</option>
+                                <option id="slot11">11</option>
+                                <option id="slot12">12</option>
+                                <option id="slot13">13</option>
+                                <option id="slot14">14</option>
+                                <option id="slot15">15</option>
+                                <option id="slot16">16</option>
+                                <option id="slot17">17</option>
+                                <option id="slot18">18</option>
+                                <option id="slot19">19</option>
+                            </select>
                         </div>
-                    </div>
-                    <div id="mainUI_console" style = "margin: 10px;">
-                        <div id="telemetry" align=center>
-                            <div>Console</div>
-                            <textarea id="console" readonly style="width: 500px; height: 150px; white-space:pre-wrap"></textarea>
-                        </div>
-                    </div>
-                    <div id="SPIKEInfo" align = center style = "margin: 10px;">
-                        <div id="batteryInfo">
-                    
+                        <div style = "display: table-cell; margin: 10px;">
+                            <!-- icons8.com-->
+                            <button id="runProgram"
+                                style="background: url(modules/views/play.png) no-repeat;  background-position: center; background-size: 26px 26px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
+                                class="tooltip">
+                                <span class="tooltiptext">Play Program</span>
+                            </button>
+                            <!-- icons8.com-->
+                            <button id="rebootHub"
+                                style="background: url(modules/views/reboot.png) no-repeat;  background-position: center; background-size: 30px 30px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
+                                class="tooltip">
+                                <span class="tooltiptext">Reboot SPIKE Prime</span>
+                            </button>
+                            <!-- roundicons icon-->
+                            <button id="stopProgram"
+                                style="background: url(modules/views/roundicons_stop.png) no-repeat;  background-position: center; background-size: 20px 20px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
+                                class="tooltip">
+                                <span class="tooltiptext">Stop Program</span>
+                            </button>
                         </div>
                     </div>
                 </div>
+                <div id="mainUI_devicePorts" style="margin: 10px;" align = center>
+                    <div id="devicesInfo" align = center>
+                        <div id="hubInfo" class = "SPIKE_devicePort">
+                            <div id="deviceInfo">
+                                <div id = "yaw">yaw:</div>
+                                <div id="pitch">pitch:</div>
+                                <div id="roll">roll:</div>
+                            </div>
+                            <div class = "morePortInfo">
+                                Hub
+                            </div>
+                        </div>
+                        <div id="portAInfo" class = "SPIKE_devicePort">
+                            <div id="deviceInfo">
+                            </div>
+                            <div class="morePortInfo">
+                                Port A
+                            </div>
+                        </div>
+                        <div id="portBInfo" class = "SPIKE_devicePort">
+                            <div id="deviceInfo">
+                            </div>
+                            <div class="morePortInfo">
+                                Port B
+                            </div>
+                        </div>
+                        <div id="portCInfo" class = "SPIKE_devicePort">
+                            <div id="deviceInfo">
+                            </div>
+                            <div class="morePortInfo">
+                                Port C
+                            </div>
+                        </div>
+                        <div id="portDInfo" class = "SPIKE_devicePort">
+                            <div id="deviceInfo">
+                            </div>
+                            <div class="morePortInfo">
+                                Port D
+                            </div>
+                        </div>
+                        <div id="portEInfo" class = "SPIKE_devicePort">
+                            <div id="deviceInfo">
+                
+                            </div>
+                            <div class="morePortInfo">
+                                Port E
+                            </div>
+                        </div>
+                        <div id="portFInfo" class = "SPIKE_devicePort">
+                            <div id="deviceInfo">
+                
+                            </div>
+                            <div class="morePortInfo">
+                                Port F
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="mainUI_console" style = "margin: 10px;">
+                    <div id="telemetry" align=center>
+                        <div>Console</div>
+                        <textarea id="console" readonly style="width: 500px; height: 150px; white-space:pre-wrap"></textarea>
+                    </div>
+                </div>
             </div>
-            <div id="disclaimer" align=center style="margin: 10px;">
-                <h5>
-                    CodingRooms’ implementation of “MicroPython for LEGO® Hardware” created in collaboration with researchers at
-                    Tufts
-                    Center for Engineering Education and Outreach (CEEO). To see other CEEO Innovation projects, visit
-                    <a href = "http://www.CEEOInnovations.org" target="_blank">
-                        CEEOInnovations.org.
-                    </a>
-                </h5>
-                <h5>
-                    LEGO®, the LEGO® logo, the Brick, MINDSTORMS®, SPIKE™, and the Minifigure are trademarks of ©The LEGO® Group.
-                    All other
-                    trademarks and copyrights are the property of their respective owners. All rights reserved. CodingRooms isn’t
-                    not
-                    affiliated, authorized, or endorsed by The LEGO Group.
-                </h5>
-            </div>
-            <br/><br /><br />
+        </div>
+        <div id="disclaimer" align=center style="margin: 10px;">
+            <h5>
+                CodingRooms’ implementation of “MicroPython for LEGO® Hardware” created in collaboration with researchers at
+                Tufts
+                Center for Engineering Education and Outreach (CEEO). To see other CEEO Innovation projects, visit
+                <a href = "http://www.CEEOInnovations.org" target="_blank">
+                    CEEOInnovations.org.
+                </a>
+            </h5>
+            <h5>
+                LEGO®, the LEGO® logo, the Brick, MINDSTORMS®, SPIKE™, and the Minifigure are trademarks of ©The LEGO® Group.
+                All other
+                trademarks and copyrights are the property of their respective owners. All rights reserved. CodingRooms isn’t
+                not
+                affiliated, authorized, or endorsed by The LEGO Group.
+            </h5>
+        </div>
+        <br/><br /><br />
     </body>
     <style>
         /* common web UI elements */
