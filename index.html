@@ -68,6 +68,102 @@ hub.light_matrix.show_image('HAPPY')
 </form>
 </div>
 
+<div id = "testingConsole">
+  <div id = "testUI">
+    <h4>Testing UI</h4>
+    <div id="testFirstPositionNotEmpty" class = "testUI">
+      Test registered programs:
+      <span id="status">
+        Not tested
+      </span>
+    </div>
+    <div id="testHubName" class="testUI">
+      Test hub name:
+      <span id="status">
+        Not tested
+      </span>
+    </div>
+    <div id="testConsoleIndex" class="testUI">
+      Test console messages:
+      <span id="status">
+        Not tested
+      </span>
+    </div>
+  </div>
+  <div id = "testingProgramWrite">
+    <h4>Testing Program Write</h4>
+    <div id="testDefaultCode">
+      Test the default code:
+      <span id="status">
+        Not tested
+      </span>
+    </div>
+    <div id="testPrintCode">
+      Test code with print statements:
+      <span id="status">
+        Not tested
+      </span>
+    </div>
+    <div id="testLongCode">
+      Test a long code (>= 2 x 514 bytes):
+      <span id="status">
+        Not tested
+      </span>
+    </div>
+    <div id="testTabEscapeCode">
+      Test code with horizontal tab escape sequences:
+      <span id="status">
+        Not tested
+      </span>
+    </div>
+    <div id="testSyntaxErrorModuleImports">
+      Test code with syntax error in module imports: 
+      <span id="status">
+        Not tested
+      </span>
+    </div>
+    <div id="testSyntaxErrorCode">
+      Test code with syntax error (line numbers may differ from Coding Rooms):
+      <span id="status">
+        Not tested
+      </span>
+    </div>
+    <div id="testEmptyCode">
+      Test empty code:
+      <span id="status">
+        Not tested
+      </span>
+    </div>
+  </div>
+
+
+  <div id="testingUIfunctions">
+    <h4>Testing UI functions</h4>
+    <div id="testRunButton">
+      Test Run button:
+      <span id="status">
+        Not tested
+      </span>
+    </div>
+    <div id="testRebootButton">
+      Test Reboot button:
+      <span id="status">
+        Not tested
+      </span>
+    </div>
+    <div id="testStopButton">
+      Test Stop button:
+      <span id="status">
+        Not tested
+      </span>
+    </div>
+  
+  </div>
+
+
+
+</div>
+
 <br/><br/>
 
 <!-- Note the id if the iframe element must be in the form of "cc-embed-frameId" where
@@ -80,5 +176,23 @@ hub.light_matrix.show_image('HAPPY')
         style="height:400px;width:600px;border-width: 2px"
         title="Run Code"></iframe>
 
+    
+
 </body>
+
+<style>
+  #testingConsole {
+    background-color: khaki;
+    height: 500px;
+    width: 600px;
+    position: absolute;
+    left: 700px;
+  }
+  
+  #status {
+    position: absolute;
+    left: 500px;
+  }
+
+</style>
 </html>
