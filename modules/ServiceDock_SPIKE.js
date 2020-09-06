@@ -3192,7 +3192,7 @@ function Service_SPIKE() {
 
                         console.log("remaining data's length is more than blocksize");
 
-                        var dataToSend = remainingData.substsring(0, blocksize);
+                        var dataToSend = remainingData.subststring(0, blocksize);
                         
                         console.log("sending blocksize amount of data: ", dataToSend)
                         
