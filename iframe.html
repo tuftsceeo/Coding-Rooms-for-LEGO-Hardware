@@ -14,6 +14,8 @@
             crossorigin="anonymous"></script>
         <script language="javascript">
 
+            var alreadyInitOnceSPIKE = false; // to prevent event listeners from redefining when hardware reconnects
+
             var motorInfo = '<div id="motor">Motor<div id="motorAngle"></div></div>'
             var colorInfo = '<div id="color">Color<div id="colorRGBbox" data-r="0", data-g="0", data-b="0" style="height:22px;width:22px;"> </div> </div>';
             var distanceInfo = '<div id="distance">Distance<div id = "distanceValue"></div></div>';
@@ -77,37 +79,41 @@
 
                     refreshSlotsDisplay();
 
-                    var runButton = document.getElementById("runProgram");
-                    runButton.addEventListener("click", function () {
+                    if (!alreadyInitOnceSPIKE) {
+                        var runButton = document.getElementById("runProgram");
+                        runButton.addEventListener("click", function () {
 
-                        var slotidSelect = document.getElementById("slotidSelect");
-                        var slotidOption = slotidSelect.options[slotidSelect.selectedIndex];
-                        var slotid = slotidOption.id;
-                        slotid = slotid.substring(4, slotid.length);
+                            var slotidSelect = document.getElementById("slotidSelect");
+                            var slotidOption = slotidSelect.options[slotidSelect.selectedIndex];
+                            var slotid = slotidOption.id;
+                            slotid = slotid.substring(4, slotid.length);
 
-                        var slotidInteger = parseInt(slotid);
+                            var slotidInteger = parseInt(slotid);
 
-                        printOnConsole("Executing program in position " + slotid + "...")
+                            printOnConsole("Executing program in position " + slotid + "...")
 
-                        mySPIKE.executeProgram(slotidInteger);
-                    })
+                            mySPIKE.executeProgram(slotidInteger);
+                        })
 
-                    var rebootButton = document.getElementById("rebootHub");
-                    rebootButton.addEventListener("click", function () {
-                        printOnConsole("Rebooting SPIKE Prime Hub...")
+                        var rebootButton = document.getElementById("rebootHub");
+                        rebootButton.addEventListener("click", function () {
+                            printOnConsole("Rebooting SPIKE Prime Hub...")
 
-                        refreshSlotsDisplay();
+                            refreshSlotsDisplay();
 
-                        mySPIKE.rebootHub();
-                    })
+                            mySPIKE.rebootHub();
+                        })
 
-                    var stopButton = document.getElementById("stopProgram");
-                    stopButton.addEventListener("click", function () {
+                        var stopButton = document.getElementById("stopProgram");
+                        stopButton.addEventListener("click", function () {
 
-                        printOnConsole("Terminating any running program...")
+                            printOnConsole("Terminating any running program...")
 
-                        mySPIKE.stopCurrentProgram();
-                    })
+                            mySPIKE.stopCurrentProgram();
+                        })
+
+                        alreadyInitOnceSPIKE = true;
+                    }
 
                     mySPIKE.executeWithStream(async function () {
                         var batteryStatus = await mySPIKE.getBatteryStatus();
