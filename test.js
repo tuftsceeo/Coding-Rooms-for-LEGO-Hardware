@@ -5,13 +5,23 @@ let page;
 let frame;
 let UIConsoleCurrentIndex;
 
-async function launchBrowser(callback) {
-    browser = await puppeteer.launch({
-        defaultViewport: null,
-        headless: false,
-        slowMo: 80,
-        args: ['--window-size=1380,780', "--flag-switches-begin", "--enable-experimental-web-platform-features", "--flag-switches-end"]
-    })
+async function launchBrowser(experimentalflag, callback) {
+    if (experimentalflag) {
+        browser = await puppeteer.launch({
+            defaultViewport: null,
+            headless: false,
+            slowMo: 80,
+            args: ['--window-size=1380,780', "--flag-switches-begin", "--enable-experimental-web-platform-features", "--flag-switches-end"]
+        })
+    }
+    else {
+        browser = await puppeteer.launch({
+            defaultViewport: null,
+            headless: false,
+            slowMo: 80,
+            args: ['--window-size=1380,780', "--flag-switches-begin", "--disable-experimental-web-platform-features", "--flag-switches-end"]
+        })
+    }
     page = await browser.newPage();
     await page.goto(
         'file:///Users/jang-hojung/tuftsceeo/SPIKEstuff/src/codingroomsHardware/index.html'
@@ -278,7 +288,6 @@ async function testTabEscapeCode() {
 
     UIConsoleCurrentIndex = consoleValue.length;
 
-
 }
 
 async function testSyntaxErrorModuleImports(){
@@ -401,10 +410,160 @@ async function testEmptyCode() {
     UIConsoleCurrentIndex = consoleValue.length;
 }
 
+async function defaultFileContent() {
+    await page.$eval("#filecontent", element => element.innerHTML =
+        "from spike import PrimeHub, LightMatrix, Motor, MotorPair\n"
+        + "from spike.control import wait_for_seconds, wait_until, Timer\n"
+        + "print('hello')\n"
+        + "hub = PrimeHub()\n"
+        + "hub.light_matrix.show_image('HAPPY')\n"
+    );
 
+    await page.click("#runCode");
+
+    await delay(5000);
+
+    const consoleValue = await frame.$eval("#console", el => el.value);
+    var nextConsoleValue = consoleValue.substring(UIConsoleCurrentIndex, consoleValue.length);
+    console.log("next console value: ", nextConsoleValue);
+
+    UIConsoleCurrentIndex = consoleValue.length;
+}
+
+async function testRun() {
+
+    console.log("##### testing run button ######")
+
+    page.$eval("#testRunButton > span#status", element => element.innerHTML = "In progress");
+
+    await frame.click("#runProgram");
+
+    await delay(3000);
+    
+    const consoleValue = await frame.$eval("#console", el => el.value);
+    var nextConsoleValue = consoleValue.substring(UIConsoleCurrentIndex, consoleValue.length);
+    console.log("next console value: ", nextConsoleValue);
+
+    var expectedResultBase = (nextConsoleValue.indexOf("Executing program in position 0...") > -1)
+    var expectedResultExtra = (nextConsoleValue.indexOf(">>> Program started!") > -1) && (nextConsoleValue.indexOf("hello") > -1) && (nextConsoleValue.indexOf(">>> Program finished!") > -1)
+    var expectedResultWithoutErrors = (nextConsoleValue.indexOf("Please try again. If error persists, refresh this environment.") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please reboot the Hub and refresh this environment") == -1) 
+    
+    if (expectedResultBase && expectedResultExtra && expectedResultWithoutErrors) {
+        page.$eval("#testRunButton > span#status", element => element.innerHTML = "Passed");
+    }
+    else {
+        page.$eval("#testRunButton > span#status", element => element.innerHTML = "Failed");
+    }
+
+    UIConsoleCurrentIndex = consoleValue.length;
+
+}
+
+async function testStop() {
+    console.log("##### testing stop button ######")
+
+    page.$eval("#testStopButton > span#status", element => element.innerHTML = "In progress");
+
+    await frame.click("#stopProgram");
+
+    const consoleValue = await frame.$eval("#console", el => el.value);
+    var nextConsoleValue = consoleValue.substring(UIConsoleCurrentIndex, consoleValue.length);
+    console.log("next console value: ", nextConsoleValue);
+    
+    var expectedResultBase = (nextConsoleValue.indexOf("Terminating any running program...") > -1)
+    var expectedResultWithoutErrors = (nextConsoleValue.indexOf("Please try again. If error persists, refresh this environment.") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please reboot the Hub and refresh this environment") == -1) 
+
+    if (expectedResultBase && expectedResultWithoutErrors) {
+        page.$eval("#testStopButton > span#status", element => element.innerHTML = "Passed");
+    }
+    else {
+        page.$eval("#testStopButton > span#status", element => element.innerHTML = "Failed");
+    }
+
+    UIConsoleCurrentIndex = consoleValue.length;
+
+}
+
+async function testReboot() {
+    console.log("##### testing reboot button ######")
+
+    page.$eval("#testRebootButton > span#status", element => element.innerHTML = "In progress");
+
+    await frame.click("#rebootHub");
+
+    const consoleValue = await frame.$eval("#console", el => el.value);
+    var nextConsoleValue = consoleValue.substring(UIConsoleCurrentIndex, consoleValue.length);
+    console.log("next console value: ", nextConsoleValue);
+
+
+    var expectedResultBase = (nextConsoleValue.indexOf("Rebooting SPIKE Prime Hub...") > -1)
+    var expectedResultWithoutErrors = (nextConsoleValue.indexOf("Please try again. If error persists, refresh this environment.") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please reboot the Hub and refresh this environment") == -1) 
+
+    if (expectedResultBase && expectedResultWithoutErrors) {
+        page.$eval("#testRebootButton > span#status", element => element.innerHTML = "Passed");
+    }
+    else {
+        page.$eval("#testRebootButton > span#status", element => element.innerHTML = "Failed");
+    }
+
+    UIConsoleCurrentIndex = consoleValue.length;
+
+}
+
+
+async function testDisconnectAndReconnect() {
+    
+    page.$eval("#testReconnect > span#status", element => element.innerHTML = "In progress");
+
+    await page.$eval("#filecontent", element => element.innerHTML =
+        "from spike import PrimeHub, LightMatrix, Motor, MotorPair\n"
+        + "from spike.control import wait_for_seconds, wait_until, Timer\n"
+        + "print('hello')\n"
+        + "hub = PrimeHub()\n"
+        + "hub.light_matrix.show_image('HAPPY')\n"
+    );
+
+    await page.evaluate(() => {
+        alert("Disconnect and reconnect your SPIKE Prime now");
+    })
+
+    await delay(15000);
+
+}
+
+async function testDependenciesInfo() {
+
+    page.$eval("#testDependenciesInfo > span#status", element => element.innerHTML = "In progress");
+
+    var SecondBrowser = await puppeteer.launch({
+        defaultViewport: null,
+        headless: false,
+        slowMo: 80,
+        args: ['--window-size=1380,780', "--flag-switches-begin", "--disable-experimental-web-platform-features", "--flag-switches-end"]
+    })
+    SecondPage = await SecondBrowser.newPage();
+    await SecondPage.goto(
+        'file:///Users/jang-hojung/tuftsceeo/SPIKEstuff/src/codingroomsHardware/index.html'
+    )
+
+    const framesList = (await SecondPage.frames());
+
+    SecondFrame = await getFrame(framesList, "SPIKE iframe");
+
+    var display = await SecondFrame.$eval("#dependenciesInfo", element => element.style.display);
+    console.log("display of dependenciesInfo: ", display);
+
+    if (display == "block") {
+        page.$eval("#testDependenciesInfo > span#status", element => element.innerHTML = "Passed");
+    }
+    else {
+        page.$eval("#testDependenciesInfo > span#status", element => element.innerHTML = "Failed");
+    }
+
+}
 
 async function startTests(callback) {
-    launchBrowser( async function () {
+    launchBrowser(true, async function () {
         try {
 
             const framesList = (await page.frames());
@@ -418,35 +577,36 @@ async function startTests(callback) {
             console.log("delay ended");
 
             testUIInit();
-
             await delay(3000);
 
             // run default code
             await testDefaultCode();
 
-            await delay(5000);
-
             await testPrintCode();
-
-            await delay(5000);
 
             await testLongCode();
 
-            await delay(5000);
-
             await testTabEscapeCode();
-
-            await delay(5000);
 
             await testSyntaxErrorModuleImports();
 
-            await delay(5000);
-
             await testSyntaxErrorCode();
 
+            await testEmptyCode();
+
+            await defaultFileContent();
+            await delay(1000);
+
+            await testRun();
             await delay(5000);
 
-            await testEmptyCode();
+            await testStop();
+            await delay(5000);
+
+            await testReboot();
+            await delay(5000);
+
+            await testDependenciesInfo();
 
         }
         catch (e) {

@@ -362,7 +362,7 @@ function Service_SPIKE() {
             streamUJSONRPC();
 
             await sleep(1000);
-            
+
             triggerCurrentState();
             serviceActive = true;
 
@@ -2577,6 +2577,7 @@ function Service_SPIKE() {
 
                                         }
                                     }
+                                    // there are no conjoined packets in this jsonline
                                     else {
                                         lastUJSONRPC = jsonline.substring(0, carriageReIndex);
 
