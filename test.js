@@ -1,5 +1,3 @@
-/* test file */
-
 const puppeteer = require('puppeteer');
 
 let browser;
