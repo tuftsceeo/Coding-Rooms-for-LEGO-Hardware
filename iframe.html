@@ -457,7 +457,7 @@
                     <span class="tooltiptext">Connect to SPIKE Prime</span>
                 </service-spike>
                 <button id = "documentation_SPIKE" class = "documentation tooltip">
-                    <span class="tooltiptext">Coding Help</span>
+                    <span class="tooltiptext">SPIKE API Documentation</span>
                 </button>
             </div>
         </div>
@@ -600,7 +600,7 @@
                 <div id="mainUI_console" style = "margin: 10px;">
                     <div id="telemetry" align=center>
                         <div>Console</div>
-                        <textarea id="console" readonly style="width: 500px; height: 150px; white-space:pre-wrap"></textarea>
+                        <textarea id="console" readonly></textarea>
                     </div>
                 </div>
             </div>
@@ -682,12 +682,12 @@
             position: relative; 
             float: left;
             border-radius: 10px;
-            border: none;
             background-color: yellowgreen;
             top: 10px;
             cursor: pointer;
-            background: url("./modules/views/PixelPerfect_question.png");
-            background-size: 68px 68px;
+            background: url("./modules/views/icons8_api.png");
+            background-color: rgb(240, 182, 82);
+            background-size: 75px 87px;
             border: none; 
             background-position: center;
         }
@@ -743,19 +743,24 @@
             margin: 3px;
         }
 
+        #console {
+            width: 500px; 
+            height: 150px; 
+            white-space:pre-wrap;
+        }
+
         /* toolTip CSS from w3schools */
 
         /* Tooltip container */
         .tooltip {
             position: relative;
             display: inline-block;
-            border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
         }
 
         /* Tooltip text */
         .tooltip .tooltiptext {
             visibility: hidden;
-            width: 150%;
+            width: 190%;
             background-color: #555;
             color: #fff;
             text-align: center;
