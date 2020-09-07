@@ -41,7 +41,7 @@ class servicespike extends HTMLElement {
         button.setAttribute("id", "sl_button");
         button.setAttribute("class", "SD_button");
 
-        var imageRelPath = "/modules/views/SPIKE_icon.png"
+        var imageRelPath = "./modules/views/SPIKE_icon.png"
         var length = 50; // for width and height of button
         var buttonBackgroundColor = "#A2E1EF" // background color of the button
         var buttonStyle = "width:" + length + "px; height:" + length + "px; background: url(" + imageRelPath + ") no-repeat; background-size: 57px 57px;" 
@@ -360,6 +360,9 @@ function Service_SPIKE() {
 
             // start streaming UJSONRPC
             streamUJSONRPC();
+
+            await sleep(1000);
+
             triggerCurrentState();
             serviceActive = true;
 
@@ -2511,7 +2514,6 @@ function Service_SPIKE() {
 
                             // stringify the packet to look for carriage return
                             var json_string = await JSON.stringify(value);
-
                             let findEscapedQuotes = /\\"/g;
                             let findNewLines = /\\n/g;
 
@@ -2575,6 +2577,7 @@ function Service_SPIKE() {
 
                                         }
                                     }
+                                    // there are no conjoined packets in this jsonline
                                     else {
                                         lastUJSONRPC = jsonline.substring(0, carriageReIndex);
 
