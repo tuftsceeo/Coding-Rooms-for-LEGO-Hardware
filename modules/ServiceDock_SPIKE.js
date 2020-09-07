@@ -360,6 +360,7 @@ function Service_SPIKE() {
 
             // start streaming UJSONRPC
             streamUJSONRPC();
+
             triggerCurrentState();
             serviceActive = true;
 
@@ -2511,7 +2512,7 @@ function Service_SPIKE() {
 
                             // stringify the packet to look for carriage return
                             var json_string = await JSON.stringify(value);
-
+                            console.log(value);
                             let findEscapedQuotes = /\\"/g;
                             let findNewLines = /\\n/g;
 
