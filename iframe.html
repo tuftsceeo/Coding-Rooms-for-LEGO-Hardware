@@ -2,7 +2,7 @@
     <!--
         Developer  Notes:
         common web UI elements (regardless of hardware): hardwareSelect, topToolbar_container, mainUI_container
-                                                        connectionHelp_container, explanation
+                                                        connectionHelp_container, dependenciesInfoElement
 
     -->
     <title> SPIKE iframe </title>
@@ -33,7 +33,7 @@
                 var topToolbar_container = document.getElementById("topToolbar_container");
                 var mainUI_container = document.getElementById("mainUI_container");
                 var connectionHelp_container = document.getElementById("connectionHelp_container");
-                var explanation = document.getElementById("dependenciesInfo");
+                var dependenciesInfoElement = document.getElementById("dependenciesInfo");
 
                 // instantiate LEGO hardware Services
                 mySPIKE = document.getElementById("Service_SPIKE").getService();
@@ -199,7 +199,7 @@
                                 var url = "/documentation/SPIKE_Prime_Python_Knowledge_Base.htm"
                                 window.open(url);
                             })
-                            explanation.style.display = "none";
+                            dependenciesInfoElement.style.display = "none";
                             topToolbar_container.style.display = "block";
                             if (mySPIKE.isActive()) {
                                 mainUI_container.style.display = "block";
@@ -210,7 +210,7 @@
                         }
                         else {
                             console.log("you dont got")
-                            explanation.style.display = "block";
+                            dependenciesInfoElement.style.display = "block";
                             topToolbar_container.style.display = "none";
                             mainUI_container.style.display = "none";
                         }
@@ -668,6 +668,7 @@
             border: solid;
             border-width: 1px;
             margin: 10px;
+            display:none;
 
         }
 
