@@ -41,7 +41,7 @@ class servicespike extends HTMLElement {
         button.setAttribute("id", "sl_button");
         button.setAttribute("class", "SD_button");
 
-        var imageRelPath = "./modules/views/SPIKE_icon.png"
+        var imageRelPath = "./modules/views/SPIKE_Button.png"
         var length = 50; // for width and height of button
         var buttonBackgroundColor = "#A2E1EF" // background color of the button
         var buttonStyle = "width:" + length + "px; height:" + length + "px; background: url(" + imageRelPath + ") no-repeat; background-size: 57px 57px;" 
@@ -52,9 +52,9 @@ class servicespike extends HTMLElement {
 
         var status = document.createElement("div");
         status.setAttribute("class", "status");
-        var length = 20; // for width and height of circle
+        var length = 16; // for width and height of circle
         var statusBackgroundColor = "red" // default background color of service (inactive color)
-        var posLeft = 30;
+        var posLeft = 32;
         var posTop = 20;
         var statusStyle = "border-radius: 50%; height:" + length + "px; width:" + length + "px; background-color:" + statusBackgroundColor +
             "; position: relative; left:" + posLeft + "px; top:" + posTop + "px;";
