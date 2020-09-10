@@ -506,8 +506,10 @@
                     </div>
                     <div id="mainUI_toolbar" align=center style="margin: 10px;">
                         <div style="display: table-cell; top: -6px; position: relative;">
-                            Select Storage Position:
-                            <select id="slotidSelect" style="align-items: center; margin-right: 10px;"
+                            <span style = "font-size: 14px;">
+                                Select Storage Position:
+                            </span>
+                            <select id="slotidSelect" style=" width: 150px; align-items: center; margin-right: 10px;"
                                 class="hardwareIsSPIKE">
                                 <option value = "slot0" id="slot0">0</option>
                                 <option value = "slot1" id="slot1">1</option>
@@ -531,24 +533,21 @@
                                 <option value = "slot19" id="slot19">19</option>
                             </select>
                         </div>
-                        <div style="display: table-cell; margin: 10px;">
-                            <!-- icons8.com-->
+                        <div style="display: table-cell; margin: 5px;">
                             <button id="runProgram"
-                                style="background: url(./modules/views/Run_Button.png) no-repeat;  background-position: center; background-size: 61px 33px; height: 33px; width: 61px; border-radius: 50px; display: table-cell;"
+                                style="background: url(./modules/views/Run_Button.png) no-repeat;  background-position: center; background-size: 54px 27px; height: 27px; width: 54px; border-radius: 54px; display: table-cell;"
                                 class="tooltip mainUI_button">
                                 <span class="tooltiptext">Play Program</span>
                             </button>
-                            <!-- icons8.com-->
-                            <button id="rebootHub"
-                                style="background: url(./modules/views/Reboot_1.png) no-repeat;  background-position: center; background-size: 61px 33px; height: 33px; width: 61px; border-radius: 50px; display: table-cell;"
-                                class="tooltip mainUI_button">
-                                <span class="tooltiptext">Reboot SPIKE Prime</span>
-                            </button>
-                            <!-- roundicons icon-->
                             <button id="stopProgram"
-                                style="background: url(./modules/views/Stop_Button.png) no-repeat;  background-position: center; background-size: 61px 33px; height: 33px; width: 61px; border-radius: 50px; display: table-cell;"
+                                style="background: url(./modules/views/Stop_Button.png) no-repeat;  background-position: center; background-size: 54px 27px; height: 27px; width: 54px; border-radius: 54px; display: table-cell;"
                                 class="tooltip mainUI_button">
                                 <span class="tooltiptext">Stop Program</span>
+                            </button>
+                            <button id="rebootHub"
+                                style="background: url(./modules/views/Reboot_1.png) no-repeat;  background-position: center; background-size: 54px 27px; height: 27px; width: 54px; border-radius: 54px; display: table-cell;"
+                                class="tooltip mainUI_button">
+                                <span class="tooltiptext">Reboot SPIKE Prime</span>
                             </button>
                         </div>
                     </div>
