@@ -444,13 +444,15 @@
                     <li class="checklist">You are using the
                         <a id = "googlechromelink" href="https://www.google.com/chrome/" target="_blank">
                             Google Chrome browser</a>.</li>
-                    <li class="checklist">The experimental web platform flag is enabled.</li>
+                    <li class="checklist">The following chrome flags are enabled on chrome://flags.</li>
+                    <li class = "steps">Mac OSX user? #enable-experimental-web-platform-features</li>
+                    <li class="steps">Windows user? #enable-experimental-web-platform-features AND #enable-new-usb-backend</li>
                 </ol>
-                To enable this flag:
+                To enable these flags:
                 <ol style="font-size: 15px;">
                     <li class="steps">In your Browser URL, visit
-                        <em>chrome://flags/#enable-experimental-web-platform-features</em></li>
-                    <li class="steps"> Set the "Experimental Web Platform features" to "Enabled" via dropdown</li>
+                        <em>chrome://flags</em></li>
+                    <li class="steps"> Set the your required flags to "Enabled" via dropdown</li>
                     <li class="steps"> Relaunch the browser to have changes take effect </li>
                     <li class="steps"> Revisit your Coding Rooms classroom (this website) </li>
                 </ol>
@@ -507,45 +509,45 @@
                             Select Storage Position:
                             <select id="slotidSelect" style="align-items: center; margin-right: 10px;"
                                 class="hardwareIsSPIKE">
-                                <option id="slot0">0</option>
-                                <option id="slot1">1</option>
-                                <option id="slot2">2</option>
-                                <option id="slot3">3</option>
-                                <option id="slot4">4</option>
-                                <option id="slot5">5</option>
-                                <option id="slot6">6</option>
-                                <option id="slot7">7</option>
-                                <option id="slot8">8</option>
-                                <option id="slot9">9</option>
-                                <option id="slot10">10</option>
-                                <option id="slot11">11</option>
-                                <option id="slot12">12</option>
-                                <option id="slot13">13</option>
-                                <option id="slot14">14</option>
-                                <option id="slot15">15</option>
-                                <option id="slot16">16</option>
-                                <option id="slot17">17</option>
-                                <option id="slot18">18</option>
-                                <option id="slot19">19</option>
+                                <option value = "slot0" id="slot0">0</option>
+                                <option value = "slot1" id="slot1">1</option>
+                                <option value = "slot2" id="slot2">2</option>
+                                <option value = "slot3" id="slot3">3</option>
+                                <option value = "slot4" id="slot4">4</option>
+                                <option value = "slot5" id="slot5">5</option>
+                                <option value = "slot6" id="slot6">6</option>
+                                <option value = "slot7" id="slot7">7</option>
+                                <option value = "slot8" id="slot8">8</option>
+                                <option value = "slot9" id="slot9">9</option>
+                                <option value = "slot10" id="slot10">10</option>
+                                <option value = "slot11" id="slot11">11</option>
+                                <option value = "slot12" id="slot12">12</option>
+                                <option value = "slot13" id="slot13">13</option>
+                                <option value = "slot14" id="slot14">14</option>
+                                <option value = "slot15" id="slot15">15</option>
+                                <option value = "slot16" id="slot16">16</option>
+                                <option value = "slot17" id="slot17">17</option>
+                                <option value = "slot18" id="slot18">18</option>
+                                <option value = "slot19" id="slot19">19</option>
                             </select>
                         </div>
                         <div style="display: table-cell; margin: 10px;">
                             <!-- icons8.com-->
                             <button id="runProgram"
-                                style="background: url(./modules/views/play.png) no-repeat;  background-position: center; background-size: 26px 26px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
-                                class="tooltip">
+                                style="background: url(./modules/views/Run_Button.png) no-repeat;  background-position: center; background-size: 61px 33px; height: 33px; width: 61px; border-radius: 50px; display: table-cell;"
+                                class="tooltip mainUI_button">
                                 <span class="tooltiptext">Play Program</span>
                             </button>
                             <!-- icons8.com-->
                             <button id="rebootHub"
-                                style="background: url(./modules/views/reboot.png) no-repeat;  background-position: center; background-size: 30px 30px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
-                                class="tooltip">
+                                style="background: url(./modules/views/Reboot_1.png) no-repeat;  background-position: center; background-size: 61px 33px; height: 33px; width: 61px; border-radius: 50px; display: table-cell;"
+                                class="tooltip mainUI_button">
                                 <span class="tooltiptext">Reboot SPIKE Prime</span>
                             </button>
                             <!-- roundicons icon-->
                             <button id="stopProgram"
-                                style="background: url(./modules/views/roundicons_stop.png) no-repeat;  background-position: center; background-size: 20px 20px; height: 30px; width: 40px; border-radius: 50px; display: table-cell;"
-                                class="tooltip">
+                                style="background: url(./modules/views/Stop_Button.png) no-repeat;  background-position: center; background-size: 61px 33px; height: 33px; width: 61px; border-radius: 50px; display: table-cell;"
+                                class="tooltip mainUI_button">
                                 <span class="tooltiptext">Stop Program</span>
                             </button>
                         </div>
