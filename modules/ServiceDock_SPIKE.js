@@ -55,7 +55,7 @@ class servicespike extends HTMLElement {
         var length = 16; // for width and height of circle
         var statusBackgroundColor = "red" // default background color of service (inactive color)
         var posLeft = 32;
-        var posTop = 20;
+        var posTop = -20;
         var statusStyle = "border-radius: 50%; height:" + length + "px; width:" + length + "px; background-color:" + statusBackgroundColor +
             "; position: relative; left:" + posLeft + "px; top:" + posTop + "px;";
         status.setAttribute("style", statusStyle);
