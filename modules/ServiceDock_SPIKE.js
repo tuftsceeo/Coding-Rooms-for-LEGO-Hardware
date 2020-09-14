@@ -2509,6 +2509,8 @@ function Service_SPIKE() {
                             console.log(value);
                         }
 
+                        console.log(value);
+
                         //concatenate UJSONRPC packets into complete JSON objects
                         if (value) {
 
