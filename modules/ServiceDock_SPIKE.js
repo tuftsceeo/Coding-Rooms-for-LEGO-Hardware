@@ -2617,7 +2617,7 @@ function Service_SPIKE() {
                 console.log("jsonline needs reset: ", jsonline);
 
                 jsonline = jsonline.substring(carriageReIndex+2, jsonline.length);
-                
+
                 console.log("jsonline was reset to: %c" + jsonline, "color: #61A1B1");
                 
                 // reset jsonline for next concatenation
@@ -2930,16 +2930,16 @@ function Service_SPIKE() {
                 if (errorType.indexOf("SyntaxError") > -1) {
                     /* get the error line number*/
                     var lineNumberLine = splitData[splitData.length - 3];
-                    console.log("lineNumberLine: ", lineNumberLine);
+                    // console.log("lineNumberLine: ", lineNumberLine);
                     var indexLine = lineNumberLine.indexOf("line");
                     var lineNumberSubstring = lineNumberLine.substring(indexLine, lineNumberLine.length);
                     var numberPattern = /\d+/g;
                     var lineNumber = lineNumberSubstring.match(numberPattern)[0];
-                    console.log(lineNumberSubstring.match(numberPattern));
-                    console.log("lineNumber:", lineNumber);
-                    console.log("typeof lineNumber:", typeof lineNumber);
+                    // console.log(lineNumberSubstring.match(numberPattern));
+                    // console.log("lineNumber:", lineNumber);
+                    // console.log("typeof lineNumber:", typeof lineNumber);
                     var lineNumberInNumber = parseInt(lineNumber) - 6;
-                    console.log("typeof lineNumberInNumber:", typeof lineNumberInNumber);
+                    // console.log("typeof lineNumberInNumber:", typeof lineNumberInNumber);
 
                     funcAfterError("line " + lineNumberInNumber + ": " + errorType);
                 }
