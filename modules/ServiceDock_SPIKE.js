@@ -908,6 +908,33 @@ function Service_SPIKE() {
         UJSONRPC.programExecute(slotid)
     }
 
+    async function testStreamUJSONRPC(input) {
+        console.log("starting test");
+
+        var testsResults = [true];
+
+        for (var test in input) {
+            var testInput = input[test];
+
+            for (var packetIndex in testInput) {
+                await parsePacket(testInput[packetIndex], true, () => {
+                    testsResults[test] = false;
+                });
+            }
+
+        }
+
+        // reset variables
+        jsonline = "";
+        lastUJSONRPC = undefined;
+        json_string = undefined;
+        cleanedJsonString = undefined;
+
+        return testsResults;
+
+
+    }
+
     //////////////////////////////////////////
     //                                      //
     //         SPIKE APP Functions          //
@@ -2212,7 +2239,7 @@ function Service_SPIKE() {
         writeProgramSetTimeout = setTimeout(function() {
             if (startWriteProgramCallback != undefined) {
                 if (funcAfterError != undefined) {
-                    funcAfterError("5 seconds have passed without response... Please reboot the hub and try again.")
+                    funcAfterError("5 seconds have passed without response... Please reboot the hub and try again.");
                 }
             }
         }, 5000)
@@ -2477,6 +2504,137 @@ function Service_SPIKE() {
         }
     }
 
+    async function parsePacket(value, testing = false, callback) {
+
+        console.log(value);
+
+        // stringify the packet to look for carriage return
+        var json_string = await JSON.stringify(value);
+        json_string = json_string.trim();
+
+        let findEscapedQuotes = /\\"/g;
+
+        var cleanedJsonString = json_string.replace(findEscapedQuotes, '"');
+        cleanedJsonString = cleanedJsonString.substring(1, cleanedJsonString.length - 1);
+        // cleanedJsonString = cleanedJsonString.replace(findNewLines,'');
+
+        jsonline = jsonline + cleanedJsonString; // concatenate packet to data
+        jsonline = jsonline.trim();
+
+        // regex search for carriage return
+        let pattern = /\\r/g;
+        var carriageReIndex = jsonline.search(pattern);
+
+        // there is at least one carriage return in this packet
+        if (carriageReIndex > -1) {
+
+            // the concatenated packets start with a left curly brace (start of JSON)
+            if (jsonline[0] == "{") {
+
+                lastUJSONRPC = jsonline.substring(0, carriageReIndex);
+
+                // look for conjoined JSON packets: there's at least two carriage returns in jsonline
+                if (jsonline.match(/\\r/g).length > 1) {
+
+                    var conjoinedPacketsArray = jsonline.split(/\\r/); // array that split jsonline by \r
+
+                    // last index only contains "" as it would be after \r
+                    for (var i = 0; i < conjoinedPacketsArray.length - 1; i++) {
+
+                        // for every JSON object in array, perform data handling
+
+                        lastUJSONRPC = conjoinedPacketsArray[i];
+
+                        try {
+                            var parseTest = await JSON.parse(lastUJSONRPC)
+                            
+                            if (testing) {
+                                console.log("UJSONRPC line: ", lastUJSONRPC);
+                            }
+
+                            // update hub information using lastUJSONRPC
+                            await updateHubPortsInfo();
+                            await PrimeHubEventHandler();
+
+                            if (funcWithStream) {
+                                await funcWithStream();
+                            }
+
+                        }
+                        catch (e) {
+                            console.log(e);
+                            console.log("error parsing lastUJSONRPC: ", lastUJSONRPC);
+                            console.log("current jsonline: ", jsonline);
+                            console.log("current cleaned json_string: ", cleanedJsonString)
+                            console.log("current json_string: ", json_string);
+                            console.log("current value: ", value);
+
+                            if (funcAfterError != undefined) {
+                                funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
+                            }
+
+                            if (callback != undefined) {
+                                callback();
+                            }
+
+                        }
+
+                        jsonline = "";
+
+                    }
+                }
+                // there are no conjoined packets in this jsonline
+                else {
+                    lastUJSONRPC = jsonline.substring(0, carriageReIndex);
+
+                    // parsing test
+                    try {
+                        var parseTest = await JSON.parse(lastUJSONRPC);
+
+                        if (testing) {
+                            console.log("UJSONRPC line: ", lastUJSONRPC);
+                        }
+
+                        // update hub information using lastUJSONRPC
+                        await updateHubPortsInfo();
+                        await PrimeHubEventHandler();
+
+                        if (funcWithStream) {
+                            await funcWithStream();
+                        }
+                    }
+                    catch (e) {
+                        console.log(e);
+                        console.log("error parsing lastUJSONRPC: ", lastUJSONRPC);
+                        console.log("current jsonline: ", jsonline);
+                        console.log("current cleaned json_string: ", cleanedJsonString)
+                        console.log("current json_string: ", json_string);
+                        console.log("current value: ", value);
+
+                        if (funcAfterError != undefined) {
+                            funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
+                        }
+
+                        if (callback != undefined) {
+                            callback();
+                        }
+
+                    }
+
+                    jsonline = jsonline.substring(carriageReIndex + 2, jsonline.length);
+                }
+
+            }
+            else {
+                console.log("jsonline was reset: ", jsonline);
+                
+                // reset jsonline for next concatenation
+                jsonline = "";
+            }
+        }
+
+    }
+
     /** <h4> Continuously take UJSON RPC input from SPIKE Prime </h4>
      * @private
      */
@@ -2501,6 +2659,7 @@ function Service_SPIKE() {
                             console.log("lastUJSONRPC: ", lastUJSONRPC);
                             firstReading = false;
                         }
+
                         // read UJSON RPC stream ( actual data in {value} )
                         ({ value, done } = await reader.read());
                         
@@ -2514,112 +2673,7 @@ function Service_SPIKE() {
                         //concatenate UJSONRPC packets into complete JSON objects
                         if (value) {
 
-                            // stringify the packet to look for carriage return
-                            var json_string = await JSON.stringify(value);
-                            let findEscapedQuotes = /\\"/g;
-                            let findNewLines = /\\n/g;
-
-                            var cleanedJsonString = json_string.replace(findEscapedQuotes, '"');
-                            cleanedJsonString = cleanedJsonString.substring(1,cleanedJsonString.length - 1);
-                            // cleanedJsonString = cleanedJsonString.replace(findNewLines,'');
-
-                            jsonline = jsonline + cleanedJsonString; // concatenate packet to data
-
-                            // regex search for carriage return
-                            let pattern = /\\r/g;
-                            var carriageReIndex = jsonline.search(pattern);
-                            
-                            // there is at least one carriage return in this packet
-                            if ( carriageReIndex > -1 ) {
-                                
-                                // the concatenated packets start with a left curly brace (start of JSON)
-                                if ( jsonline[0] == "{" ) {
-
-                                    lastUJSONRPC = jsonline.substring(0, carriageReIndex);
-
-                                    // look for conjoined JSON packets: there's at least two carriage returns in jsonline
-                                    if ( jsonline.match(/\\r/g).length > 1 ) {
-                                        
-                                        var conjoinedPacketsArray = jsonline.split(/\\r/); // array that split jsonline by \r
-
-                                        // last index only contains "" as it would be after \r
-                                        for ( var i = 0; i < conjoinedPacketsArray.length - 1; i++ ) {
-                                            
-                                            // for every JSON object in array, perform data handling
-
-                                            lastUJSONRPC = conjoinedPacketsArray[i];
-
-                                            try {
-                                                var parseTest = await JSON.parse(lastUJSONRPC)
-
-                                                // update hub information using lastUJSONRPC
-                                                await updateHubPortsInfo();
-                                                await PrimeHubEventHandler();
-                                                
-                                                if (funcWithStream) {
-                                                    await funcWithStream();
-                                                }
-
-                                            }
-                                            catch (e) {
-                                                console.log(e);
-                                                console.log("error parsing lastUJSONRPC: ", lastUJSONRPC);
-                                                console.log("current jsonline: ", jsonline);
-                                                console.log("current cleaned json_string: ", cleanedJsonString)
-                                                console.log("current json_string: ", json_string);
-                                                console.log("current value: ", value);
-
-                                                if (funcAfterError != undefined) {
-                                                    funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
-                                                }
-
-                                            }
-
-                                            jsonline = "";
-
-                                        }
-                                    }
-                                    // there are no conjoined packets in this jsonline
-                                    else {
-                                        lastUJSONRPC = jsonline.substring(0, carriageReIndex);
-
-                                        // parsing test
-                                        try {
-                                            var parseTest = await JSON.parse(lastUJSONRPC)
-
-                                            // update hub information using lastUJSONRPC
-                                            await updateHubPortsInfo();
-                                            await PrimeHubEventHandler();
-                                            
-                                            if (funcWithStream) {
-                                                await funcWithStream();
-                                            }
-                                        }
-                                        catch (e) {
-                                            console.log(e);
-                                            console.log("error parsing lastUJSONRPC: ", lastUJSONRPC);
-                                            console.log("current jsonline: ", jsonline);
-                                            console.log("current cleaned json_string: ", cleanedJsonString)
-                                            console.log("current json_string: ", json_string);
-                                            console.log("current value: ", value);
-
-                                            if (funcAfterError != undefined) {
-                                                funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
-                                            }
-
-                                        }
-                                        
-                                        jsonline = jsonline.substring(carriageReIndex + 2, jsonline.length);
-                                    }
-
-                                }
-                                else {
-                                    console.log("jsonline was reset: ", jsonline);
-
-                                    // reset jsonline for next concatenation
-                                    jsonline = "";
-                                }
-                            }
+                            await parsePacket(value);
 
                         }
                         if (done) {
@@ -3295,7 +3349,8 @@ function Service_SPIKE() {
         MotorPair: MotorPair,
         writeProgram: writeProgram,
         stopCurrentProgram: stopCurrentProgram,
-        executeProgram: executeProgram
+        executeProgram: executeProgram,
+        testStreamUJSONRPC: testStreamUJSONRPC
     };
 }
 
