@@ -84,19 +84,14 @@ class servicespike extends HTMLElement {
 
         // when ServiceDock button is double clicked
         this.addEventListener("click", async function () {
-            if ("serial" in navigator) {
-                // check active flag so once activated, the service doesnt reinit
-                if (!active) {
-                    console.log("activating service");
-                    var initSuccessful = await this.service.init();
-                    if (initSuccessful) {
-                        active = true;
-                        status.style.backgroundColor = "green";
-                    }
+            // check active flag so once activated, the service doesnt reinit
+            if (!active) {
+                console.log("activating service");
+                var initSuccessful = await this.service.init();
+                if (initSuccessful) {
+                    active = true;
+                    status.style.backgroundColor = "green";
                 }
-            }
-            else {
-                alert("To use this function you need to enable Experimental Web Interfaces on Google Chrome. Please go to chrome://flags/#enable-experimental-web-platform-features Enable the flag and restart Google Chrome.")
             }
             
         });
@@ -347,8 +342,6 @@ function Service_SPIKE() {
      */
     async function init() {
 
-        console.log("navigator.product is ", navigator.product);
-        console.log("navigator.appName is ", navigator.appName);
         // reinit variables in the case of hardware disconnection and Service reactivation
         reader = undefined;
         writer = undefined;
@@ -2456,11 +2449,6 @@ function Service_SPIKE() {
             // wait for the port to open.
             try {
                 await port.open({ baudrate: 115200 });
-                // console.log("Connected web serial port");
-                // console.log(navigator.serial.getInfo());
-                // console.log(typeof port);
-
-                // console.log(port.getInfo());
 
             }
             catch (er) {
@@ -2506,7 +2494,7 @@ function Service_SPIKE() {
 
     async function parsePacket(value, testing = false, callback) {
 
-        console.log(value);
+        // console.log(value);
 
         // stringify the packet to look for carriage return
         var json_string = await JSON.stringify(value);
@@ -2668,7 +2656,7 @@ function Service_SPIKE() {
                             console.log(value);
                         }
 
-                        console.log(value);
+                        // console.log(value);
 
                         //concatenate UJSONRPC packets into complete JSON objects
                         if (value) {
