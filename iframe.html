@@ -25,7 +25,7 @@
             var mySPIKE;
             var hubProjects;
             var devicesInfo = document.getElementById("devicesInfo");
-
+            var refreshSlotsDisplayTimeout;
             window.onload = function () {
                 // common web UI elements
                 var hardwareSelect = document.getElementById("hardwareSelect");
@@ -98,8 +98,10 @@
                             printOnConsole("Rebooting SPIKE Prime Hub...")
 
                             mySPIKE.rebootHub();
-
-                            setTimeout(refreshSlotsDisplay(), 5000);
+                            clearTimeout(refreshSlotsDisplayTimeout);
+                            refreshSlotsDisplayTimeout = setTimeout( function () {
+                                refreshSlotsDisplay();
+                            }, 5000);
 
                         })
 
@@ -663,7 +665,6 @@
             border-width: 1px;
             margin: 10px;
             display:none;
-
         }
 
         #dependenciesInfo .checklist {
