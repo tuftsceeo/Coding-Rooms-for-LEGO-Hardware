@@ -2618,7 +2618,7 @@ function Service_SPIKE() {
 
                 jsonline = jsonline.substring(carriageReIndex+2, jsonline.length);
 
-                console.log("jsonline was reset to: %c" + jsonline, "color: #61A1B1");
+                console.log("jsonline was reset to: ", jsonline);
                 
                 // reset jsonline for next concatenation
                 // jsonline = "";
