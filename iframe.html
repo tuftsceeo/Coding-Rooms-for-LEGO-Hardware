@@ -76,6 +76,7 @@
 
                     refreshSlotsDisplay();
 
+                    // prevent event listeners from defining twice
                     if (!alreadyInitOnceSPIKE) {
                         var runButton = document.getElementById("runProgram");
                         runButton.addEventListener("click", function () {
@@ -96,9 +97,10 @@
                         rebootButton.addEventListener("click", function () {
                             printOnConsole("Rebooting SPIKE Prime Hub...")
 
-                            refreshSlotsDisplay();
-
                             mySPIKE.rebootHub();
+
+                            setTimeout(refreshSlotsDisplay(), 5000);
+
                         })
 
                         var stopButton = document.getElementById("stopProgram");
