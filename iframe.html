@@ -182,9 +182,10 @@
 
                     /* END OF SPIKE Prime web UI code */
 
+                    console.log("iframe window has completed loading");
                 })
 
-                console.log("mySPIKE = " + mySPIKE);
+
 
 
                 function handleHardwareSelect() {
@@ -209,6 +210,8 @@
                             }
                         }
                         else {
+                            console.log("serial was not detected in the browser");
+                            
                             dependenciesInfoElement.style.display = "block";
                             topToolbar_container.style.display = "none";
                             mainUI_container.style.display = "none";
