@@ -38,8 +38,6 @@
                 // instantiate LEGO hardware Services
                 mySPIKE = document.getElementById("Service_SPIKE").getService();
 
-                console.log("here!");
-
                 handleHardwareSelect();
                 hardwareSelect.addEventListener("change", async function () {
                     // TO:DO reinitialize (re"block") hidden UI elements
@@ -193,7 +191,6 @@
                     if (hardwareSelectedID == "hardwareSPIKE") {
 
                         if ('serial' in navigator) {
-                            console.log("you got cereal")
                             var documentation = document.getElementById("documentation_SPIKE");
                             documentation.addEventListener("click", function () {
                                 var url = "./documentation/SPIKE_Prime_Python_Knowledge_Base.htm"
@@ -209,7 +206,6 @@
                             }
                         }
                         else {
-                            console.log("you dont got")
                             dependenciesInfoElement.style.display = "block";
                             topToolbar_container.style.display = "none";
                             mainUI_container.style.display = "none";
