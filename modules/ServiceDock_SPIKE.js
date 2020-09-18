@@ -2614,10 +2614,14 @@ function Service_SPIKE() {
 
             }
             else {
-                console.log("jsonline was reset: ", jsonline);
+                console.log("jsonline needs reset: ", jsonline);
+
+                jsonline = jsonline.substring(carriageReIndex+2, jsonline.length);
+                
+                console.log("jsonline was reset to: %c" + jsonline, "color: #61A1B1");
                 
                 // reset jsonline for next concatenation
-                jsonline = "";
+                // jsonline = "";
             }
         }
 
@@ -2934,7 +2938,7 @@ function Service_SPIKE() {
                     console.log(lineNumberSubstring.match(numberPattern));
                     console.log("lineNumber:", lineNumber);
                     console.log("typeof lineNumber:", typeof lineNumber);
-                    var lineNumberInNumber = parseInt(lineNumber) - 5;
+                    var lineNumberInNumber = parseInt(lineNumber) - 6;
                     console.log("typeof lineNumberInNumber:", typeof lineNumberInNumber);
 
                     funcAfterError("line " + lineNumberInNumber + ": " + errorType);
