@@ -86,7 +86,7 @@ class servicespike extends HTMLElement {
         this.addEventListener("click", async function () {
             // check active flag so once activated, the service doesnt reinit
             if (!active) {
-                console.log("activating service");
+                console.log("%cTuftsCEEO ", "color: lightgreen;" ,"activating service");
                 var initSuccessful = await this.service.init();
                 if (initSuccessful) {
                     active = true;
@@ -435,7 +435,7 @@ function Service_SPIKE() {
         // look up the command to send
         commands = command.split("\n"); // split on new line
         //commands = command
-        console.log("sendDATA: " + commands);
+        console.log("%cTuftsCEEO ", "color: lightgreen;" , "sendDATA: " + commands);
 
         // make sure ready to write to device
         setupWriter();
@@ -459,10 +459,10 @@ function Service_SPIKE() {
             // trim it, send it, and send a return...
             for (var i = 0; i < commands.length; i++) {
                 
-                //console.log("commands.length", commands.length)
+                //console.log("%cTuftsCEEO ", "color: lightgreen;" ,"commands.length", commands.length)
                 
                 current = commands[i].trim();
-                //console.log("current", current);
+                //console.log("%cTuftsCEEO ", "color: lightgreen;" ,"current", current);
                 // turn string into JSON
 
                 //string_current = (JSON.stringify(current));
@@ -484,7 +484,7 @@ function Service_SPIKE() {
      * mySPIKE.rebootHub();
      */
     async function rebootHub() {
-        console.log("rebooting")
+        console.log("%cTuftsCEEO ", "color: lightgreen;" , "rebooting")
         // make sure ready to write to device
         setupWriter();
         writer.write(CONTROL_C);
@@ -627,7 +627,7 @@ function Service_SPIKE() {
      * mySPIKE.sendDATA("hub.light_matrix.show_image('HAPPY')");
      */
     async function reachMicroPy() {
-        console.log("starting micropy interpreter");
+        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"starting micropy interpreter");
         setupWriter();
         writer.write(CONTROL_C);
         micropython_interpreter = true;
@@ -643,7 +643,7 @@ function Service_SPIKE() {
             var parsedUJSON = await JSON.parse(lastUJSONRPC)
         }
         catch (error) {
-            //console.log('[retrieveData] ERROR', error);
+            //console.log("%cTuftsCEEO ", "color: lightgreen;" ,'[retrieveData] ERROR', error);
         }
 
         return lastUJSONRPC
@@ -902,7 +902,7 @@ function Service_SPIKE() {
     }
 
     async function testStreamUJSONRPC(input) {
-        console.log("starting test");
+        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"starting test");
 
         var testsResults = [true];
 
@@ -2192,8 +2192,8 @@ function Service_SPIKE() {
      */
     UJSONRPC.startWriteProgram = async function startWriteProgram(projectName, type, data, slotid) {
 
-        console.log("in startWriteProgram...");
-        console.log("constructing start_write_program script...");
+        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"in startWriteProgram...");
+        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"constructing start_write_program script...");
 
         if (type == "python") {
             var typeInt = 0;
@@ -2219,12 +2219,12 @@ function Service_SPIKE() {
             ', "slotid": ' + slotid +
             '} }';
 
-        console.log("constructed start_write_program script...");
+        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"constructed start_write_program script...");
         
         // assign function to start sending packets after confirming blocksize and transferid
         startWriteProgramCallback = [randomId, writePackageFunc];
 
-        console.log("sending start_write_program script");
+        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"sending start_write_program script");
 
         sendDATA(command);
 
@@ -2240,20 +2240,20 @@ function Service_SPIKE() {
         // function to write the first packet of data
         function writePackageFunc(blocksize, transferid) {
 
-            console.log("in writePackageFunc...");
+            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"in writePackageFunc...");
             
-            console.log("stringified the entire data to send: ", data);
+            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"stringified the entire data to send: ", data);
             
             // when data's length is less than the blocksize limit of sending data
             if ( data.length <= blocksize ) {
-                console.log("data's length is less than the blocksize of ", blocksize);
+                console.log("%cTuftsCEEO ", "color: lightgreen;" ,"data's length is less than the blocksize of ", blocksize);
 
                 // if the data's length is not zero (not empty)
                 if ( data.length != 0 ) {
 
                     var dataToSend = data.substring(0, data.length); // get the entirety of data
 
-                    console.log("data's length is not zero, sending the entire data: ", dataToSend);
+                    console.log("%cTuftsCEEO ", "color: lightgreen;" ,"data's length is not zero, sending the entire data: ", dataToSend);
 
                     var base64data = btoa(dataToSend); // encode the packet to base64
                     
@@ -2275,11 +2275,11 @@ function Service_SPIKE() {
             // and save the remaining data to send packet by packet
             else if ( data.length > blocksize ) {
 
-                console.log("data's length is more than the blocksize of ", blocksize);
+                console.log("%cTuftsCEEO ", "color: lightgreen;" ,"data's length is more than the blocksize of ", blocksize);
 
                 var dataToSend = data.substring(0, blocksize); // get the first block of packet
 
-                console.log("sending the blocksize amount of data: ", dataToSend);
+                console.log("%cTuftsCEEO ", "color: lightgreen;" ,"sending the blocksize amount of data: ", dataToSend);
 
                 var base64data = btoa(dataToSend); // encode the packet to base64
 
@@ -2287,8 +2287,8 @@ function Service_SPIKE() {
 
                 var remainingData = data.substring(blocksize, data.length); // remove the portion just sent from data
 
-                console.log("reassigning writePackageInformation with message ID: ", msgID);
-                console.log("reassigning writePackageInformation with remainingData: ", remainingData);
+                console.log("%cTuftsCEEO ", "color: lightgreen;" ,"reassigning writePackageInformation with message ID: ", msgID);
+                console.log("%cTuftsCEEO ", "color: lightgreen;" ,"reassigning writePackageInformation with remainingData: ", remainingData);
 
                 // update package information to be used for sending remaining packets
                 writePackageInformation = [msgID, remainingData, transferid, blocksize];
@@ -2440,7 +2440,7 @@ function Service_SPIKE() {
             var success = false;
 
             port = await navigator.serial.getPorts();
-            console.log("ports:", port);
+            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"ports:", port);
             // select device
             port = await navigator.serial.requestPort({
                 // filters:[filter]
@@ -2452,7 +2452,7 @@ function Service_SPIKE() {
 
             }
             catch (er) {
-                console.log(er)
+                console.log("%cTuftsCEEO ", "color: lightgreen;", er)
                 if ( funcAfterError != undefined ) {
                     funcAfterError(er + "\nPlease try again. If error persists, refresh this environment.");
                 }
@@ -2470,7 +2470,7 @@ function Service_SPIKE() {
 
 
         } catch (e) {
-            console.log("Cannot read port:", e);
+            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"Cannot read port:", e);
             if ( funcAfterError != undefined ) {
                 funcAfterError(e);
             }
@@ -2537,7 +2537,7 @@ function Service_SPIKE() {
                             var parseTest = await JSON.parse(lastUJSONRPC)
                             
                             if (testing) {
-                                console.log("UJSONRPC line: ", lastUJSONRPC);
+                                console.log("%cTuftsCEEO ", "color: lightgreen;" ,"UJSONRPC line: ", lastUJSONRPC);
                             }
 
                             // update hub information using lastUJSONRPC
@@ -2551,11 +2551,11 @@ function Service_SPIKE() {
                         }
                         catch (e) {
                             console.log(e);
-                            console.log("error parsing lastUJSONRPC: ", lastUJSONRPC);
-                            console.log("current jsonline: ", jsonline);
-                            console.log("current cleaned json_string: ", cleanedJsonString)
-                            console.log("current json_string: ", json_string);
-                            console.log("current value: ", value);
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"error parsing lastUJSONRPC: ", lastUJSONRPC);
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"current jsonline: ", jsonline);
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"current cleaned json_string: ", cleanedJsonString)
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"current json_string: ", json_string);
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"current value: ", value);
 
                             if (funcAfterError != undefined) {
                                 funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
@@ -2580,7 +2580,7 @@ function Service_SPIKE() {
                         var parseTest = await JSON.parse(lastUJSONRPC);
 
                         if (testing) {
-                            console.log("UJSONRPC line: ", lastUJSONRPC);
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" , "UJSONRPC line: ", lastUJSONRPC);
                         }
 
                         // update hub information using lastUJSONRPC
@@ -2593,11 +2593,11 @@ function Service_SPIKE() {
                     }
                     catch (e) {
                         console.log(e);
-                        console.log("error parsing lastUJSONRPC: ", lastUJSONRPC);
-                        console.log("current jsonline: ", jsonline);
-                        console.log("current cleaned json_string: ", cleanedJsonString)
-                        console.log("current json_string: ", json_string);
-                        console.log("current value: ", value);
+                        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"error parsing lastUJSONRPC: ", lastUJSONRPC);
+                        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"current jsonline: ", jsonline);
+                        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"current cleaned json_string: ", cleanedJsonString)
+                        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"current json_string: ", json_string);
+                        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"current value: ", value);
 
                         if (funcAfterError != undefined) {
                             funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
@@ -2614,11 +2614,11 @@ function Service_SPIKE() {
 
             }
             else {
-                console.log("jsonline needs reset: ", jsonline);
+                console.log("%cTuftsCEEO ", "color: lightgreen;" , "jsonline needs reset: ", jsonline);
 
                 jsonline = jsonline.substring(carriageReIndex+2, jsonline.length);
 
-                console.log("jsonline was reset to: ", jsonline);
+                console.log("%cTuftsCEEO ", "color: lightgreen;" ,"jsonline was reset to:" + jsonline);
                 
                 // reset jsonline for next concatenation
                 // jsonline = "";
@@ -2646,9 +2646,9 @@ function Service_SPIKE() {
                     try {
 
                         if (firstReading) {
-                            console.log("##### READING FIRST UJSONRPC LINE ##### CHECKING VARIABLES");
-                            console.log("jsonline: ", jsonline);
-                            console.log("lastUJSONRPC: ", lastUJSONRPC);
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"##### READING FIRST UJSONRPC LINE ##### CHECKING VARIABLES");
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"jsonline: ", jsonline);
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"lastUJSONRPC: ", lastUJSONRPC);
                             firstReading = false;
                         }
 
@@ -2657,7 +2657,7 @@ function Service_SPIKE() {
                         
                         // log value
                         if (micropython_interpreter) {
-                            console.log(value);
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,value);
                         }
 
                         // console.log(value);
@@ -2671,12 +2671,12 @@ function Service_SPIKE() {
                         if (done) {
                             serviceActive = false;
                             // reader has been canceled.
-                            console.log("[readLoop] DONE", done);
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"[readLoop] DONE", done);
                         }
                     }
                     // error handler
                     catch (error) {
-                        console.log('[readLoop] ERROR', error);
+                        console.log("%cTuftsCEEO ", "color: lightgreen;" ,'[readLoop] ERROR', error);
 
                         serviceActive = false;
                         
@@ -2717,12 +2717,12 @@ function Service_SPIKE() {
                 reader.releaseLock();
 
             } // end of: while (port.readable) [checking if readable loop]
-            console.log("- port.readable is FALSE")
+            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"- port.readable is FALSE")
         } // end of: trying to open port
         catch (e) {
             serviceActive = false;
             // Permission to access a device was denied implicitly or explicitly by the user.
-            console.log('ERROR trying to open:', e);
+            console.log("%cTuftsCEEO ", "color: lightgreen;" ,'ERROR trying to open:', e);
         }
     }
 
@@ -2744,9 +2744,9 @@ function Service_SPIKE() {
                 data_stream = data_stream.p;
             }
             catch (e) {
-                console.log("error parsing lastUJSONRPC at updateHubPortsInfo", lastUJSONRPC);
-                console.log(typeof lastUJSONRPC);
-                console.log(lastUJSONRPC.p);
+                console.log("%cTuftsCEEO ", "color: lightgreen;" ,"error parsing lastUJSONRPC at updateHubPortsInfo", lastUJSONRPC);
+                console.log("%cTuftsCEEO ", "color: lightgreen;" ,typeof lastUJSONRPC);
+                console.log("%cTuftsCEEO ", "color: lightgreen;" ,lastUJSONRPC.p);
 
                 if (funcAfterError != undefined) {
                     funcAfterError("Fatal Error: Please reboot the Hub and refresh this environment");
@@ -2918,7 +2918,7 @@ function Service_SPIKE() {
 
             decodedResponse = JSON.stringify(decodedResponse);
 
-            console.log(decodedResponse);
+            console.log("%cTuftsCEEO ", "color: lightgreen;" ,decodedResponse);
 
             var splitData = decodedResponse.split(/\\n/); // split the code by every newline
 
@@ -2930,16 +2930,16 @@ function Service_SPIKE() {
                 if (errorType.indexOf("SyntaxError") > -1) {
                     /* get the error line number*/
                     var lineNumberLine = splitData[splitData.length - 3];
-                    // console.log("lineNumberLine: ", lineNumberLine);
+                    // console.log("%cTuftsCEEO ", "color: lightgreen;" ,"lineNumberLine: ", lineNumberLine);
                     var indexLine = lineNumberLine.indexOf("line");
                     var lineNumberSubstring = lineNumberLine.substring(indexLine, lineNumberLine.length);
                     var numberPattern = /\d+/g;
                     var lineNumber = lineNumberSubstring.match(numberPattern)[0];
-                    // console.log(lineNumberSubstring.match(numberPattern));
-                    // console.log("lineNumber:", lineNumber);
-                    // console.log("typeof lineNumber:", typeof lineNumber);
+                    // console.log("%cTuftsCEEO ", "color: lightgreen;" ,lineNumberSubstring.match(numberPattern));
+                    // console.log("%cTuftsCEEO ", "color: lightgreen;" ,"lineNumber:", lineNumber);
+                    // console.log("%cTuftsCEEO ", "color: lightgreen;" ,"typeof lineNumber:", typeof lineNumber);
                     var lineNumberInNumber = parseInt(lineNumber) - 6;
-                    // console.log("typeof lineNumberInNumber:", typeof lineNumberInNumber);
+                    // console.log("%cTuftsCEEO ", "color: lightgreen;" ,"typeof lineNumberInNumber:", typeof lineNumberInNumber);
 
                     funcAfterError("line " + lineNumberInNumber + ": " + errorType);
                 }
@@ -3074,7 +3074,7 @@ function Service_SPIKE() {
                 funcAfterNewGesture = undefined;
 
             }
-            console.log(lastUJSONRPC);
+            console.log("%cTuftsCEEO ", "color: lightgreen;" ,lastUJSONRPC);
         }
         else if (messageType == 7) {
             if (funcAfterPrint != undefined) {
@@ -3096,14 +3096,14 @@ function Service_SPIKE() {
             }
         }
         else if (messageType == 11) {
-            console.log(lastUJSONRPC);
+            console.log("%cTuftsCEEO ", "color: lightgreen;" ,lastUJSONRPC);
         }
         else if (messageType == "userProgram.print") {
             var printedMessage = parsedUJSON["p"]["value"];
             var NLindex = printedMessage.search(/\\n/);
             printedMessage = await printedMessage.substring(0, NLindex);
             
-            console.log(atob(printedMessage));
+            console.log("%cTuftsCEEO ", "color: lightgreen;" , "print in micropy: ", atob(printedMessage));
 
             // execute function after print if defined
             if (funcAfterPrint != undefined) {
@@ -3138,12 +3138,12 @@ function Service_SPIKE() {
                             stringVersion = stringVersion + version[index];
                         }
                     }
-                    console.log("firmware version: ", stringVersion);
+                    console.log("%cTuftsCEEO ", "color: lightgreen;" ,"firmware version: ", stringVersion);
                     getFirmwareInfoCallback[1](stringVersion);
                 }
             }
 
-            console.log("received response: ", lastUJSONRPC);
+            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"received response: ", lastUJSONRPC);
 
             // iterate over responseCallbacks global variable
             for ( var index in responseCallbacks ) {
@@ -3173,23 +3173,23 @@ function Service_SPIKE() {
             // execute the callback function after sending start_write_program UJSONRPC
             if ( startWriteProgramCallback != undefined ) {
 
-                console.log("startWriteProgramCallback is defined. Looking for matching mesasage id...")
+                console.log("%cTuftsCEEO ", "color: lightgreen;" ,"startWriteProgramCallback is defined. Looking for matching mesasage id...")
 
                 // check if the message id of UJSONRPC corresponds to that of a response callback
                 if (startWriteProgramCallback[0] == parsedUJSON["i"]) {
 
-                    console.log("matching message id detected with startWriteProgramCallback[0]: ", startWriteProgramCallback[0])
+                    console.log("%cTuftsCEEO ", "color: lightgreen;" ,"matching message id detected with startWriteProgramCallback[0]: ", startWriteProgramCallback[0])
                     
                     // get the information for the packet sending
                     var blocksize = parsedUJSON["r"]["blocksize"]; // maximum size of each packet to be sent in bytes
                     var transferid = parsedUJSON["r"]["transferid"]; // id to use for transferring this program
 
-                    console.log("executing writePackageFunc expecting transferID of ", transferid);
+                    console.log("%cTuftsCEEO ", "color: lightgreen;" ,"executing writePackageFunc expecting transferID of ", transferid);
 
                     // execute callback
                     await startWriteProgramCallback[1](blocksize, transferid);
 
-                    console.log("deallocating startWriteProgramCallback");
+                    console.log("%cTuftsCEEO ", "color: lightgreen;" ,"deallocating startWriteProgramCallback");
 
                     // deallocate callback
                     startWriteProgramCallback = undefined;
@@ -3200,12 +3200,12 @@ function Service_SPIKE() {
             // check if the program should write packages for a program
             if ( writePackageInformation != undefined ) {
 
-                console.log("writePackageInformation is defined. Looking for matching mesasage id...")
+                console.log("%cTuftsCEEO ", "color: lightgreen;" ,"writePackageInformation is defined. Looking for matching mesasage id...")
 
                 // check if the message id of UJSONRPC corresponds to that of the first write_package script that was sent
                 if (writePackageInformation[0] == parsedUJSON["i"]) {
 
-                    console.log("matching message id detected with writePackageInformation[0]: ", writePackageInformation[0]);
+                    console.log("%cTuftsCEEO ", "color: lightgreen;" ,"matching message id detected with writePackageInformation[0]: ", writePackageInformation[0]);
 
                     // get the information for the package sending process
                     var remainingData = writePackageInformation[1];
@@ -3214,20 +3214,20 @@ function Service_SPIKE() {
 
                     // the size of the remaining data to send is less than or equal to blocksize
                     if ( remainingData.length <= blocksize ) {
-                        console.log("remaining data's length is less than or equal to blocksize");
+                        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"remaining data's length is less than or equal to blocksize");
 
                         // the size of remaining data is not zero
                         if ( remainingData.length != 0 ) {
 
                             var dataToSend = remainingData.substring(0, remainingData.length);
 
-                            console.log("reminaing data's length is not zero, sending entire remaining data: ", dataToSend);
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"reminaing data's length is not zero, sending entire remaining data: ", dataToSend);
                             
                             var base64data = btoa(dataToSend);
 
                             UJSONRPC.writePackage(base64data, transferID);
 
-                            console.log("deallocating writePackageInforamtion")
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"deallocating writePackageInforamtion")
 
                             if (writeProgramCallback != undefined) {
                                 
@@ -3241,17 +3241,17 @@ function Service_SPIKE() {
                     // the size of remaining data is more than the blocksize
                     else if ( remainingData.length > blocksize ) {
 
-                        console.log("remaining data's length is more than blocksize");
+                        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"remaining data's length is more than blocksize");
 
                         var dataToSend = remainingData.substring(0, blocksize);
                         
-                        console.log("sending blocksize amount of data: ", dataToSend)
+                        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"sending blocksize amount of data: ", dataToSend)
                         
                         var base64data = btoa(dataToSend);
 
                         var messageid = UJSONRPC.writePackage(base64data, transferID);
 
-                        console.log("expected response with message id of ", messageid);
+                        console.log("%cTuftsCEEO ", "color: lightgreen;" ,"expected response with message id of ", messageid);
 
                         var remainingData = remainingData.substring(blocksize, remainingData.length);
 
