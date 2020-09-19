@@ -29,6 +29,41 @@ async function launchBrowser(experimentalflag, callback) {
 
     callback();
 }
+async function testStreamUJSONRPC() {
+    console.log("##### TESTING streamUJSONRPC #####");
+    
+    
+    var testsResult = await frame.evaluate( async () => {
+        var UJSONRPCtests = {
+            1: ['{ "m": 2, "p": ', '[8.326, 100] }\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48, [0, 0, -176, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 383]], [61, [1, null, 7, 9, 7]], [62, [10]], [4, -8, 989], [0, 0, 0], [-4, ', '0, 0], "", 0] }\r{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49', ', [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]], [62, [10]], [4, -8, 990], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 383]], [61, [1, ', 'null, 7, 7, 7]], [62, [', '10]]', ', [4, -6, 989], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0', ', 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]', '], [62, [10]], [4, -7, 990], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, 109', ', 0]], [48, ', '[0, 0, -177, 0]], ', '[49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 8, 9, 7]], [62, [10]], [4, -6, 990], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48, [0, ', '0, -176, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61', ', [1, null, 7, 9, 7]], [62, [10]], [4, -6, 990], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48', ', [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 9, 7]], [62, [10]], [4, -', '6, 992], [0, 0, 0], [-4, 0, 0], ""', ', 0] }\r', '{ "m": 0, "p": [[48, [0, 0, ', '109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]], [', '62, [10]], [4, -5, 990], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48, ', '[0, 0, -176, 0]], [49, [0, 0, ', '166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]], [62, [10]], [4, -6, 989], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, ', '109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 383]], [61, [1, null, 7, 7, 7]], [62, [10]], [5, -8', ', 991], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": ', '[[48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 383]], [61, [1, null, 7, 7, 7]], [62, [10]], [3, -7, 990], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0', ', "p": [[48, [0, 0, 109, 0]], [', '48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 9, 7]], [62, [10]], [3, -10, 991], [', '0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48, [0, ', '0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 383]], [61, [1, n', 'ull, 7, 9, 7]], [62, [10]], [4, -5, 989], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48', ', [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]], ', '[62, [10]], ', '[5, -7, 990], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ ', '"m": 0, "p": [[48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]], [62, [10]], [2, -8, ', '989], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0', ']], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0', ']], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]], [62, [10]], [4, -7, 990], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [', '[48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 9, 7]], [62, [10]], [4, -8, 991], ', '[0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [', '0, 0, 109, 0]], [48, [0, 0, -176, 0]], [49, [0, 0, 166, 0]], [63, [0, ', '0, 384]], [61, [1, null, 7, 9, 7]], [62, [10]], [4, -6, 990], [0, 0, 0', '], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0', ', 0, 109, 0]], [48, [0, ', '0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 383]], [61, [1, null, 7, 7, 7]], [62, [10]], [4, -6, 992], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, ', '7, 7]], [62, [10]], [6, -6, 990], [0, 0, 0], [-4, 0, 0], "", 0] }\r{ "m": 2, "p": [8.323, 100] }\r', '{ "m": 0, "p": ', '[[48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]], [62, [10]], [4, -6, 991], [0, 0, 0], [-4, ', '0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, ', '[0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]], [62, [10]], [4, -5, 991], [0, 0, 0], [-4, 0, ', '0], "", 0] }\r', '{ "m": 0, "p": [[48, [', '0, 0, 109, 0]], [48, [0, 0, -177, 0]], [', '49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 8, 9, 7]], [62, [10]], [5, -7, 991], [0, 0, 0], [-4, ', '0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, ', '0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1', ', null, 7, 9, 7]], [62, [10', ']], [4, -7, 991], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0', ', "p": [[48, [0, 0, 109, 0', ']], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]], [62, [10]', '], [4, -5, 989], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [', '[48, [0, 0, 1', '09, 0]], [48, [', '0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]], [62, [10]], [3, -7, 991], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [', '[48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [', '61, [1, null, 7, 7, 7]], [62, [10]], [5, -7, 991], [0, 0, 0], [-4', ', 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 383]], [61, [1, null, 7, 7, 7]], [62, [10]], [6, -5, 989], [0, 0, 0], [-4, 0, 0], ', '"", 0] }\r', '{ "m": 0, "p": [[48, ', '[0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [', '1, null, 7, 7, 7]]', ', [62, [10]], [4, -7, 990], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0', ', "p": [[48, [0, 0, 109, 0]], [48, [0, ', '0, -177, 0]], [49, [0, ', '0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 9, 7]], [62, [10]], ', '[3, -6, 992], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, 109', ', 0]], [48, [0, 0, -176, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]], [62, [10]', '], [4, ', ' -8, 991], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": ', '[[48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [', '61, [1, null, 7, 7, 7]], [62, [10]], [5, -6, 989], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": ', '[[48, [0, 0, 109, 0]], ', '[48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]], [62, [10]], [3, -7, 991], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0', ', "p": [[48, [', '0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, ', 'null, 7, 7, 7]], [62, [10]], [4, -7, 990], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48, [', '0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 9, 7]], [62, [10]], [5, -6, 991], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[', '48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 9, 7]], [62, [10]], [4, -7, 990], [0, 0, 0]', ', [-4, 0, 0], "", 0]', '}\r', '{ "m": 0, "p": [[48, [0, 0, ', '109, 0]], [48, [0, 0, -176, 0]], [49, [0, 0, 166, ', '0]], [63, [0, 0, 384]], [61, [1, null, 7, 9, 7]], [62, [10]], [3, -7, 989], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, ', '[0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]]', ', [62, [10]], [5, -6, 990]', ', [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0', ', "p": [[48, ', '[0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 383]], [61, [1, null, 7, 7, 7]], [62, [10]], [3, -6, ', '992], [0, 0, 0], [-4, 0, 0], "", 0]', '}\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48, [0', ', 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]], [62, [10]], [3, -8, 992], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 2, "p": [8.323, 100] }\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48, ', '[0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, ', '384]], [61, [1, null, 7, 7, 7]], [62, [10]], [5, -7, 990], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, ', '109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 8, 9, 7]], [62', ', [10]], [3, -6, 990], [0, 0, 0], [-4', ', 0, 0], "", 0] }\r', '{ "m": 0, "p": ', '[[48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 9, 7]], [62, [', '10]], [4, -6, 991], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [', '48, [0, 0, -177, 0]], ', '[49, [0, 0, 166, 0]], [63, [0, 0, 383]], [61, [1, null, 7, 7, 7]], [62, [10]], [4, -8, 989], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": ', '[[48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]', '], [62, [1', '0]], [4, -6, 989], [0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, [0', ', 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 7, 7]], [62, [10]], [3, -7, 992], [', '0, 0, 0], [-4, 0, 0], "", 0] }\r', '{ "m": 0, "p": [[48, ', '[0, 0, ', '109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 8, 9, 7]], [62, [10]], [', '3,-7, 989], [0, 0, 0], [-4, 0, 0], "", 0]}\r', '{ "m": 0, "p": [[', '48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], ', '[61, [1, null, 7, 9, 7]], [62, [10]], [4, -6, 990], [0, 0, 0], [-4, 0, 0], "", 0] }\r ', '{ "m": 0, "p": [[48, [0, 0, 109, 0]], [48, [0, 0, -177, 0]], [49, [0, 0, 166, 0]], [63, [0, 0, 384]], [61, [1, null, 7, 9, 7]], [62, [10', ']], [4, -7, 990], [0, 0, 0], [-4, 0, 0], ', '"", 0] }\r {"i": "ECSn", "r": ', '{ "blocksize": 512', ', "transferid": "53766" }', '}\r']
+        }
+        var result = await mySPIKE.testStreamUJSONRPC(UJSONRPCtests);
+        return result;
+    })
+
+
+    for (var index = 0; index < testsResult.length; index++ ) {
+        var caseSuccess = testsResult[index];
+
+        if (caseSuccess) {
+            success = false;
+            page.$eval("#testCase" + index + " > span#status", element => element.innerHTML = "Passed");
+        }
+        else {
+            page.$eval("#testCase" + index + "> span#status", element => element.innerHTML = "Failed");
+        }
+    }
+    
+    // if (success) {
+        // page.$eval("#testCase1 > span#status", element => element.innerHTML = "Passed");
+    // }
+    // else {
+        // page.$eval("#testCase1 > span#status", element => element.innerHTML = "Failed");
+    // }
+
+
+
+}
 
 async function testUIInit() {
     console.log("##### TESTING HUB PROGRAMS #####");
@@ -168,7 +203,7 @@ async function testPrintCode() {
 }
 
 async function testLongCode() {
-    page.$eval("#testLongCode > span#status", element => element.innerHTML = "In progess");
+    page.$eval("#testLongCode > span#status", element => element.innerHTML = "In progress");
 
     await page.$eval("#filecontent", element => element.innerHTML =
         "from spike import PrimeHub, LightMatrix, Motor, MotorPair\n"
@@ -180,18 +215,7 @@ async function testLongCode() {
         + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
         + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
         + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
-        + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
-        + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
-        + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
-        + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
         + "#suuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuupeeeeeeeeeeeeeeeeeeeeeeeeeeer loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong cOooooooooooooooooooooooooommmeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeenttttttttttttttttttttttttttttttttttttt\n"
-        + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
-        + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
-        + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
-        + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
-        + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
-        + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
-        + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
         + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
         + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
         + "#commmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommmentcommment\n"
@@ -247,7 +271,7 @@ async function testLongCode() {
 }
 
 async function testTabEscapeCode() {
-    page.$eval("#testTabEscapeCode > span#status", element => element.innerHTML = "In progess");
+    page.$eval("#testTabEscapeCode > span#status", element => element.innerHTML = "In progress");
 
     await page.$eval("#filecontent", element => element.innerHTML =
         "from spike import PrimeHub, LightMatrix, Motor, MotorPair\n"
@@ -291,7 +315,7 @@ async function testTabEscapeCode() {
 }
 
 async function testSyntaxErrorModuleImports(){
-    page.$eval("#testSyntaxErrorModuleImports > span#status", element => element.innerHTML = "In progess");
+    page.$eval("#testSyntaxErrorModuleImports > span#status", element => element.innerHTML = "In progress");
 
     await page.$eval("#filecontent", element => element.innerHTML =
         "from spike import PrimeHub, LightMatrix, Motor, MotorPai\n"
@@ -335,7 +359,7 @@ async function testSyntaxErrorModuleImports(){
 }
 
 async function testSyntaxErrorCode() {
-    page.$eval("#testSyntaxErrorCode > span#status", element => element.innerHTML = "In progess");
+    page.$eval("#testSyntaxErrorCode > span#status", element => element.innerHTML = "In progress");
 
     await page.$eval("#filecontent", element => element.innerHTML =
         "from spike import PrimeHub, LightMatrix, Motor, MotorPai\n"
@@ -379,7 +403,7 @@ async function testSyntaxErrorCode() {
 }
 
 async function testEmptyCode() {
-    page.$eval("#testEmptyCode > span#status", element => element.innerHTML = "In progess");
+    page.$eval("#testEmptyCode > span#status", element => element.innerHTML = "In progress");
 
     await page.$eval("#filecontent", element => element.innerHTML =
         ""
@@ -408,6 +432,69 @@ async function testEmptyCode() {
     }
 
     UIConsoleCurrentIndex = consoleValue.length;
+}
+
+async function testCodeInSlotTen() {
+    page.$eval("#testCodeInSlotTen > span#status", element => element.innerHTML = "In progress");
+
+    var printContent = await page.evaluate( () => {
+        // get random print content
+        var selection = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+        var printContent = "";
+
+        for (var i = 0; i < 10; i++) {
+            var randomInteger = Math.floor(Math.random() * 10);
+            printContent = printContent + selection[randomInteger];
+        }
+
+        var fileContent = document.getElementById("filecontent");
+
+        var codeContent = "from spike import PrimeHub, LightMatrix, Motor, MotorPair\n"
+            + "from spike.control import wait_for_seconds, wait_until, Timer\n"
+            + "print('" + printContent + "')\n"
+            + "hub = PrimeHub()\n"
+            + "hub.light_matrix.show_image('HAPPY')\n"
+
+        fileContent.innerHTML = codeContent;
+
+        return printContent;
+    })
+
+    console.log("looking for print statement with: ", printContent);
+    
+    await frame.select("select#slotidSelect", "slot10");
+    
+    await delay(1000);
+
+    await page.click("#runCode");
+    
+    await delay(5000);
+
+    const consoleValue = await frame.$eval("#console", el => el.value);
+    var nextConsoleValue = consoleValue.substring(UIConsoleCurrentIndex, consoleValue.length);
+    console.log("next console value: ", nextConsoleValue);
+
+    /* CHECK 1: check all expected statements in UI console */
+
+    var expectedResultBase = (nextConsoleValue.indexOf("Writing new program to position 10...") > -1) && (nextConsoleValue.indexOf("Terminating any running program...") > -1) && (nextConsoleValue.indexOf("Executing program in position 10...") > -1)
+    var expectedResultExtra = (nextConsoleValue.indexOf(">>> Program started!") > -1) && (nextConsoleValue.indexOf(printContent) > -1) && (nextConsoleValue.indexOf(">>> Program finished!") > -1)
+    var expectedResultWithoutErrors = (nextConsoleValue.indexOf("Please try again. If error persists, refresh this environment.") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please reboot the Hub and refresh this environment") == -1)
+    
+    console.log((nextConsoleValue.indexOf(printContent) > -1));
+    
+    if (expectedResultBase && expectedResultExtra && expectedResultWithoutErrors) {
+        page.$eval("#testCodeInSlotTen > span#status", element => element.innerHTML = "Passed");
+    }
+    else {
+        page.$eval("#testCodeInSlotTen > span#status", element => element.innerHTML = "Failed");
+    }
+
+    UIConsoleCurrentIndex = consoleValue.length;
+
+    // revert to slot 0
+
+    await frame.select("select#slotidSelect", "slot0");
+
 }
 
 async function defaultFileContent() {
@@ -510,24 +597,61 @@ async function testReboot() {
 
 }
 
-
 async function testDisconnectAndReconnect() {
     
-    page.$eval("#testReconnect > span#status", element => element.innerHTML = "In progress");
-
+    page.$eval("#testPromptAfterDisconnect > span#status", element => element.innerHTML = "In progress");
+    
     await page.$eval("#filecontent", element => element.innerHTML =
-        "from spike import PrimeHub, LightMatrix, Motor, MotorPair\n"
-        + "from spike.control import wait_for_seconds, wait_until, Timer\n"
-        + "print('hello')\n"
-        + "hub = PrimeHub()\n"
-        + "hub.light_matrix.show_image('HAPPY')\n"
+    "from spike import PrimeHub, LightMatrix, Motor, MotorPair\n"
+    + "from spike.control import wait_for_seconds, wait_until, Timer\n"
+    + "print('hello')\n"
+    + "hub = PrimeHub()\n"
+    + "hub.light_matrix.show_image('HAPPY')\n"
     );
-
+    
     await page.evaluate(() => {
-        alert("Disconnect and reconnect your SPIKE Prime now");
+        alert("Disconnect your SPIKE Prime now");
+    })
+    
+    await delay(12000)
+
+    // check connection guide display
+    
+    var display = await frame.$eval("#connectionHelp_container", element => element.style.display);
+    console.log("display of connectionHelp: ", display);
+    
+    if (display == "block") {
+        page.$eval("#testPromptAfterDisconnect > span#status", element => element.innerHTML = "Passed");
+    }
+    else {
+        page.$eval("#testPromptAfterDisconnect > span#status", element => element.innerHTML = "Failed");
+    }
+    
+    await page.evaluate(() => {
+        alert("Turn on and reconnect your SPIKE Prime now");
     })
 
-    await delay(15000);
+    page.$eval("#testReconnect > span#status", element => element.innerHTML = "In progress");
+    
+    await delay(12000);
+
+    // check ability to reconnect 
+
+    const consoleValue = await frame.$eval("#console", el => el.value);
+    var nextConsoleValue = consoleValue.substring(UIConsoleCurrentIndex, consoleValue.length);
+    console.log("next console value: ", nextConsoleValue);
+
+    var expectedResultBase = (nextConsoleValue.indexOf("SPIKE Prime hub has been disconnected") > -1) && (nextConsoleValue.indexOf("Successfully connected to SPIKE Prime!") > -1) && (nextConsoleValue.indexOf("Reading registered programs in the hub...") > -1) && (nextConsoleValue.indexOf("Web UI initialization complete!") > -1) 
+    var expectedResultWithoutErrors = (nextConsoleValue.indexOf("Please try again. If error persists, refresh this environment.") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please reboot the Hub and refresh this environment") == -1)
+
+    if (expectedResultBase && expectedResultWithoutErrors) {
+        page.$eval("#testReconnect > span#status", element => element.innerHTML = "Passed");
+    }
+    else {
+        page.$eval("#testReconnect > span#status", element => element.innerHTML = "Failed");
+    }
+
+    UIConsoleCurrentIndex = consoleValue.length;
 
 }
 
@@ -560,6 +684,8 @@ async function testDependenciesInfo() {
         page.$eval("#testDependenciesInfo > span#status", element => element.innerHTML = "Failed");
     }
 
+    await SecondBrowser.close();
+
 }
 
 async function startTests(callback) {
@@ -570,11 +696,11 @@ async function startTests(callback) {
 
             frame = await getFrame(framesList, "SPIKE iframe");
 
+            await testStreamUJSONRPC();
+
             await frame.click('#Service_SPIKE');
 
-            await delay(10000);
-
-            console.log("delay ended");
+            await delay(14000); // wait for UI init
 
             testUIInit();
             await delay(3000);
@@ -594,6 +720,10 @@ async function startTests(callback) {
 
             await testEmptyCode();
 
+            await testCodeInSlotTen();
+
+            await delay(5000);
+
             await defaultFileContent();
             await delay(1000);
 
@@ -601,13 +731,15 @@ async function startTests(callback) {
             await delay(5000);
 
             await testStop();
-            await delay(5000);
+            await delay(3000);
 
             await testReboot();
             await delay(5000);
 
-            await testDependenciesInfo();
+            await testDisconnectAndReconnect();
+            await delay(1000);
 
+            await testDependenciesInfo();
         }
         catch (e) {
             console.log(e);
