@@ -2938,7 +2938,7 @@ function Service_SPIKE() {
                     // console.log("%cTuftsCEEO ", "color: #3ba336;" ,lineNumberSubstring.match(numberPattern));
                     // console.log("%cTuftsCEEO ", "color: #3ba336;" ,"lineNumber:", lineNumber);
                     // console.log("%cTuftsCEEO ", "color: #3ba336;" ,"typeof lineNumber:", typeof lineNumber);
-                    var lineNumberInNumber = parseInt(lineNumber) - 6;
+                    var lineNumberInNumber = parseInt(lineNumber) - 9;
                     // console.log("%cTuftsCEEO ", "color: #3ba336;" ,"typeof lineNumberInNumber:", typeof lineNumberInNumber);
 
                     funcAfterError("line " + lineNumberInNumber + ": " + errorType);
