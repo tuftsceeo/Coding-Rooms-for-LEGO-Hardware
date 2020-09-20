@@ -357,25 +357,17 @@
             }
 
             async function writeCodeExecRequestPayloadToDOM(payload) {
-                var files = payload.files;
-
-                var defaultFileName = payload.defaultFileName;
-
-                console.log("defaultFileName: ", defaultFileName);
-
                 console.log("payload: ", payload);
 
                 // only gets the content of file with name, "main.py"
-                for (var key in files) {
-                    console.log("key: ", key);
+                for (var key in payload) {
                     var fileName = key;
-                    var fileContent = files[key];
+                    var fileContent = payload[key]
+                    console.log("key: ", key);
                     console.log("fileContent: ", fileContent);
-                    //
-                    if (fileName == "main.py") {
-                        break;
-                    }
+                    break;
                 }
+
                 if (mySPIKE.isActive()) {
                     // parse the selected slot id
                     var slotidSelect = document.getElementById("slotidSelect");
@@ -622,18 +614,21 @@
         </div>
         <div id="disclaimer" align=center style="margin: 10px;">
             <h5>
-                CodingRooms’ implementation of “MicroPython for LEGO® Hardware” created in collaboration with
+                CodingRooms&apos; implementation of &quot;MicroPython for LEGO&reg; Hardware&quot; created in collaboration with
                 researchers at Tufts Center for Engineering Education and Outreach (CEEO). To see other CEEO Innovation projects, visit
                 <a id = "ceeoinnovationslink" href="http://www.CEEOInnovations.org" target="_blank">
                     CEEOInnovations.org.
                 </a>
             </h5>
             <h5>
-                LEGO®, the LEGO® logo, the Brick, MINDSTORMS®, SPIKE™, and the Minifigure are trademarks of ©The LEGO®
+                LEGO&reg;, the LEGO&reg; logo, the Brick, MINDSTORMS&reg;, SPIKE&trade;, and the Minifigure are trademarks of &copy;The LEGO&reg;
                 Group.
                 All other
                 trademarks and copyrights are the property of their respective owners. All rights reserved. CodingRooms
-                isn’t affiliated, authorized, or endorsed by The LEGO Group.
+                isn&apos;t affiliated, authorized, or endorsed by The LEGO Group.
+            </h5>
+            <h5>
+                The refresh page icon design was supplied by Freepik. Remaining sprites are attributed by TuftsCEEO.
             </h5>
         </div>
         <br /><br /><br />

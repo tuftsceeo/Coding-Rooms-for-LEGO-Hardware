@@ -1,8 +1,10 @@
 <html>
-<head>
+
+  <head>
+    <script src="./modules/libraries/ace.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"
-            integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg=="
-            crossorigin="anonymous"></script>
+      integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg=="
+      crossorigin="anonymous"></script>
     <script language="javascript">
       requirejs.config({
         paths: {
@@ -22,215 +24,97 @@
           return;
         }
 
-        // set up JSON data object
-        var fileName = document.getElementById("filename2").value;
-        var fileContent = document.getElementById("filecontent").value
+        var editor = ace.edit("editor");
+        // get fileContent
+        var editSession = editor.getSession();
+        var codeSession = editSession.getValue();
+        var fileContent = codeSession;
 
-        var files = {}; // Files object
-        files[fileName] = fileContent; // add { filename: filecontent } to object
-        var payload = {
-          language: 'demo-lang',
-          defaultFileName: fileName,
-          files: files,
-          stdin: ''
-        };
-        
-        console.log("about to send: " + payload);
+        // get fileName
+        var filename = document.getElementById("filename").value;
+
+        // set up JSON data object
+        var myData = {}; // JSON data object
+        myData[filename] = fileContent; // add { filename: fileContent } to JSON
+        console.log("about to send as: " + filename);
+        console.log("about to send: " + myData[filename]);
 
         try {
-          window.webExecManager.sendMessage('execute_code', payload);
+          window.webExecManager.sendMessage('execute_code', myData);
         } catch (err) {
           console.log("error sending execute code message: ", err);
         }
       }
     </script>
-</head>
-<body>
-<h1>iframe test</h1>
-<div>
-  <div style="float:left">
-    Project name:
-  </div>
-  <input type="text" id="filename2" value="Some Project" style="float: left;" />
-</div>
-<br/><br />
-<div>
-<form style="position:relative;" onsubmit="submitForm(); return false;">
-  <textarea style="width:600px; font-family:'Courier New', Courier" rows=5 id="filecontent">
-from spike import PrimeHub, LightMatrix, Motor, MotorPair
+  </head>
+
+  <body>
+    <form onsubmit="submitForm(); return false;">
+      <div id="demobox">
+        <div id = "topbar">
+          Filename: <input type="text" id="filename" value="file.py" />
+          <input type="submit" id="execute" value="Run">
+        </div>
+        <div id="editor">from spike import PrimeHub, LightMatrix, Motor, MotorPair
 from spike.control import wait_for_seconds, wait_until, Timer
 
 hub = PrimeHub()
 
-hub.light_matrix.show_image('HAPPY')
-      </textarea>
-  <input type=submit value="Run" id = "runCode">
-</form>
-</div>
+hub.light_matrix.show_image('HAPPY')</div>
+      </div>
+    </form>
+    <iframe id="cc-embed-myFrameIdSetMe" src="iframe.html?frameId=myFrameIdSetMe" title="Submit Code to SPIKE Prime"></iframe>
+  </body>
+  <script>
+    var editor = ace.edit("editor");
 
-<div id = "testingConsole">
-  <div id = "testUJSONRPC">
-    <h4>Testing UJSONRPC parser</h4>
-        <div id="testCase0" class="testUJSONRPC">
-          Conjoined packets {...}\r {...}
-          <span id="status">
-            Not tested
-          </span>
-        </div>
-        
-  </div>
-  <div id = "testUI">
-    <h4>Testing UI</h4>
-    <div id="testFirstPositionNotEmpty" class = "testUI">
-      Test registered programs:
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-    <div id="testHubName" class="testUI">
-      Test hub name:
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-    <div id="testConsoleIndex" class="testUI">
-      Test console messages:
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-  </div>
-  <div id = "testingProgramWrite">
-    <h4>Testing Program Write</h4>
-    <div id="testDefaultCode">
-      Test the default code:
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-    <div id="testPrintCode">
-      Test code with print statements:
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-    <div id="testLongCode">
-      Test a long code (>= 2 x 514 bytes):
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-    <div id="testTabEscapeCode">
-      Test code with horizontal tab escape sequences:
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-    <div id="testSyntaxErrorModuleImports">
-      Test code with syntax error in module imports: 
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-    <div id="testSyntaxErrorCode">
-      Test code with syntax error (line numbers may differ from Coding Rooms):
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-    <div id="testEmptyCode">
-      Test empty code:
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-    <div id="testCodeInSlotTen">
-      Test code register in slot 10:
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-  </div>
+    var buttonExecute = document.getElementById("execute");
+    buttonExecute.addEventListener("click", function () {
+      var editSession = editor.getSession();
 
+      var codeSession = editSession.getValue();
+    })
+  </script>
 
-  <div id="testingUIfunctions">
-    <h4>Testing UI functions</h4>
-    <div id="testRunButton">
-      Test Run button:
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-    <div id="testStopButton">
-      Test Stop button:
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-    <div id="testRebootButton">
-      Test Reboot button:
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-  
-  </div>
+  <style type="text/css" media="screen">
+    #editor {
+      position: relative;
+      top: 40px;
+      right: 0;
+      bottom: 0;
+      left: 50px;
+      height: 600px;
+      width: 500px;
+    }
 
-  <div id = "testingReconnect">
-    <h4>Testing Miscellaneous </h4>
-    <div id="testPromptAfterDisconnect">
-      Test connection prompt after hardware disconnect:
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-    <div id="testReconnect">
-      Test ability to reconnect hardware:
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-    <div id="testDependenciesInfo">
-      Test enable flag alert:
-      <span id="status">
-        Not tested
-      </span>
-    </div>
-  </div>
+    #execute {
+      position: relative;
+      height: 30px;
+      width: 60px;
+      left: 10px;
+    }
 
+    #topbar {
+      position: relative;
+      left: 50px;
+      top: 20px;
+    }
 
+    #demobox {
+      height: 700px;
+      width: 600px;
+      background-image: url('./modules/views/CEEOInnovationsbackground.png');
+      border-radius: 8px;
+    }
 
-</div>
+    #cc-embed-myFrameIdSetMe {
+      height: 700px;
+      width: 600px;
+      border-width: 2px;
+      position: absolute;
+      left: 700px;
+      top: 10px;
+    }
+  </style>
 
-<br/><br/>
-
-<!-- Note the id if the iframe element must be in the form of "cc-embed-frameId" where
-     there "frameId" is equal to the value of the "?frameId=" query param and the value set in
-     the CCWebExecManager constructor call, UNLESS you use the extended form of the CCWebExecManager
-     constructor where you specify the id of the iframe element, e.g.,
-     `new CCWebExecManager('myFrameIdSetMe', 'nonStandardIdOfMyIFrameElement')`
- -->
-<iframe id="cc-embed-myFrameIdSetMe" src="iframe.html?frameId=myFrameIdSetMe"
-        style="height:400px;width:600px;border-width: 2px"
-        title="Run Code"></iframe>
-
-    
-
-</body>
-
-<style>
-  #testingConsole {
-    background-color: khaki;
-    height: 700px;
-    width: 600px;
-    position: absolute;
-    left: 700px;
-  }
-  
-  #status {
-    position: absolute;
-    left: 500px;
-  }
-
-</style>
 </html>
