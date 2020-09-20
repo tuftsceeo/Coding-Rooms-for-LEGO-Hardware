@@ -182,7 +182,7 @@
 
                     /* END OF SPIKE Prime web UI code */
 
-                    console.log("iframe window has completed loading");
+                    console.log("%cTuftsCEEO ", "color: lightgreen;" ,"iframe window has completed loading");
                 })
 
 
@@ -210,7 +210,7 @@
                             }
                         }
                         else {
-                            console.log("serial was not detected in the browser");
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"serial was not detected in the browser");
                             
                             dependenciesInfoElement.style.display = "block";
                             topToolbar_container.style.display = "none";
@@ -351,20 +351,19 @@
                 //       the `.dispose()` function or you plan to have your app 'disposed' automatically when the iframe
                 //       is removed by the parent.
                 window.webExecClient.subscribe('execute_code', function (event, payload) {
-                    console.log(event, payload);
+                    console.log("%cTuftsCEEO ", "color: lightgreen;" ,event, payload);
                     writeCodeExecRequestPayloadToDOM(payload);
                 });
             }
 
             async function writeCodeExecRequestPayloadToDOM(payload) {
-                console.log("payload: ", payload);
 
                 // only gets the content of file with name, "main.py"
                 for (var key in payload) {
                     var fileName = key;
                     var fileContent = payload[key]
-                    console.log("key: ", key);
-                    console.log("fileContent: ", fileContent);
+                    console.log("%cTuftsCEEO ", "color: lightgreen;", "key: ", key);
+                    console.log("%cTuftsCEEO ", "color: lightgreen;", "fileContent: ", fileContent);
                     break;
                 }
 
