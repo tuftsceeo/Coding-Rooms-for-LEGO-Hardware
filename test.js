@@ -692,7 +692,7 @@ async function testDependenciesInfo() {
 }
 
 async function startTests(callback) {
-    launchBrowser(false, async function () {
+    launchBrowser(true, async function () {
         try {
 
             const framesList = (await page.frames());
