@@ -1,5 +1,8 @@
 const puppeteer = require('puppeteer');
 
+//edge cases to log
+// when user clicks RUN program before SPIKE fully loads
+// when user spams the reboot button
 let browser;
 let page;
 let frame;
@@ -389,7 +392,7 @@ async function testSyntaxErrorCode() {
     /* CHECK 1: check all expected statements in UI console */
 
     var expectedResultBase = (nextConsoleValue.indexOf("Writing new program to position 0...") > -1) && (nextConsoleValue.indexOf("Terminating any running program...") > -1) && (nextConsoleValue.indexOf("Executing program in position 0...") > -1)
-    var expectedResultExtra = (nextConsoleValue.indexOf("line 7: SyntaxError: invalid syntax") > -1)
+    var expectedResultExtra = (nextConsoleValue.indexOf("line 6: SyntaxError: invalid syntax") > -1)
     var expectedResultWithoutErrors = (nextConsoleValue.indexOf("Please try again. If error persists, refresh this environment.") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please reboot the Hub and refresh this environment") == -1) 
 
     if (expectedResultBase && expectedResultExtra && expectedResultWithoutErrors) {
@@ -420,7 +423,7 @@ async function testEmptyCode() {
     /* CHECK 1: check all expected statements in UI console */
 
     var expectedResultBase = (nextConsoleValue.indexOf("Writing new program to position 0...") > -1) && (nextConsoleValue.indexOf("Terminating any running program...") > -1) && (nextConsoleValue.indexOf("Executing program in position 0...") > -1)
-    var expectedResultExtra = (nextConsoleValue.indexOf("line 3: SyntaxError: invalid syntax") > -1)
+    var expectedResultExtra = (nextConsoleValue.indexOf("line 2: SyntaxError: invalid syntax") > -1)
 
     var expectedResultWithoutErrors = (nextConsoleValue.indexOf("Please try again. If error persists, refresh this environment.") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please reboot the Hub and refresh this environment") == -1) 
 
