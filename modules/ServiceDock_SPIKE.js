@@ -1650,9 +1650,10 @@ function Service_SPIKE() {
                         if ( i < conjoinedPacketsArray.length - 1 ) {
                             lastUJSONRPC = conjoinedPacketsArray[i];
                             processFullUJSONRPC(lastUJSONRPC, testing, callback);
+                            jsonline = "";
                         }
                         else {
-                            jsonline = conjoinedPacketsArray[i];
+                            //jsonline = conjoinedPacketsArray[i];
                         }
 
                     }
