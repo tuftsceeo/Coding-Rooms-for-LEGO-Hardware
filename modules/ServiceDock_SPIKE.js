@@ -1650,10 +1650,9 @@ function Service_SPIKE() {
                         if ( i < conjoinedPacketsArray.length - 1 ) {
                             lastUJSONRPC = conjoinedPacketsArray[i];
                             processFullUJSONRPC(lastUJSONRPC, testing, callback);
-                            jsonline = "";
                         }
                         else {
-                            //jsonline = conjoinedPacketsArray[i];
+                            jsonline = conjoinedPacketsArray[i];
                         }
 
                     }
@@ -1685,7 +1684,7 @@ function Service_SPIKE() {
     /** <h4> Continuously take UJSON RPC input from SPIKE Prime </h4>
      * @private
      */
-    async function streamUJSONRPC(testing = true) {
+    async function streamUJSONRPC(testing = false) {
         try {
             var firstReading = true;
             // read when port is set up
