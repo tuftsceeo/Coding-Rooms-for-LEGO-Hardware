@@ -2001,7 +2001,10 @@ function Service_SPIKE() {
                     var lineNumberInNumber = parseInt(lineNumber) - 6;
                     // console.log("%cTuftsCEEO ", "color: #3ba336;" ,"typeof lineNumberInNumber:", typeof lineNumberInNumber);
 
-                    funcAfterError("line " + lineNumberInNumber + ": " + errorType);
+                    // removed line number specification due to inaccuracy
+                    // funcAfterError("line " + lineNumberInNumber + ": " + errorType);
+                    funcAfterError(errorType);
+
                 }
                 else {
                     funcAfterError(errorType);
