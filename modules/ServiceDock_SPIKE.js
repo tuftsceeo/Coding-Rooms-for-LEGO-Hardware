@@ -1750,15 +1750,12 @@ function Service_SPIKE() {
                             console.log("%cTuftsCEEO ", "color: #3ba336;" ,"jsonline: ", jsonline);
                             console.log("%cTuftsCEEO ", "color: #3ba336;" ,"lastUJSONRPC: ", lastUJSONRPC);
                             firstReading = false;
-                            if (testing) {
-                                setInterval(function () {
-                                    console.log("%cTuftsCEEO ", "color: #3ba336;", "UJSONRPC messages processed in the last 10 seconds: ", countProcessedUJSONRPC);
-                                    
-                                    totalUJSONRPCProcessed.push(countProcessedUJSONRPC);
-
-                                    countProcessedUJSONRPC = 0;
-                                }, 10000)
-                            }
+                            setInterval(function () {
+                                console.log("%cTuftsCEEO ", "color: #3ba336;", "UJSONRPC messages processed in the last 10 seconds: ", countProcessedUJSONRPC);
+                                
+                                totalUJSONRPCProcessed.push(countProcessedUJSONRPC);
+                                countProcessedUJSONRPC = 0;
+                            }, 10000)
                         }
 
                         // read UJSON RPC stream ( actual data in {value} )
@@ -2045,10 +2042,10 @@ function Service_SPIKE() {
             console.log("%cTuftsCEEO ", "color: #3ba336;", "stringified erroneous UJSONRPC: ", await JSON.stringify(parsedUJSON));
         }*/
 
-        /*
+        
         if (flagPrimeHubEventHandlerCounter) {
             setInterval(async function () {
-                console.log("%cTuftsCEEO ", "color: #3ba336;", "PrimeHubEventHandler: UJSONRPC messages count in last 10 seconds: ", countPrimeHubEventHandlerUJSONRPC);
+                //console.log("%cTuftsCEEO ", "color: #3ba336;", "PrimeHubEventHandler: UJSONRPC messages count in last 10 seconds: ", countPrimeHubEventHandlerUJSONRPC);
                 
                 totalUJSONRPCPrimeHubEventHandled.push(countPrimeHubEventHandlerUJSONRPC);
 
@@ -2059,7 +2056,7 @@ function Service_SPIKE() {
         }
 
         countPrimeHubEventHandlerUJSONRPC = countPrimeHubEventHandlerUJSONRPC + 1;
-        */
+        
 
         //console.log(messageType);
 

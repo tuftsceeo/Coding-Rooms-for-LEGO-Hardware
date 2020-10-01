@@ -383,7 +383,7 @@ async function testSyntaxErrorCode() {
     /* CHECK 1: check all expected statements in UI console */
 
     var expectedResultBase = (nextConsoleValue.indexOf("Writing new program to position 0...") > -1) && (nextConsoleValue.indexOf("Terminating any running program...") > -1) && (nextConsoleValue.indexOf("Executing program in position 0...") > -1)
-    var expectedResultExtra = (nextConsoleValue.indexOf("line 6: SyntaxError: invalid syntax") > -1)
+    var expectedResultExtra = (nextConsoleValue.indexOf("SyntaxError: invalid syntax") > -1)
     var expectedResultWithoutErrors = (nextConsoleValue.indexOf("Please try again. If error persists, refresh this environment.") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please reboot the Hub and refresh this environment") == -1) 
 
     if (expectedResultBase && expectedResultExtra && expectedResultWithoutErrors) {
@@ -414,7 +414,7 @@ async function testEmptyCode() {
     /* CHECK 1: check all expected statements in UI console */
 
     var expectedResultBase = (nextConsoleValue.indexOf("Writing new program to position 0...") > -1) && (nextConsoleValue.indexOf("Terminating any running program...") > -1) && (nextConsoleValue.indexOf("Executing program in position 0...") > -1)
-    var expectedResultExtra = (nextConsoleValue.indexOf("line 2: SyntaxError: invalid syntax") > -1)
+    var expectedResultExtra = (nextConsoleValue.indexOf("SyntaxError: invalid syntax") > -1)
 
     var expectedResultWithoutErrors = (nextConsoleValue.indexOf("Please try again. If error persists, refresh this environment.") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime") == -1) && (nextConsoleValue.indexOf("Fatal Error: Please reboot the Hub and refresh this environment") == -1) 
 
@@ -591,7 +591,7 @@ async function testReboot() {
 
 }
 
-async function testEffiency() {
+async function testEfficiency() {
     console.log("##### testing program efficiency ######");
 
     page.evaluate( () => {
@@ -614,9 +614,9 @@ async function testEffiency() {
         var totalPrime = await mySPIKE.getTotalUJSONRPCPrimeHubEventHandled();
         var totalHub = await mySPIKE.getTotalUJSONRPCHubInfoUpdated();
         
-        console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA", totalProcessed);
-        console.log(totalPrime);
-        console.log(totalHub);
+        console.log("Total processed:", totalProcessed);
+        console.log("Total Prime", totalPrime);
+        console.log("total Hub", totalHub);
 
         var averageTotalProcessed = 0;
         for ( var datum in totalProcessed) {
@@ -649,15 +649,15 @@ async function testEffiency() {
         // console.log("heres the span", spanElement);
         // console.log("heres the average", testsResult[0]);
         // console.log("heres innerHTML", spanElement.innerHTML);
-        spanElement.innerHTML = testsResult[0];
+        spanElement.innerHTML = Math.floor(testsResult[0]);
 
         element = document.querySelector("#testAveragePrime");
         spanElement = element.querySelector("#status");
-        spanElement.innerHTML = testsResult[1];
+        spanElement.innerHTML = Math.floor(testsResult[1]);
 
         element = document.querySelector("#testAverageHub");
         spanElement = element.querySelector("#status");
-        spanElement.innerHTML = testsResult[2];
+        spanElement.innerHTML = Math.floor(testsResult[2]);
     }, testsResult);
 }
 
@@ -803,7 +803,7 @@ async function startTests(callback) {
             await testReboot();
             await delay(5000);
             
-            await testEffiency();
+            await testEfficiency();
             
             await testDisconnectAndReconnect();
             await delay(1000);
