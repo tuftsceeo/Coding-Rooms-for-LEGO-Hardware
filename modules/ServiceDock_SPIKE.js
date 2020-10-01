@@ -1715,7 +1715,7 @@ function Service_SPIKE() {
     /** <h4> Continuously take UJSON RPC input from SPIKE Prime </h4>
      * @private
      */
-    async function streamUJSONRPC(testing = true) {
+    async function streamUJSONRPC(testing = false) {
         try {
             var firstReading = true;
             // read when port is set up
@@ -2028,6 +2028,7 @@ function Service_SPIKE() {
             console.log("%cTuftsCEEO ", "color: #3ba336;", "stringified erroneous UJSONRPC: ", await JSON.stringify(parsedUJSON));
         }*/
 
+        /*
         if (flagPrimeHubEventHandlerCounter) {
             setInterval(async function () {
                 console.log("%cTuftsCEEO ", "color: #3ba336;", "PrimeHubEventHandler: UJSONRPC messages count in last 10 seconds: ", countPrimeHubEventHandlerUJSONRPC);
@@ -2041,7 +2042,8 @@ function Service_SPIKE() {
         }
 
         countPrimeHubEventHandlerUJSONRPC = countPrimeHubEventHandlerUJSONRPC + 1;
-
+        */
+       
         //console.log(messageType);
 
         //catch runtime_error made at ujsonrpc level
