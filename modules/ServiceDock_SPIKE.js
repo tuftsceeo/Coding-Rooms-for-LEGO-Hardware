@@ -504,8 +504,8 @@ function Service_SPIKE() {
         console.log("%cTuftsCEEO ", "color: #3ba336;" , "rebooting")
         // make sure ready to write to device
         setupWriter();
-        writer.write(CONTROL_C);
-        writer.write(CONTROL_D);
+        await writer.write(CONTROL_C);
+        await writer.write(CONTROL_D);
 
         //toggle micropython_interpreter flag if its was active
         if (micropython_interpreter) {
@@ -1600,7 +1600,7 @@ function Service_SPIKE() {
         return cleanedJsonString;
     }
 
-    async function processFullUJSONRPC(lastUJSONRPC, testing = false, callback) {
+    async function processFullUJSONRPC(lastUJSONRPC, json_string = "undefined", testing = false, callback) {
         try {
 
             var parseTest = await JSON.parse(lastUJSONRPC)
@@ -1623,16 +1623,18 @@ function Service_SPIKE() {
 
         }
         catch (e) {
+            // don't throw error when failure of processing UJSONRPC is due to micropython
+            if (lastUJSONRPC.indexOf("Traceback") == -1 && lastUJSONRPC.indexOf(">>>") == -1 && json_string.indexOf("Traceback") == -1 && json_string.indexOf(">>>") == -1 )  {
+                if (funcAfterError != undefined) {
+                    funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
+                }
+            }
             console.log(e);
             console.log("%cTuftsCEEO ", "color: #3ba336;", "error parsing lastUJSONRPC: ", lastUJSONRPC);
             console.log("%cTuftsCEEO ", "color: #3ba336;", "current jsonline: ", jsonline);
             console.log("%cTuftsCEEO ", "color: #3ba336;", "current cleaned json_string: ", cleanedJsonString)
             console.log("%cTuftsCEEO ", "color: #3ba336;", "current json_string: ", json_string);
             console.log("%cTuftsCEEO ", "color: #3ba336;", "current value: ", value);
-
-            if (funcAfterError != undefined) {
-                funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
-            }
 
             if (callback != undefined) {
                 callback();
@@ -1689,7 +1691,7 @@ function Service_SPIKE() {
                             }
                             lastUJSONRPC = conjoinedPacketsArray[i];
 
-                            await processFullUJSONRPC(lastUJSONRPC, testing, callback);
+                            await processFullUJSONRPC(lastUJSONRPC, json_string, testing, callback);
                         }
                         else {
                             jsonline = conjoinedPacketsArray[i];
@@ -1702,7 +1704,7 @@ function Service_SPIKE() {
                 else {
                     lastUJSONRPC = jsonline.substring(0, carriageReIndex);
 
-                    await processFullUJSONRPC(lastUJSONRPC, testing, callback);
+                    await processFullUJSONRPC(lastUJSONRPC, json_string, testing, callback);
 
                     jsonline = jsonline.substring(carriageReIndex + 2, jsonline.length);
                 }
@@ -1715,6 +1717,9 @@ function Service_SPIKE() {
 
                 console.log("%cTuftsCEEO ", "color: #3ba336;" ,"jsonline was reset to:" + jsonline);
                 
+                if (jsonline.indexOf("get_storage_status") > -1) {
+                    rebootHub();
+                }
                 // reset jsonline for next concatenation
                 // jsonline = "";
             }
@@ -1862,14 +1867,15 @@ function Service_SPIKE() {
                 countHubInfoUpdateUJSONRPC = countHubInfoUpdateUJSONRPC + 1;
             }
             catch (e) {
+                // don't throw error when failure to parse UJSONRPC was due to micropython mixing in
+                if (lastUJSONRPC.indexOf("Traceback") == -1 && lastUJSONRPC.indexOf(">>>") == -1) {
+                    if (funcAfterError != undefined) {
+                        funcAfterError("Fatal Error: Please reboot the Hub and refresh this environment");
+                    }
+                }
                 console.log("%cTuftsCEEO ", "color: #3ba336;" ,"error parsing lastUJSONRPC at updateHubPortsInfo", lastUJSONRPC);
                 console.log("%cTuftsCEEO ", "color: #3ba336;" ,typeof lastUJSONRPC);
                 console.log("%cTuftsCEEO ", "color: #3ba336;" ,lastUJSONRPC.p);
-
-                if (funcAfterError != undefined) {
-                    funcAfterError("Fatal Error: Please reboot the Hub and refresh this environment");
-                }
-
             }
 
             var index_to_port = ["A", "B", "C", "D", "E", "F"]
