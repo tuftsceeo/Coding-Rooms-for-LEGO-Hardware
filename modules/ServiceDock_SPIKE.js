@@ -284,6 +284,16 @@ function Service_SPIKE() {
                     "18": "None",
                     "19": "None"
                 };
+    var colorDictionary = {
+        0: "BLACK",
+        1: "VIOLET",
+        3: "BLUE",
+        4: "AZURE",
+        5: "GREEN",
+        7: "YELLOW",
+        9: "RED",
+        1: "WHITE",
+    };
 
     // true after Force Sensor is pressed, turned to false after reading it for the first time that it is released
     let ForceSensorWasPressed = false;
@@ -1956,15 +1966,16 @@ function Service_SPIKE() {
 
                         // parse color sensor information
                         var Creflected = await data_stream[key][1][0];
-                        var Cambient = await data_stream[key][1][1];
+                        var CcolorID = await data_stream[key][1][1];
                         var Cr = await data_stream[key][1][2];
                         var Cg = await data_stream[key][1][3];
                         var Cb = await data_stream[key][1][4];
                         var rgb_array = [Cr, Cg, Cb];
 
+                        var Ccolor = colorDictionary[CcolorID];
                         // populate value object
                         device_value.device = "color";
-                        device_value.data = { "reflected": Creflected, "ambient": Cambient, "RGB": rgb_array };
+                        device_value.data = { "reflected": Creflected, "color": Ccolor, "RGB": rgb_array };
                         ports[letter] = device_value;
                     }
                     /// NOTHING is connected
@@ -2043,7 +2054,7 @@ function Service_SPIKE() {
 
         countPrimeHubEventHandlerUJSONRPC = countPrimeHubEventHandlerUJSONRPC + 1;
         */
-       
+
         //console.log(messageType);
 
         //catch runtime_error made at ujsonrpc level
