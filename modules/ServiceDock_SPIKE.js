@@ -175,6 +175,13 @@ function Service_SPIKE() {
     let done;
     let writableStreamClosed;
 
+    // for testing program efficiency
+    var countProcessedUJSONRPC = 0;
+    var countPrimeHubEventHandlerUJSONRPC = 0;
+    var countHubInfoUpdateUJSONRPC = 0;
+    var totalUJSONRPCProcessed = [];
+    var totalUJSONRPCPrimeHubEventHandled = [];
+    var totalUJSONRPCHubInfoUpdated = [];
     //define for json concatenation
     let jsonline = "";
 
@@ -277,6 +284,16 @@ function Service_SPIKE() {
                     "18": "None",
                     "19": "None"
                 };
+    var colorDictionary = {
+        0: "BLACK",
+        1: "VIOLET",
+        3: "BLUE",
+        4: "AZURE",
+        5: "GREEN",
+        7: "YELLOW",
+        9: "RED",
+        1: "WHITE",
+    };
 
     // true after Force Sensor is pressed, turned to false after reading it for the first time that it is released
     let ForceSensorWasPressed = false;
@@ -487,8 +504,8 @@ function Service_SPIKE() {
         console.log("%cTuftsCEEO ", "color: #3ba336;" , "rebooting")
         // make sure ready to write to device
         setupWriter();
-        writer.write(CONTROL_C);
-        writer.write(CONTROL_D);
+        await writer.write(CONTROL_C);
+        await writer.write(CONTROL_D);
 
         //toggle micropython_interpreter flag if its was active
         if (micropython_interpreter) {
@@ -727,6 +744,18 @@ function Service_SPIKE() {
         return hubRightButton;
     }
 
+    async function getTotalUJSONRPCProcessed() {
+        return totalUJSONRPCProcessed;
+    }
+
+    async function getTotalUJSONRPCPrimeHubEventHandled () {
+        return totalUJSONRPCPrimeHubEventHandled;
+    }
+
+    async function getTotalUJSONRPCHubInfoUpdated () {
+        return totalUJSONRPCHubInfoUpdated;
+    }
+
     /** <h4> Get the ports connected to any kind of Motors </h4>
      * @public
      * @returns {(string|Array)} Ports that are connected to Motors
@@ -857,7 +886,7 @@ function Service_SPIKE() {
         }
 
         // template of python file that needs to be concatenated
-        var firstPart = "from runtime import VirtualMachine\n\n# Stack for execution:\nasync def stack_1(vm, stack):\n"
+        var firstPart = "from runtime import VirtualMachine\n\n# Stack for execution:\nasync def stack_1(vm, stack):\n\n\n"
         var secondPart = "# Setup for execution:\ndef setup(rpc, system, stop):\n\n    # Initialize VM:\n    vm = VirtualMachine(rpc, system, stop, \"Target__1\")\n\n    # Register stack on VM:\n    vm.register_on_start(\"stack_1\", stack_1)\n\n    return vm"
 
         // stringify data and strip trailing and leading quotation marks
@@ -1558,23 +1587,79 @@ function Service_SPIKE() {
         }
     }
 
+    function cleanJsonString(json_string) {
+        var cleanedJsonString = "";
+        json_string = json_string.trim();
+
+        let findEscapedQuotes = /\\"/g;
+
+        cleanedJsonString = json_string.replace(findEscapedQuotes, '"');
+        cleanedJsonString = cleanedJsonString.substring(1, cleanedJsonString.length - 1);
+        // cleanedJsonString = cleanedJsonString.replace(findNewLines,'');
+        
+        return cleanedJsonString;
+    }
+
+    async function processFullUJSONRPC(lastUJSONRPC, json_string = "undefined", testing = false, callback) {
+        try {
+
+            var parseTest = await JSON.parse(lastUJSONRPC)
+
+            if (testing) {
+                console.log("%cTuftsCEEO ", "color: #3ba336;", "processing FullUJSONRPC line: ", lastUJSONRPC);
+            }
+
+            countProcessedUJSONRPC = countProcessedUJSONRPC + 1;
+
+            // update hub information using lastUJSONRPC
+            if( parseTest["m"] == 0 ) {
+                updateHubPortsInfo();
+            }
+            PrimeHubEventHandler();
+
+            if (funcWithStream) {
+                await funcWithStream();
+            }
+
+        }
+        catch (e) {
+            // don't throw error when failure of processing UJSONRPC is due to micropython
+            if (lastUJSONRPC.indexOf("Traceback") == -1 && lastUJSONRPC.indexOf(">>>") == -1 && json_string.indexOf("Traceback") == -1 && json_string.indexOf(">>>") == -1 )  {
+                if (funcAfterError != undefined) {
+                    funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
+                }
+            }
+            console.log(e);
+            console.log("%cTuftsCEEO ", "color: #3ba336;", "error parsing lastUJSONRPC: ", lastUJSONRPC);
+            console.log("%cTuftsCEEO ", "color: #3ba336;", "current jsonline: ", jsonline);
+            console.log("%cTuftsCEEO ", "color: #3ba336;", "current cleaned json_string: ", cleanedJsonString)
+            console.log("%cTuftsCEEO ", "color: #3ba336;", "current json_string: ", json_string);
+            console.log("%cTuftsCEEO ", "color: #3ba336;", "current value: ", value);
+
+            if (callback != undefined) {
+                callback();
+            }
+
+        }
+    }
+
     /** <h4> Process a packet in UJSONRPC </h4>
     * @private
     *
     */
     async function parsePacket(value, testing = false, callback) {
-
-        // console.log(value);
+        if (testing) {
+            //console.log(value);
+        }
 
         // stringify the packet to look for carriage return
         var json_string = await JSON.stringify(value);
-        json_string = json_string.trim();
-
-        let findEscapedQuotes = /\\"/g;
-
-        var cleanedJsonString = json_string.replace(findEscapedQuotes, '"');
-        cleanedJsonString = cleanedJsonString.substring(1, cleanedJsonString.length - 1);
-        // cleanedJsonString = cleanedJsonString.replace(findNewLines,'');
+        
+        if (testing) {
+            console.log(json_string);
+        }
+        
+        cleanedJsonString = await cleanJsonString(json_string); // remove whitespaces, enclosing quotes, etc.
 
         jsonline = jsonline + cleanedJsonString; // concatenate packet to data
         jsonline = jsonline.trim();
@@ -1597,47 +1682,21 @@ function Service_SPIKE() {
                     var conjoinedPacketsArray = jsonline.split(/\\r/); // array that split jsonline by \r
 
                     // last index only contains "" as it would be after \r
-                    for (var i = 0; i < conjoinedPacketsArray.length - 1; i++) {
+                    for (var i = 0; i < conjoinedPacketsArray.length; i++) {
 
-                        // for every JSON object in array, perform data handling
-
-                        lastUJSONRPC = conjoinedPacketsArray[i];
-
-                        try {
-                            var parseTest = await JSON.parse(lastUJSONRPC)
-                            
+                        // for every JSON object in array except last, perform data handling
+                        if ( i < conjoinedPacketsArray.length - 1 ) {
                             if (testing) {
-                                console.log("%cTuftsCEEO ", "color: #3ba336;" ,"UJSONRPC line: ", lastUJSONRPC);
+                                console.log("%cTuftsCEEO ", "color: #3ba336;", "split jsonline: ", conjoinedPacketsArray[i]);
                             }
+                            lastUJSONRPC = conjoinedPacketsArray[i];
 
-                            // update hub information using lastUJSONRPC
-                            await updateHubPortsInfo();
-                            await PrimeHubEventHandler();
-
-                            if (funcWithStream) {
-                                await funcWithStream();
-                            }
-
+                            await processFullUJSONRPC(lastUJSONRPC, json_string, testing, callback);
                         }
-                        catch (e) {
-                            console.log(e);
-                            console.log("%cTuftsCEEO ", "color: #3ba336;" ,"error parsing lastUJSONRPC: ", lastUJSONRPC);
-                            console.log("%cTuftsCEEO ", "color: #3ba336;" ,"current jsonline: ", jsonline);
-                            console.log("%cTuftsCEEO ", "color: #3ba336;" ,"current cleaned json_string: ", cleanedJsonString)
-                            console.log("%cTuftsCEEO ", "color: #3ba336;" ,"current json_string: ", json_string);
-                            console.log("%cTuftsCEEO ", "color: #3ba336;" ,"current value: ", value);
-
-                            if (funcAfterError != undefined) {
-                                funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
-                            }
-
-                            if (callback != undefined) {
-                                callback();
-                            }
-
+                        else {
+                            jsonline = conjoinedPacketsArray[i];
+                            console.log("%cTuftsCEEO ", "color: #3ba336;", "jsonline after conjoined process: ", jsonline);
                         }
-
-                        jsonline = "";
 
                     }
                 }
@@ -1645,39 +1704,7 @@ function Service_SPIKE() {
                 else {
                     lastUJSONRPC = jsonline.substring(0, carriageReIndex);
 
-                    // parsing test
-                    try {
-                        var parseTest = await JSON.parse(lastUJSONRPC);
-
-                        if (testing) {
-                            console.log("%cTuftsCEEO ", "color: #3ba336;" , "UJSONRPC line: ", lastUJSONRPC);
-                        }
-
-                        // update hub information using lastUJSONRPC
-                        await updateHubPortsInfo();
-                        await PrimeHubEventHandler();
-
-                        if (funcWithStream) {
-                            await funcWithStream();
-                        }
-                    }
-                    catch (e) {
-                        console.log(e);
-                        console.log("%cTuftsCEEO ", "color: #3ba336;" ,"error parsing lastUJSONRPC: ", lastUJSONRPC);
-                        console.log("%cTuftsCEEO ", "color: #3ba336;" ,"current jsonline: ", jsonline);
-                        console.log("%cTuftsCEEO ", "color: #3ba336;" ,"current cleaned json_string: ", cleanedJsonString)
-                        console.log("%cTuftsCEEO ", "color: #3ba336;" ,"current json_string: ", json_string);
-                        console.log("%cTuftsCEEO ", "color: #3ba336;" ,"current value: ", value);
-
-                        if (funcAfterError != undefined) {
-                            funcAfterError("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime");
-                        }
-
-                        if (callback != undefined) {
-                            callback();
-                        }
-
-                    }
+                    await processFullUJSONRPC(lastUJSONRPC, json_string, testing, callback);
 
                     jsonline = jsonline.substring(carriageReIndex + 2, jsonline.length);
                 }
@@ -1690,6 +1717,9 @@ function Service_SPIKE() {
 
                 console.log("%cTuftsCEEO ", "color: #3ba336;" ,"jsonline was reset to:" + jsonline);
                 
+                if (jsonline.indexOf("get_storage_status") > -1) {
+                    rebootHub();
+                }
                 // reset jsonline for next concatenation
                 // jsonline = "";
             }
@@ -1700,7 +1730,7 @@ function Service_SPIKE() {
     /** <h4> Continuously take UJSON RPC input from SPIKE Prime </h4>
      * @private
      */
-    async function streamUJSONRPC() {
+    async function streamUJSONRPC(testing = false) {
         try {
             var firstReading = true;
             // read when port is set up
@@ -1720,6 +1750,12 @@ function Service_SPIKE() {
                             console.log("%cTuftsCEEO ", "color: #3ba336;" ,"jsonline: ", jsonline);
                             console.log("%cTuftsCEEO ", "color: #3ba336;" ,"lastUJSONRPC: ", lastUJSONRPC);
                             firstReading = false;
+                            setInterval(function () {
+                                console.log("%cTuftsCEEO ", "color: #3ba336;", "UJSONRPC messages processed in the last 10 seconds: ", countProcessedUJSONRPC);
+                                
+                                totalUJSONRPCProcessed.push(countProcessedUJSONRPC);
+                                countProcessedUJSONRPC = 0;
+                            }, 10000)
                         }
 
                         // read UJSON RPC stream ( actual data in {value} )
@@ -1735,7 +1771,7 @@ function Service_SPIKE() {
                         //concatenate UJSONRPC packets into complete JSON objects
                         if (value) {
 
-                            await parsePacket(value);
+                            await parsePacket(value, testing);
 
                         }
                         if (done) {
@@ -1796,6 +1832,8 @@ function Service_SPIKE() {
         }
     }
 
+    var flagForUpdatePortsInfoCounter = true;
+
     /** Get the devices that are connected to each port on the SPIKE Prime
      * <p> Effect: </p>
      * <p> Modifies {ports} global variable </p>
@@ -1812,16 +1850,29 @@ function Service_SPIKE() {
             try {
                 data_stream = await JSON.parse(lastUJSONRPC);
                 data_stream = data_stream.p;
+                if (flagForUpdatePortsInfoCounter) {
+                    setInterval( async function() {
+                        console.log("%cTuftsCEEO ", "color: #3ba336;", "updatePortsInfo: UJSONRPC messages count in last 10 seconds: ", countHubInfoUpdateUJSONRPC);
+                        
+                        totalUJSONRPCHubInfoUpdated.push(countHubInfoUpdateUJSONRPC);
+
+                        countHubInfoUpdateUJSONRPC = 0;
+                    }, 10000)
+                    flagForUpdatePortsInfoCounter = false;
+                }
+
+                countHubInfoUpdateUJSONRPC = countHubInfoUpdateUJSONRPC + 1;
             }
             catch (e) {
+                // don't throw error when failure to parse UJSONRPC was due to micropython mixing in
+                if (lastUJSONRPC.indexOf("Traceback") == -1 && lastUJSONRPC.indexOf(">>>") == -1) {
+                    if (funcAfterError != undefined) {
+                        funcAfterError("Fatal Error: Please reboot the Hub and refresh this environment");
+                    }
+                }
                 console.log("%cTuftsCEEO ", "color: #3ba336;" ,"error parsing lastUJSONRPC at updateHubPortsInfo", lastUJSONRPC);
                 console.log("%cTuftsCEEO ", "color: #3ba336;" ,typeof lastUJSONRPC);
                 console.log("%cTuftsCEEO ", "color: #3ba336;" ,lastUJSONRPC.p);
-
-                if (funcAfterError != undefined) {
-                    funcAfterError("Fatal Error: Please reboot the Hub and refresh this environment");
-                }
-
             }
 
             var index_to_port = ["A", "B", "C", "D", "E", "F"]
@@ -1918,15 +1969,16 @@ function Service_SPIKE() {
 
                         // parse color sensor information
                         var Creflected = await data_stream[key][1][0];
-                        var Cambient = await data_stream[key][1][1];
+                        var CcolorID = await data_stream[key][1][1];
                         var Cr = await data_stream[key][1][2];
                         var Cg = await data_stream[key][1][3];
                         var Cb = await data_stream[key][1][4];
                         var rgb_array = [Cr, Cg, Cb];
 
+                        var Ccolor = colorDictionary[CcolorID];
                         // populate value object
                         device_value.device = "color";
-                        device_value.data = { "reflected": Creflected, "ambient": Cambient, "RGB": rgb_array };
+                        device_value.data = { "reflected": Creflected, "color": Ccolor, "RGB": rgb_array };
                         ports[letter] = device_value;
                     }
                     /// NOTHING is connected
@@ -1969,7 +2021,8 @@ function Service_SPIKE() {
             }
         }
     }
-
+    
+    var flagPrimeHubEventHandlerCounter = true;
     /** <h4> Catch hub events in UJSONRPC </h4>
      * <p> Effect: </p>
      * <p> Logs in the console when some particular messages are caught </p>
@@ -1979,8 +2032,33 @@ function Service_SPIKE() {
     async function PrimeHubEventHandler() {
 
         var parsedUJSON = await JSON.parse(lastUJSONRPC);
-        
+
         var messageType = parsedUJSON["m"];
+        /*
+        if ( messageType === undefined ) {
+            console.log("%cTuftsCEEO ", "color: #3ba336;" , "messageType is undefined");
+            console.log("%cTuftsCEEO ", "color: #3ba336;", "erroneous UJSONRPC: ", lastUJSONRPC);
+            console.log("%cTuftsCEEO ", "color: #3ba336;", "parsed erroneous UJSONRPC: ", parsedUJSON);
+            console.log("%cTuftsCEEO ", "color: #3ba336;", "stringified erroneous UJSONRPC: ", await JSON.stringify(parsedUJSON));
+        }*/
+
+        
+        if (flagPrimeHubEventHandlerCounter) {
+            setInterval(async function () {
+                //console.log("%cTuftsCEEO ", "color: #3ba336;", "PrimeHubEventHandler: UJSONRPC messages count in last 10 seconds: ", countPrimeHubEventHandlerUJSONRPC);
+                
+                totalUJSONRPCPrimeHubEventHandled.push(countPrimeHubEventHandlerUJSONRPC);
+
+                countPrimeHubEventHandlerUJSONRPC = 0;
+
+            }, 10000);
+            flagPrimeHubEventHandlerCounter = false;
+        }
+
+        countPrimeHubEventHandlerUJSONRPC = countPrimeHubEventHandlerUJSONRPC + 1;
+        
+
+        //console.log(messageType);
 
         //catch runtime_error made at ujsonrpc level
         if (messageType == "runtime_error") {
@@ -2011,7 +2089,10 @@ function Service_SPIKE() {
                     var lineNumberInNumber = parseInt(lineNumber) - 6;
                     // console.log("%cTuftsCEEO ", "color: #3ba336;" ,"typeof lineNumberInNumber:", typeof lineNumberInNumber);
 
-                    funcAfterError("line " + lineNumberInNumber + ": " + errorType);
+                    // removed line number specification due to inaccuracy
+                    // funcAfterError("line " + lineNumberInNumber + ": " + errorType);
+                    funcAfterError(errorType);
+
                 }
                 else {
                     funcAfterError(errorType);
@@ -2157,7 +2238,8 @@ function Service_SPIKE() {
             }
         }
         else if ( messageType == 9 ) {
-            var encodedName = parsedUJSON["p"];
+            console.log("%cTuftsCEEO ", "color: #3ba336;", "found hubName UJSONRPC: ", lastUJSONRPC);
+            var encodedName = parsedUJSON["p"][0];
             var decodedName = atob(encodedName);
             hubName = decodedName;
 
@@ -2181,6 +2263,8 @@ function Service_SPIKE() {
             }
         }
         else {
+
+            console.log("%cTuftsCEEO ", "color: #3ba336;", lastUJSONRPC);
 
             // general parameters check
             if (parsedUJSON["r"]) {
@@ -2405,6 +2489,9 @@ function Service_SPIKE() {
         writeProgram: writeProgram,
         stopCurrentProgram: stopCurrentProgram,
         executeProgram: executeProgram,
-        testStreamUJSONRPC: testStreamUJSONRPC
+        testStreamUJSONRPC: testStreamUJSONRPC,
+        getTotalUJSONRPCHubInfoUpdated: getTotalUJSONRPCHubInfoUpdated,
+        getTotalUJSONRPCPrimeHubEventHandled: getTotalUJSONRPCPrimeHubEventHandled,
+        getTotalUJSONRPCProcessed: getTotalUJSONRPCProcessed
     };
 }

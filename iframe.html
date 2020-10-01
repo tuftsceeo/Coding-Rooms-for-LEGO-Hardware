@@ -17,7 +17,7 @@
             var alreadyInitOnceSPIKE = false; // to prevent event listeners from redefining when hardware reconnects
 
             var motorInfo = '<div id="motor">Motor<div id="motorAngle"></div></div>'
-            var colorInfo = '<div id="color">Color<div id="colorRGBbox" data-r="0", data-g="0", data-b="0" style="height:22px;width:22px;"> </div> </div>';
+            var colorInfo = '<div id="color">Color<div id="colorRGBbox" data-r="0", data-g="0", data-b="0" style="height:18px;width:18px;"> </div> <div id = "colorName" style = "margin-top: 3px; font-size: 12px;"></div> </div>';
             var distanceInfo = '<div id="distance">Distance<div id = "distanceValue"></div></div>';
             var forceInfo = '<div id="force">Force<div id="forceForce"></div></div>';
 
@@ -138,6 +138,9 @@
                                 var G = portsInfo[port]["data"]["RGB"][1];
                                 var B = portsInfo[port]["data"]["RGB"][2];
                                 RGBbox.style.backgroundColor = "rgb(" + R + "," + G + "," + B + ")";
+                                var color = portsInfo[port]["data"]["color"];
+                                var colorNameDiv = colorDiv.querySelector("#colorName");
+                                colorNameDiv.innerHTML = color;
                             }
                             else if (portsInfo[port]["device"] == "ultrasonic") {
                                 var distanceDiv = await addDistanceIcon(port);
@@ -372,7 +375,7 @@
                     var fileContent = files[key];
                     console.log("%cTuftsCEEO ", "color: lightgreen;" ,"fileContent: ", fileContent);
                     //
-                    if (fileName == "main.py") {
+                    if (fileName == defaultFileName) {
                         break;
                     }
                 }
