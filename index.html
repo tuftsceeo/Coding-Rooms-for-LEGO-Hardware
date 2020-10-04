@@ -69,6 +69,35 @@ hub.light_matrix.show_image('HAPPY')
 </div>
 
 <div id = "testingConsole">
+  <div id = "testUJSONRPC">
+    <h4>Program efficiency</h4>
+      <div id="testAverageTotal" class="testUJSONRPC">
+        Average UJSONRPC processed every 10 sec:
+        <span id="status">
+          Not tested
+        </span>
+      </div>
+      <div id="testAveragePrime" class="testUJSONRPC">
+        Average UJSONRPC processed in HubEventHandler every 10 sec:
+        <span id="status">
+          Not tested
+        </span>
+      </div>
+      <div id="testAverageHub" class="testUJSONRPC">
+        Average UJSONRPC processed in HubUpdatePortsInfo every 10 sec:
+        <span id="status">
+          Not tested
+        </span>
+      </div>
+    <h4>Testing UJSONRPC parser</h4>
+        <div id="testCase0" class="testUJSONRPC">
+          Conjoined packets {...}\r {...}
+          <span id="status">
+            Not tested
+          </span>
+        </div>
+        
+  </div>
   <div id = "testUI">
     <h4>Testing UI</h4>
     <div id="testFirstPositionNotEmpty" class = "testUI">
@@ -134,6 +163,12 @@ hub.light_matrix.show_image('HAPPY')
         Not tested
       </span>
     </div>
+    <div id="testCodeInSlotTen">
+      Test code register in slot 10:
+      <span id="status">
+        Not tested
+      </span>
+    </div>
   </div>
 
 
@@ -162,8 +197,14 @@ hub.light_matrix.show_image('HAPPY')
 
   <div id = "testingReconnect">
     <h4>Testing Miscellaneous </h4>
+    <div id="testPromptAfterDisconnect">
+      Test connection prompt after hardware disconnect:
+      <span id="status">
+        Not tested
+      </span>
+    </div>
     <div id="testReconnect">
-      Test hardware reconnect:
+      Test ability to reconnect hardware:
       <span id="status">
         Not tested
       </span>
@@ -199,7 +240,7 @@ hub.light_matrix.show_image('HAPPY')
 <style>
   #testingConsole {
     background-color: khaki;
-    height: 500px;
+    height: 700px;
     width: 600px;
     position: absolute;
     left: 700px;

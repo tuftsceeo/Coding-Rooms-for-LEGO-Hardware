@@ -17,16 +17,15 @@
             var alreadyInitOnceSPIKE = false; // to prevent event listeners from redefining when hardware reconnects
 
             var motorInfo = '<div id="motor">Motor<div id="motorAngle"></div></div>'
-            var colorInfo = '<div id="color">Color<div id="colorRGBbox" data-r="0", data-g="0", data-b="0" style="height:22px;width:22px;"> </div> </div>';
+            var colorInfo = '<div id="color">Color<div id="colorRGBbox" data-r="0", data-g="0", data-b="0" style="height:18px;width:18px;"> </div> <div id = "colorName" style = "margin-top: 3px; font-size: 12px;"></div> </div>';
             var distanceInfo = '<div id="distance">Distance<div id = "distanceValue"></div></div>';
             var forceInfo = '<div id="force">Force<div id="forceForce"></div></div>';
 
             // SPIKE Prime Code
             var mySPIKE;
-            var SPIKEisActive = false;
             var hubProjects;
             var devicesInfo = document.getElementById("devicesInfo");
-
+            var refreshSlotsDisplayTimeout;
             window.onload = function () {
                 // common web UI elements
                 var hardwareSelect = document.getElementById("hardwareSelect");
@@ -37,8 +36,6 @@
 
                 // instantiate LEGO hardware Services
                 mySPIKE = document.getElementById("Service_SPIKE").getService();
-
-                console.log("here!");
 
                 handleHardwareSelect();
                 hardwareSelect.addEventListener("change", async function () {
@@ -79,6 +76,7 @@
 
                     refreshSlotsDisplay();
 
+                    // prevent event listeners from defining twice
                     if (!alreadyInitOnceSPIKE) {
                         var runButton = document.getElementById("runProgram");
                         runButton.addEventListener("click", function () {
@@ -99,9 +97,12 @@
                         rebootButton.addEventListener("click", function () {
                             printOnConsole("Rebooting SPIKE Prime Hub...")
 
-                            refreshSlotsDisplay();
-
                             mySPIKE.rebootHub();
+                            clearTimeout(refreshSlotsDisplayTimeout);
+                            refreshSlotsDisplayTimeout = setTimeout( function () {
+                                refreshSlotsDisplay();
+                            }, 5000);
+
                         })
 
                         var stopButton = document.getElementById("stopProgram");
@@ -137,6 +138,9 @@
                                 var G = portsInfo[port]["data"]["RGB"][1];
                                 var B = portsInfo[port]["data"]["RGB"][2];
                                 RGBbox.style.backgroundColor = "rgb(" + R + "," + G + "," + B + ")";
+                                var color = portsInfo[port]["data"]["color"];
+                                var colorNameDiv = colorDiv.querySelector("#colorName");
+                                colorNameDiv.innerHTML = color;
                             }
                             else if (portsInfo[port]["device"] == "ultrasonic") {
                                 var distanceDiv = await addDistanceIcon(port);
@@ -181,9 +185,10 @@
 
                     /* END OF SPIKE Prime web UI code */
 
+                    console.log("%cTuftsCEEO ", "color: lightgreen;" ,"iframe window has completed loading");
                 })
 
-                console.log("mySPIKE = " + mySPIKE);
+
 
 
                 function handleHardwareSelect() {
@@ -193,7 +198,6 @@
                     if (hardwareSelectedID == "hardwareSPIKE") {
 
                         if ('serial' in navigator) {
-                            console.log("you got cereal")
                             var documentation = document.getElementById("documentation_SPIKE");
                             documentation.addEventListener("click", function () {
                                 var url = "./documentation/SPIKE_Prime_Python_Knowledge_Base.htm"
@@ -209,7 +213,8 @@
                             }
                         }
                         else {
-                            console.log("you dont got")
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"serial was not detected in the browser");
+                            
                             dependenciesInfoElement.style.display = "block";
                             topToolbar_container.style.display = "none";
                             mainUI_container.style.display = "none";
@@ -349,7 +354,7 @@
                 //       the `.dispose()` function or you plan to have your app 'disposed' automatically when the iframe
                 //       is removed by the parent.
                 window.webExecClient.subscribe('execute_code', function (event, payload) {
-                    console.log(event, payload);
+                    console.log("%cTuftsCEEO ", "color: lightgreen;" ,event, payload);
                     writeCodeExecRequestPayloadToDOM(payload);
                 });
             }
@@ -359,52 +364,54 @@
 
                 var defaultFileName = payload.defaultFileName;
 
-                console.log("defaultFileName: ", defaultFileName);
+                console.log("%cTuftsCEEO ", "color: lightgreen;" ,"defaultFileName: ", defaultFileName);
 
-                console.log("payload: ", payload);
+                console.log("%cTuftsCEEO ", "color: lightgreen;" ,"payload: ", payload);
 
                 // only gets the content of file with name, "main.py"
                 for (var key in files) {
-                    console.log("key: ", key);
+                    console.log("%cTuftsCEEO ", "color: lightgreen;" ,"key: ", key);
                     var fileName = key;
                     var fileContent = files[key];
-                    console.log("fileContent: ", fileContent);
+                    console.log("%cTuftsCEEO ", "color: lightgreen;" ,"fileContent: ", fileContent);
                     //
-                    if (fileName == "main.py") {
+                    if (fileName == defaultFileName) {
                         break;
                     }
                 }
+                if (mySPIKE.isActive()) {
+                    // parse the selected slot id
+                    var slotidSelect = document.getElementById("slotidSelect");
+                    var slotidOption = slotidSelect.options[slotidSelect.selectedIndex];
+                    var slotid = slotidOption.id;
+                    slotid = slotid.substring(4, slotid.length);
+                    var slotidInteger = parseInt(slotid);
 
-                // parse the selected slot id
-                var slotidSelect = document.getElementById("slotidSelect");
-                var slotidOption = slotidSelect.options[slotidSelect.selectedIndex];
-                var slotid = slotidOption.id;
-                slotid = slotid.substring(4, slotid.length);
-                var slotidInteger = parseInt(slotid);
+                    printOnConsole("Writing new program to position " + slotid + "...");
 
-                printOnConsole("Writing new program to position " + slotid + "...");
+                    // var base64encodedFileName = btoa(fileName);
 
-                // var base64encodedFileName = btoa(fileName);
+                    // register the program into SPIKE (only one file can be registered)
+                    mySPIKE.writeProgram(fileName, fileContent, slotidInteger, async function () {
+                        // show the new list of programs currently registered in the SPIKE
 
-                // register the program into SPIKE (only one file can be registered)
-                mySPIKE.writeProgram(fileName, fileContent, slotidInteger, async function () {
-                    // show the new list of programs currently registered in the SPIKE
+                        printOnConsole("Terminating any running program..." + "");
 
-                    printOnConsole("Terminating any running program..." + "");
+                        // stop any currently running program
+                        mySPIKE.stopCurrentProgram();
 
-                    // stop any currently running program
-                    mySPIKE.stopCurrentProgram();
+                        // refresh programs
+                        refreshSlotsDisplay(function () {
 
-                    // refresh programs
-                    refreshSlotsDisplay(function () {
+                            printOnConsole("Executing program in position " + slotidInteger + "..." + "");
 
-                        printOnConsole("Executing program in position " + slotidInteger + "..." + "");
+                            // execute the program that was just downloaded
+                            mySPIKE.executeProgram(slotidInteger);
+                        })
 
-                        // execute the program that was just downloaded
-                        mySPIKE.executeProgram(slotidInteger);
-                    })
+                    });
+                }
 
-                });
 
                 return true;
             }
@@ -446,7 +453,7 @@
                             Google Chrome browser</a>.</li>
                     <li class="checklist">The following chrome flags are enabled on chrome://flags.</li>
                     <li class = "steps">Mac OSX user? #enable-experimental-web-platform-features</li>
-                    <li class="steps">Windows user? #enable-experimental-web-platform-features AND #enable-new-usb-backend</li>
+                    <li class="steps">Windows user? #enable-experimental-web-platform-features AND #new-usb-backend</li>
                 </ol>
                 To enable these flags:
                 <ol style="font-size: 15px;">
@@ -631,8 +638,10 @@
                 trademarks and copyrights are the property of their respective owners. All rights reserved. CodingRooms
                 isn’t affiliated, authorized, or endorsed by The LEGO Group.
             </h5>
+            <h5>
+                The "refresh preview" icon is attributed to Freepik. The "API" icon is attributed to icons8. All other icons are attributed to Tufts CEEO. 
+            </h5>
         </div>
-        <br /><br /><br />
     </body>
     <style>
         body {
@@ -664,7 +673,6 @@
             border-width: 1px;
             margin: 10px;
             display:none;
-
         }
 
         #dependenciesInfo .checklist {
