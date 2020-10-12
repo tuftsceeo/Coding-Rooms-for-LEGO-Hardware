@@ -284,7 +284,6 @@ function Service_SPIKE() {
                     "18": "None",
                     "19": "None"
                 };
-                
     var colorDictionary = {
         0: "BLACK",
         1: "VIOLET",
@@ -1544,7 +1543,7 @@ function Service_SPIKE() {
 
             // wait for the port to open.
             try {
-                await port.open({ baudRate: 115200 });
+                await port.open({ baudrate: 115200 });
 
             }
             catch (er) {
