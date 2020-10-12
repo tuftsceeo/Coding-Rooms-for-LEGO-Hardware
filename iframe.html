@@ -27,6 +27,8 @@
             var devicesInfo = document.getElementById("devicesInfo");
             var refreshSlotsDisplayTimeout;
             window.onload = function () {
+
+                
                 // common web UI elements
                 var hardwareSelect = document.getElementById("hardwareSelect");
                 var topToolbar_container = document.getElementById("topToolbar_container");
@@ -180,8 +182,9 @@
                         rollDiv.innerHTML = "roll: " + roll;
 
                     })
-
+                    printOnConsole("Web environment version: 1.0");
                     printOnConsole("Web UI initialization complete!\n")
+                    
 
                     /* END OF SPIKE Prime web UI code */
 
@@ -368,13 +371,12 @@
 
                 console.log("%cTuftsCEEO ", "color: lightgreen;" ,"payload: ", payload);
 
-                // only gets the content of file with name, "main.py"
+                // only gets the content of file with the defaultFileName
                 for (var key in files) {
                     console.log("%cTuftsCEEO ", "color: lightgreen;" ,"key: ", key);
                     var fileName = key;
                     var fileContent = files[key];
                     console.log("%cTuftsCEEO ", "color: lightgreen;" ,"fileContent: ", fileContent);
-                    //
                     if (fileName == defaultFileName) {
                         break;
                     }
