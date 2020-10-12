@@ -1543,7 +1543,7 @@ function Service_SPIKE() {
 
             // wait for the port to open.
             try {
-                await port.open({ baudRate: 115200 });
+                await port.open({ baudrate: 115200 });
 
             }
             catch (er) {
