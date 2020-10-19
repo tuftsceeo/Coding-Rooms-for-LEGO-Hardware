@@ -1328,7 +1328,7 @@ function Service_SPIKE() {
         writeProgramSetTimeout = setTimeout(function() {
             if (startWriteProgramCallback != undefined) {
                 if (funcAfterError != undefined) {
-                    funcAfterError("5 seconds have passed without response... Please refresh the environment and try again.");
+                    funcAfterError("5 seconds have passed without response... Please refresh the environment, reboot the hub, and try again.");
                 }
             }
         }, 5000)
