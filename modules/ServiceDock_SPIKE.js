@@ -899,9 +899,9 @@ function Service_SPIKE() {
 
         // add a tab before every newline (this is syntactically needed for concatenating with the template)
         for (var index in splitData) {
-            var parsedRunForSeconds = await parseWaitForSeconds(splitData[index]);
+            // var parsedRunForSeconds = await parseWaitForSeconds(splitData[index]);
 
-            var addedTab = "    " + parsedRunForSeconds + "\n";
+            var addedTab = "    " + splitData[index] + "\n";
 
             result = result + addedTab;
         }
