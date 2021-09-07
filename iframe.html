@@ -8,7 +8,8 @@
     <title> SPIKE iframe </title>
 
     <head>
-        <script type="text/javascript" src="./modules/ServiceDock_SPIKE.js"></script>
+        <!-- <script type="text/javascript" src="./modules/ServiceDock_SPIKEV2.js"></script> -->
+        <script src="https://cdn.jsdelivr.net/gh/tuftsceeo/SPIKE-Web-Interface@1.1.2/cdn/ServiceDock.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"
             integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg=="
             crossorigin="anonymous"></script>
@@ -56,7 +57,7 @@
 
                 mySPIKE.executeAfterError(printOnConsole);
 
-                mySPIKE.CodingRooms_executeAfterDisconnect(function () {
+                mySPIKE.executeAfterDisconnect(function () {
                     mainUI_container.style.display = "none";
                     connectionHelp_container.style.display = "block";
                 })
@@ -93,27 +94,25 @@
                             printOnConsole("Executing program in position " + slotid + "...")
 
                             mySPIKE.executeProgram(slotidInteger);
-                        })
+                        });
 
                         var rebootButton = document.getElementById("rebootHub");
                         rebootButton.addEventListener("click", function () {
-                            printOnConsole("Rebooting SPIKE Prime Hub...")
+                            printOnConsole("Rebooting SPIKE Prime Hub...");
 
                             mySPIKE.rebootHub();
                             clearTimeout(refreshSlotsDisplayTimeout);
                             refreshSlotsDisplayTimeout = setTimeout( function () {
                                 refreshSlotsDisplay();
                             }, 5000);
-
-                        })
+                        });
 
                         var stopButton = document.getElementById("stopProgram");
                         stopButton.addEventListener("click", function () {
-
-                            printOnConsole("Terminating any running program...")
+                            printOnConsole("Terminating any running program...");
 
                             mySPIKE.stopCurrentProgram();
-                        })
+                        });
 
                         alreadyInitOnceSPIKE = true;
                     }
@@ -125,7 +124,6 @@
                         batteryInfo.innerHTML = "&#160; Battery: " + batteryStatus + "%";
 
                         var portsInfo = await mySPIKE.getPortsInfo();
-
                         for (var port in portsInfo) {
 
                             if (portsInfo[port]["device"] == "smallMotor" || portsInfo[port]["device"] == "bigMotor") {
@@ -200,6 +198,7 @@
                     if (hardwareSelectedID == "hardwareSPIKE") {
 
                         if ('serial' in navigator) {
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"serial was detected in the browser");
                             var documentation = document.getElementById("documentation_SPIKE");
                             documentation.addEventListener("click", function () {
                                 var url = "./documentation/SPIKE_Prime_Python_Knowledge_Base.htm"
@@ -215,7 +214,7 @@
                             }
                         }
                         else {
-                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"serial was not detected in the browser");
+                            console.log("%cTuftsCEEO ", "color: lightgreen;" ,"serial was NOT detected in the browser");
                             
                             dependenciesInfoElement.style.display = "block";
                             topToolbar_container.style.display = "none";
@@ -472,7 +471,7 @@
                 <div style="position: relative; float:left; margin: 10px; text-align: center; top: 20%;">
                     Service Dock for SPIKE&trade; Prime:
                 </div>
-                <service-spike id="Service_SPIKE" class="Service tooltip">
+                <service-spike id="Service_SPIKE" class="Service tooltip" style = "top: -5px;">
                     <span class="tooltiptext">Connect to SPIKE Prime</span>
                 </service-spike>
                 <button id="documentation_SPIKE" class="documentation tooltip">
