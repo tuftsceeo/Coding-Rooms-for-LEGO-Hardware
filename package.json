@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/tuftsceeo/Coding-Rooms-for-LEGO-Hardware#readme",
   "dependencies": {
-    "puppeteer": "^5.2.1"
+    "puppeteer": "10.2.0"
   }
 }
