@@ -7,9 +7,9 @@ let browser;
 let page;
 let frame;
 let UIConsoleCurrentIndex;
-
+const indexFilePath = 'file:///Users/jungjangho/Documents/projects/Coding-Rooms-for-LEGO-Hardware/index.html'
 async function launchBrowser(experimentalflag, callback) {
-    if (experimentalflag) {
+   if (experimentalflag) {
         browser = await puppeteer.launch({
             defaultViewport: null,
             headless: false,
@@ -27,7 +27,7 @@ async function launchBrowser(experimentalflag, callback) {
     }
     page = await browser.newPage();
     await page.goto(
-        'file:///Users/jang-hojung/tuftsceeo/SPIKEstuff/src/codingroomsHardware/index.html'
+        indexFilePath
     )
 
     callback();
@@ -56,6 +56,7 @@ async function testStreamUJSONRPC() {
             page.$eval("#testCase" + index + "> span#status", element => element.innerHTML = "Failed");
         }
     }
+    console.log("##### END TESTING streamUJSONRPC #####");
 
 }
 
@@ -99,11 +100,13 @@ async function testUIInit() {
         else {
             page.$eval("#testHubName > span#status", element => element.innerHTML = "Failed");
         }
+        console.log("##### END TESTING HUB NAME #####");
     }
     // wasnt defined at all
     catch (e) {
         console.log(e);
         page.$eval("#testHubName > span#status", element => element.innerHTML = "Failed");
+        console.log("##### END TESTING HUB NAME #####");
     }
 
     /* CHECK 3: if UI console is devoice of errors */
@@ -118,7 +121,7 @@ async function testUIInit() {
     
     var expectedResultWithoutErrors = (consoleValue.indexOf("Please try again. If error persists, refresh this environment.") == -1) && (consoleValue.indexOf("Fatal Error: Please close any other window or program that is connected to your SPIKE Prime") == -1) && (consoleValue.indexOf("Fatal Error: Please reboot the Hub and refresh this environment") == -1) 
 
-    if (index_SucessfullyConnected == 81 && expectedResultWithoutErrors) {
+    if (expectedResultWithoutErrors) {
         page.$eval("#testConsoleIndex > span#status", element => element.innerHTML = "Passed");
     }
     else {
@@ -126,7 +129,7 @@ async function testUIInit() {
     }
 
     UIConsoleCurrentIndex = consoleValue.length;
-
+    console.log("##### END TESTING UI CONSOLE MESSAGES #####");
 }
 
 async function testDefaultCode() {
@@ -154,10 +157,12 @@ async function testDefaultCode() {
     }
 
     UIConsoleCurrentIndex = consoleValue.length;
+    console.log("##### END TESTING HUB PROGRAMS #####");
 
 }
 
 async function testPrintCode() {
+    console.log("##### TESTING PRINT CODE #####");
     page.$eval("#testPrintCode > span#status", element => element.innerHTML = "In progress");
 
     await page.$eval("#filecontent", element => element.innerHTML = 
@@ -193,10 +198,11 @@ async function testPrintCode() {
     }
 
     UIConsoleCurrentIndex = consoleValue.length;
-
+    console.log("##### END TESTING PRINT CODE #####");
 }
 
 async function testLongCode() {
+    console.log("##### TESTING LONG CODE #####");
     page.$eval("#testLongCode > span#status", element => element.innerHTML = "In progress");
 
     await page.$eval("#filecontent", element => element.innerHTML =
@@ -261,10 +267,11 @@ async function testLongCode() {
     }
 
     UIConsoleCurrentIndex = consoleValue.length;
-
+    console.log("##### END TESTING LONG CODE #####");
 }
 
 async function testTabEscapeCode() {
+    console.log("##### TESTING TAB ESCAPE CODE #####");
     page.$eval("#testTabEscapeCode > span#status", element => element.innerHTML = "In progress");
 
     await page.$eval("#filecontent", element => element.innerHTML =
@@ -305,10 +312,11 @@ async function testTabEscapeCode() {
     }
 
     UIConsoleCurrentIndex = consoleValue.length;
-
+    console.log("##### END TESTING TAB ESCAPE CODE #####");
 }
 
 async function testSyntaxErrorModuleImports(){
+    console.log("##### TESTING SYNTAX ERROR MODULE IMPORTS #####");
     page.$eval("#testSyntaxErrorModuleImports > span#status", element => element.innerHTML = "In progress");
 
     await page.$eval("#filecontent", element => element.innerHTML =
@@ -350,9 +358,11 @@ async function testSyntaxErrorModuleImports(){
     }
 
     UIConsoleCurrentIndex = consoleValue.length;
+    console.log("##### END TESTING SYNTAX ERROR MODULE IMPORTS #####");
 }
 
 async function testSyntaxErrorCode() {
+    console.log("##### TESTING SYNTAX ERROR CODE#####");
     page.$eval("#testSyntaxErrorCode > span#status", element => element.innerHTML = "In progress");
 
     await page.$eval("#filecontent", element => element.innerHTML =
@@ -394,9 +404,11 @@ async function testSyntaxErrorCode() {
     }
 
     UIConsoleCurrentIndex = consoleValue.length;
+    console.log("##### END TESTING SYNTAX ERROR CODE#####");
 }
 
 async function testEmptyCode() {
+    console.log("##### TESTING EMPTY CODE #####");
     page.$eval("#testEmptyCode > span#status", element => element.innerHTML = "In progress");
 
     await page.$eval("#filecontent", element => element.innerHTML =
@@ -426,9 +438,11 @@ async function testEmptyCode() {
     }
 
     UIConsoleCurrentIndex = consoleValue.length;
+    console.log("##### END TESTING EMPTY CODE #####");
 }
 
 async function testCodeInSlotTen() {
+    console.log("##### TESTING CODE IN SLOT TEN #####");
     page.$eval("#testCodeInSlotTen > span#status", element => element.innerHTML = "In progress");
 
     var printContent = await page.evaluate( () => {
@@ -488,10 +502,12 @@ async function testCodeInSlotTen() {
     // revert to slot 0
 
     await frame.select("select#slotidSelect", "slot0");
+    console.log("##### END TESTING CODE IN SLOT TEN #####");
 
 }
 
 async function defaultFileContent() {
+    console.log("##### TESTING DEFAULT FILE CONTENT #####");
     await page.$eval("#filecontent", element => element.innerHTML =
         "from spike import PrimeHub, LightMatrix, Motor, MotorPair\n"
         + "from spike.control import wait_for_seconds, wait_until, Timer\n"
@@ -509,11 +525,12 @@ async function defaultFileContent() {
     console.log("next console value: ", nextConsoleValue);
 
     UIConsoleCurrentIndex = consoleValue.length;
+    console.log("##### END TESTING DEFAULT FILE CONTENT #####");
 }
 
 async function testRun() {
 
-    console.log("##### testing run button ######")
+    console.log("##### TESTING RUN BUTTON #####");
 
     page.$eval("#testRunButton > span#status", element => element.innerHTML = "In progress");
 
@@ -537,11 +554,11 @@ async function testRun() {
     }
 
     UIConsoleCurrentIndex = consoleValue.length;
-
+    console.log("##### END TESTING RUN BUTTON #####");
 }
 
 async function testStop() {
-    console.log("##### testing stop button ######")
+    console.log("##### TESTING STOP BUTTON #####");
 
     page.$eval("#testStopButton > span#status", element => element.innerHTML = "In progress");
 
@@ -562,11 +579,12 @@ async function testStop() {
     }
 
     UIConsoleCurrentIndex = consoleValue.length;
-
+    console.log("##### END TESTING STOP BUTTON #####");
 }
 
 async function testReboot() {
-    console.log("##### testing reboot button ######")
+    console.log("##### TESTING REBOOT BUTTON #####");
+
 
     page.$eval("#testRebootButton > span#status", element => element.innerHTML = "In progress");
 
@@ -588,11 +606,11 @@ async function testReboot() {
     }
 
     UIConsoleCurrentIndex = consoleValue.length;
-
+    console.log("##### END TESTING REBOOT BUTTON #####");
 }
 
 async function testEfficiency() {
-    console.log("##### testing program efficiency ######");
+    console.log("##### TESTING PROGRAM EFFICIENCY #####");
 
     page.evaluate( () => {
         var element = document.querySelector("#testAverageTotal");
@@ -659,6 +677,7 @@ async function testEfficiency() {
         spanElement = element.querySelector("#status");
         spanElement.innerHTML = Math.floor(testsResult[2]);
     }, testsResult);
+    console.log("##### END TESTING PROGRAM EFFICIENCY #####");
 }
 
 async function testDisconnectAndReconnect() {
@@ -731,7 +750,7 @@ async function testDependenciesInfo() {
     })
     SecondPage = await SecondBrowser.newPage();
     await SecondPage.goto(
-        'file:///Users/jang-hojung/tuftsceeo/SPIKEstuff/src/codingroomsHardware/index.html'
+        indexFilePath
     )
 
     const framesList = (await SecondPage.frames());
@@ -747,8 +766,9 @@ async function testDependenciesInfo() {
     else {
         page.$eval("#testDependenciesInfo > span#status", element => element.innerHTML = "Failed");
     }
-
-    await SecondBrowser.close();
+    setTimeout( async function () {
+        await SecondBrowser.close();
+    }, 20000);
 
 }
 
