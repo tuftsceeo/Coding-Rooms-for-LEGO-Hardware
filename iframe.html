@@ -221,11 +221,15 @@
                             mainUI_container.style.display = "none";
                         }
                     }
+                    else if (hardwareSelectedID == "replSPIKE") {
+                        window.location.href = "./build/index.html"
+                    }
                     else if (hardwareSelectedID == "survey") {
 
                         window.open("https://tufts.qualtrics.com/jfe/form/SV_2tM0l0jcPzyPH1z");
                         hardwareSelect.selectedIndex = 0;
                     }
+                    
 
                 }
             }; /* end of window.load */
@@ -438,6 +442,7 @@
             Select platform:
             <select id="hardwareSelect">
                 <option id="hardwareSPIKE">SPIKE Prime</option>
+                <option id="replSPIKE">PyREPL for SPIKE Prime</option>
                 <option id="survey">&lt;Request new hardware&gt;</option>
             </select>
         </div>
