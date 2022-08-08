@@ -7,7 +7,7 @@ let browser;
 let page;
 let frame;
 let UIConsoleCurrentIndex;
-const indexFilePath = 'file:///Users/jungjangho/Documents/projects/Coding-Rooms-for-LEGO-Hardware/index.html'
+const indexFilePath = 'file:///C:/Users/gsess/Documents/Coding-Rooms-for-LEGO-Hardware/index.html'
 async function launchBrowser(experimentalflag, callback) {
    if (experimentalflag) {
         browser = await puppeteer.launch({
