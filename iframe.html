@@ -13,6 +13,13 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"
             integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg=="
             crossorigin="anonymous"></script>
+        <script>
+            console.log(localStorage.getItem("version"));
+            if (localStorage.getItem("version") == 2) {
+                console.log("running")
+                window.location.href = "./build/index.html?frameId=myFrameIdSetMe";
+            }
+        </script>
         <script language="javascript">
 
             var alreadyInitOnceSPIKE = false; // to prevent event listeners from redefining when hardware reconnects
@@ -222,6 +229,8 @@
                         }
                     }
                     else if (hardwareSelectedID == "replSPIKE") {
+                        window.webExecClient.dispose();
+                        localStorage.setItem("version", 2);
                         window.location.href = "./build/index.html"
                     }
                     else if (hardwareSelectedID == "survey") {
