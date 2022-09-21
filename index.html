@@ -58,12 +58,16 @@
 <div>
 <form style="position:relative;" onsubmit="submitForm(); return false;">
   <textarea style="width:600px; font-family:'Courier New', Courier" rows=5 id="filecontent">
-from spike import PrimeHub, LightMatrix, Motor, MotorPair
-from spike.control import wait_for_seconds, wait_until, Timer
+import display, util, time
 
-hub = PrimeHub()
+async def main():
+  display.display_show_pictogram(3) # Happy Pictogram
+  time.sleep(3)
+  display.display_show_pictogram(1) # Heart Pictogram
 
-hub.light_matrix.show_image('HAPPY')
+util.run(main())
+
+
       </textarea>
   <input type=submit value="Run" id = "runCode">
 </form>
